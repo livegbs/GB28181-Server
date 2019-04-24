@@ -260,6 +260,8 @@ https://www.npmjs.com/package/@liveqing/liveplayer
 
 LiveGBS-QQ交流群：[947137753](https://jq.qq.com/?_wv=1027&k=5UDV5Pt)
 
+联系方式：151-5689-6292（同微信）
+
 WEB：[www.liveqing.com](http://www.liveqing.com/)
 
 Copyright &copy; LiveQing.com 2016-2019
