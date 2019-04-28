@@ -1,45 +1,52 @@
 #  下载地址
 [**https://gitee.com/liveqing/ReleaseVersion/releases/LiveGBS**](https://gitee.com/liveqing/ReleaseVersion/releases/LiveGBS)
 
-#  LiveGBS GB28181 国标方案安装使用文档
+# LiveGBS GB28181 国标方案安装使用说明
 
-# 1. 服务资源
+## 服务资源
 
-[ **在线演示入口** ](http://gbs.liveqing.com) | [ **在线接口文档** ](http://gbs.liveqing.com/apidoc/) | [ **在线部署手册** ](http://gbs.liveqing.com/UserManual.pdf) | [ **QQ交流群 947137753** ](https://jq.qq.com/?_wv=1027&k=56kTtkt)
+  [试用安装包下载](https://gitee.com/liveqing/ReleaseVersion/releases/LiveGBS) | [在线演示](http://gbs.liveqing.com) | [在线API](http://gbs.liveqing.com/apidoc) | QQ交流群：[947137753](https://jq.qq.com/?_wv=1027&k=51AHErq)
 
-# 2.  服务架构
-![LiveGBS架构图](https://upload-images.jianshu.io/upload_images/15249405-441efa1414d85a05.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+## 服务架构
 
-# 3.  服务说明
-## 3.1 安装包
+![LiveGBS架构图](https://www.liveqing.com/images/gbs/1.jpg)
+
+## 服务说明
+
+### 安装包
 - Windows平台使用的安装包：
-_LiveCMS-windows-***.zip_
-_LiveSMS-windows-***.zip_
+
+        LiveCMS-windows-***.zip
+        LiveSMS-windows-***.zip
 
 - Linux平台使用的安装包：
-_LiveCMS-linux-***.tar.gz_
-_LiveSMS-linux-***.tar.gz_
 
-## 3.2 信令服务
-- ***LiveCMS*** 
+        LiveCMS-linux-***.tar.gz
+        LiveSMS-linux-***.tar.gz
+
+### 信令服务
+
+- LiveCMS
 
     SIP 中心信令服务, 单节点, 自带一个 Redis Server, 随 LiveCMS 自启动, 不需要手动运行
-- ***LiveCMS端口使用*** 
 
-	TCP 端口 : 10000(HTTP), 26379(Redis)
+- LiveCMS端口使用
+
+	TCP 端口 : 5060(SIP), 10000(HTTP), 26379(Redis)
 	
 	UDP 端口 : 5060(SIP)
     
-## 3.3 流媒体服务
-- ***LiveSMS***
+### 流媒体服务
+
+- LiveSMS
   
  	SIP 流媒体服务, 根据需要可部署多套
     
-- ***LiveSMS端口使用*** 
+- LiveSMS端口使用
 
-	TCP 端口 : 10001(HTTP), 11935(RTMP Live), 30000-40000(RTP over TCP)
+	TCP 端口 : 5070(SIP), 10001(HTTP), 11935(RTMP Live), 30000-40000(RTP over TCP)
 	
-	UDP 端口 :5070(SIP), 50000-60000(RTP/RTC over UDP)
+	UDP 端口 : 5070(SIP), 50000-60000(RTP/RTCP over UDP)
 
 
 	*端口区间说明*
@@ -49,15 +56,13 @@ _LiveSMS-linux-***.tar.gz_
    - UDP 区间大小 = 最大并发数(包括直播和回放)*2
 			
 			
-
-# 3.  服务配置
-## 3.1 配置信令服务(LiveCMS)
+### 配置信令服务(LiveCMS)
 
   	服务名称：LiveCMS
 
   	配置文件：livecms.ini
 
-  	所在位置：LiveCMS-windows-***.zip_；_LiveCMS-linux-***.tar.gz
+  	所在位置：LiveCMS-windows-***.zip, LiveCMS-linux-***.tar.gz
 
 - [sip] -> host
 
@@ -75,14 +80,16 @@ _LiveSMS-linux-***.tar.gz_
 
     设备接入统一密码
 
+    ![LiveCMS基础配置](https://www.liveqing.com/images/gbs/9.png)
 
-## 3.2 配置流媒体服务(LiveSMS)
+
+### 配置流媒体服务(LiveSMS)
 
  	 服务名称：LiveSMS
 
  	 配置文件：livesms.ini
 	
- 	 所在位置：LiveSMS-windows-***.zip_；_LiveSMS-linux-***.tar.gz
+ 	 所在位置：LiveSMS-windows-***.zip, LiveSMS-linux-***.tar.gz
 
 - [sip] -> host
 
@@ -112,46 +119,51 @@ _LiveSMS-linux-***.tar.gz_
 
     RTP over TCP 端口
 
+![LiveSMS基础配置](https://www.liveqing.com/images/gbs/10.png)
 
-# 4. 服务运行
+## 服务运行
 
-> **!!! 安装包所在路径不要包含 `中文`**
-> 先运行 LiveCMS, 再运行 LiveSMS
+::: warning 注意
 
+安装包所在路径不要包含 **中文**, 先运行 LiveCMS, 再运行 LiveSMS
+
+:::
+
+### Windows
+
+直接运行
     
-
-## 4.1 Windows
-
-### 4.1.1 直接运行
-    
-#### 4.1.1.1 信令服务（LiveCMS）
+信令服务（LiveCMS）
    
 - 启动: 解压目录中，直接双击 LiveCMS.exe 
     
 - 停止：以 `Ctrl + C` 停止服务, 不可以直接叉控制台窗口, 否则服务停不干净
 
-#### 4.1.1.2 流媒体服务（LiveSMS）
+流媒体服务（LiveSMS）
+
 - 启动: 解压目录中，直接双击 LiveSMS.exe
 
 - 停止：以 `Ctrl + C` 停止服务, 不可以直接叉控制台窗口, 否则服务停不干净
 
-### 4.1.2 以服务启动
+以服务启动
 
-#### 4.1.2.1 信令服务（LiveCMS）
+信令服务（LiveCMS）
+
 - 安装: 解压目录中，直接双击 ServiceInstall-LiveCMS.exe
     
 - 卸载: 以 ServiceUninstall-LiveCMS.exe 卸载 CMS 服务
 
-#### 4.1.2.2 流媒体服务（LiveSMS）
+流媒体服务（LiveSMS）
+
 - 安装: 解压目录中，直接双击 ServiceInstall-LiveSMS.exe
     
 - 卸载: 以 ServiceUninstall-LiveSMS.exe 卸载 SMS 服务
 
-## 4.2 Linux
+### Linux
 
-### 4.2.1 直接运行
+直接运行
     
-#### 4.2.1.1 信令服务（LiveCMS）
+信令服务（LiveCMS）
 
 ```
 cd LiveCMS
@@ -159,7 +171,7 @@ cd LiveCMS
 #停止： Ctrl + C
 ```
 
-#### 4.2.1.2 流媒体服务（LiveSMS）
+流媒体服务（LiveSMS）
 
 ```
 cd LiveSMS
@@ -167,14 +179,18 @@ cd LiveSMS
 # 停止：Ctrl + C
 ```
 
-### 4.2.2  以服务启动
-#### 4.2.2.1 信令服务（LiveCMS）
+以服务启动
+
+信令服务（LiveCMS）
+
 ```
 cd LiveCMS
 ./start.sh
 #停止： ./stop.sh
 ```
-#### 4.2.2.2 流媒体服务（LiveSMS）
+
+流媒体服务（LiveSMS）
+
 ```
 cd LiveSMS
 ./start.sh
@@ -182,27 +198,39 @@ cd LiveSMS
 ```
 
 
-# 5. 配置设备接入
+## 配置设备接入
 
-下面是海康和大华 IPC 中, GB28181 平台接入配置的两张截图, 供参考
-## 5.1 海康GB28181接入示例
-![海康GB28181接入示例](https://upload-images.jianshu.io/upload_images/15249405-79eda42b7ee2108d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-## 5.2 大华GB28181接入示例
-![大华GB28181接入示例](https://upload-images.jianshu.io/upload_images/15249405-d5f62db4dc10f1a5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+服务运行起来后，参考LiveCMS基础配置页面上显示的信息设置到下级设备或平台上。
+![LiveCMS基础配置](https://www.liveqing.com/images/gbs/9.png)
 
 
+下面是海康、大华和宇视 IPC 中, GB28181 平台接入配置的两张截图, 供参考
 
-# 6. 平台使用
+### 海康GB28181接入示例
 
-## 6.1 管理平台
+![海康GB28181接入示例](https://www.liveqing.com/images/gbs/2.jpg)
+
+### 大华GB28181接入示例
+
+![大华GB28181接入示例](https://www.liveqing.com/images/gbs/3.jpg)
+
+### 宇视4G GB28181接入示例
+
+![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/4.jpg)
+
+![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/5.jpg)
+
+
+## 平台使用
+
+### 管理平台
 
 http://localhost:10000
 
-## 6.2 接口文档    
+### 接口文档    
 http://localhost:10000/apidoc
 
-## 6.3 使用分享页
+### 使用分享页
 
 为方便客户在网页中集成播放功能, 我们单独提供了可供 HTML iframe 集成的分享页, 形如:
     
@@ -212,13 +240,15 @@ http://localhost:10000/apidoc
 
 - serial 设备国标编号
 
- - code 通道国标编号
+- code 通道国标编号
+
+- share 是否显示分享, 可选, yes/no, 默认值为 yes
 
 - ptz 是否显示云台控制, 可选, yes/no, 默认值为 yes
 
 - iframe 是否仅显示视频播放区域, 可选, yes/no, 默认值为 no
 
-- aspect 视频播放区域的宽高比, 可选, wxh, 默认为 640x360, 即16:9 
+- aspect 视频播放区域的宽高比, 可选, wxh, 默认为 640x360, 即16:9, 当 aspect=fullscreen 时整页显示播放器
 
 - fluent 是否以流畅模式播放, 可选, yes/no, 默认值为 yes
 
@@ -228,7 +258,7 @@ http://localhost:10000/apidoc
 
 - protocol 播放流格式, 可选, rtmp/hls/flv, 默认 auto check
 
-## 6.4  网页播放器
+### 网页播放器
 
 除了 iframe 方式集成播放器, 也可以使用 LivePlayer 网页播放器来二次开发
 
@@ -236,7 +266,7 @@ LivePlayer 网页播放器下载和使用文档, 参阅链接:
     
 https://www.npmjs.com/package/@liveqing/liveplayer
 
-# 7. 统一编码规则
+## 统一编码规则
 
 关于设备ID, 通道ID, 以下是国标协议文档中关于 **统一编码规则** 的截取
 
