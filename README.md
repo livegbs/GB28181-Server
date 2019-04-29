@@ -167,15 +167,15 @@
 
 ```
 cd LiveCMS
-./livecms
-#停止： Ctrl + C
+# 启动：./livecms
+# 停止： Ctrl + C
 ```
 
 流媒体服务（LiveSMS）
 
 ```
 cd LiveSMS
-./livesms
+# 启动：./livesms
 # 停止：Ctrl + C
 ```
 
@@ -185,16 +185,16 @@ cd LiveSMS
 
 ```
 cd LiveCMS
-./start.sh
-#停止： ./stop.sh
+# 启动：./start.sh
+# 停止：./stop.sh
 ```
 
 流媒体服务（LiveSMS）
 
 ```
 cd LiveSMS
-./start.sh
-#停止： ./stop.sh
+# 启动：./start.sh
+# 停止：./stop.sh
 ```
 
 
