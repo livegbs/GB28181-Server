@@ -123,11 +123,11 @@
 
 ## 服务运行
 
-::: warning 注意
 
-安装包所在路径不要包含 **中文**, 先运行 LiveCMS, 再运行 LiveSMS
+### Warning 注意
 
-:::
+> 安装包所在路径不要包含 **中文**, 先运行 LiveCMS, 再运行 LiveSMS
+
 
 ### Windows
 
