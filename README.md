@@ -1,11 +1,11 @@
 #  下载地址
-[**https://gitee.com/liveqing/ReleaseVersion/releases/LiveGBS**](https://gitee.com/liveqing/ReleaseVersion/releases/LiveGBS)
+[**https://www.liveqing.com/docs/download/LiveGBS.html**](https://www.liveqing.com/docs/download/LiveGBS.html)
 
 # LiveGBS GB28181 国标方案安装使用说明
 
 ## 服务资源
 
-  [试用安装包下载](https://gitee.com/liveqing/ReleaseVersion/releases/LiveGBS) | [在线演示](http://gbs.liveqing.com) | [在线API](http://gbs.liveqing.com/apidoc) | QQ交流群：[947137753](https://jq.qq.com/?_wv=1027&k=51AHErq)
+  [试用安装包下载](https://www.liveqing.com/docs/download/LiveGBS.html) | [在线演示](http://gbs.liveqing.com) | [在线API](http://gbs.liveqing.com/apidoc) | QQ交流群：[947137753](https://jq.qq.com/?_wv=1027&k=51AHErq)
 
 ## 服务架构
 
