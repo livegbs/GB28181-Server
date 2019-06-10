@@ -9,7 +9,7 @@
 
 ## 服务架构
 
-![LiveGBS架构图](https://www.liveqing.com/images/gbs/1.jpg)
+![LiveGBS架构图](https://www.liveqing.com/images/biz/manuals_LiveGBS_1.png)
 
 ## 服务说明
 
@@ -208,17 +208,17 @@ cd LiveSMS
 
 ### 海康GB28181接入示例
 
-![海康GB28181接入示例](https://www.liveqing.com/images/gbs/2.jpg)
+![海康GB28181接入示例](https://www.liveqing.com/images/gbs/%E6%B5%B7%E5%BA%B7%E6%8E%A5%E5%85%A5.jpg)
 
 ### 大华GB28181接入示例
 
-![大华GB28181接入示例](https://www.liveqing.com/images/gbs/3.jpg)
+![大华GB28181接入示例](https://www.liveqing.com/images/gbs/%E5%A4%A7%E5%8D%8E%E6%8E%A5%E5%85%A5.jpg)
 
 ### 宇视4G GB28181接入示例
 
-![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/4.jpg)
+![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/%E5%AE%87%E8%A7%86%E6%8E%A5%E5%85%A501.jpg)
 
-![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/5.jpg)
+![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/%E5%AE%87%E8%A7%86%E6%8E%A5%E5%85%A502.jpg)
 
 
 ## 平台使用
