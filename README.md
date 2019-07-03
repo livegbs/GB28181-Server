@@ -9,7 +9,7 @@
 
 ## 服务架构
 
-![LiveGBS架构图](https://www.liveqing.com/images/biz/manuals_LiveGBS_1.png)
+![LiveGBS架构图](http://www.liveqing.com/images/biz/manuals_LiveGBS_1.png) 
 
 ## 服务说明
 
@@ -52,8 +52,8 @@
 	*端口区间说明*
    - 如果不走TCP 传输, TCP区间端口可以不开放
    - 如果不走UDP 传输, UDP区间端口可以不开放
-   - TCP 区间大小 = 最大并发数(包括直播和回放)
-   - UDP 区间大小 = 最大并发数(包括直播和回放)*2
+   - TCP 区间大小 = 最大并发数(包括直播和回放) ，可以手动修改端口区间
+   - UDP 区间大小 = 最大并发数(包括直播和回放)*2 ，可以手动修改端口区间
 			
 			
 ### 配置信令服务(LiveCMS)
