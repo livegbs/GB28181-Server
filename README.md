@@ -109,15 +109,13 @@
 
     可选配置0/1, 指示流媒体服务器使用公网 IP 接收国标下级流数据
 
-- [rtp] -> udp_port
+- [rtp] -> udp_port_range
 
     RTP over UDP 端口
 
-- [rtp] -> tcp_port
+- [rtp] -> tcp_port_range
 
     RTP over TCP 端口
-
-![LiveSMS基础配置](https://www.liveqing.com/images/gbs/10.png)
 
 ## 服务运行
 
