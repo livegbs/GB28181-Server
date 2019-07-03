@@ -1,0 +1,122 @@
+@import "~assets/styles/variables.less";
+
+.form-control:focus {
+  border-color: @base-border;
+  box-shadow: none;
+}
+
+.btn-primary {
+  background-color: @base;
+  border-color: @base-border;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary.active,
+.btn-primary.hover {
+  background-color: @base-active !important;
+}
+
+.nav-tabs-custom>.nav-tabs>li.active {
+  border-top-color: @base;
+}
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    background-color: @base;
+}
+
+.main-header{
+  .logo {
+    background-color: @base-active !important;
+  }
+  .navbar {
+    background-color: @base !important;
+  }
+  .sidebar-toggle {
+    background-color: @base !important;
+    &:hover,&:active,&:focus,&:visited{
+      background-color: @base-active !important;
+    }
+  }
+}
+
+@sidebar-bg: darken(@base, 25%);
+.main-sidebar {
+  background-color: @sidebar-bg !important;
+  .sidebar-menu {
+    li.active,li:hover {
+      a {
+        border-left-color: @base-active !important;
+      }
+    }
+    li.active,li:hover,li.menu-open {
+      a {
+        background: darken(@sidebar-bg, 3%);
+      }
+    }
+    li > a > .pull-right-container {
+      margin-top: -8px;
+    }
+  }
+}
+.left-side {
+  background-color: @sidebar-bg !important;
+}
+.main-footer {
+  padding: 10px;
+  text-align: center;
+  // border:0;
+  // color:#fff;
+  // background-color: @base;
+  // a {
+  //   color: #fff;
+  // }
+}
+
+.text-primary {
+  color: @base-active !important;
+}
+
+.btn-primary {
+  background-color: @base !important;
+  border-color: @base-active !important;
+}
+
+.box {
+  &.box-primary {
+    border-top-color: @base !important;
+  }
+}
+
+.callout.callout-primary, .alert-primary, .label-primary, .modal-primary .modal-body {
+  background-color: @base-active !important;
+  border-color: @base-active !important;
+}
+
+* {
+  outline: none !important;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.form-horizontal .form-group label, .form-inline .form-group label {
+  font-weight: 400;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple, .select2-container--default .select2-search--dropdown .select2-search__field {
+  border-color: @base !important;
+}
+
+.qcontent-header {
+  height: 50px;
+  padding:15px 10px 10px 12px;
+  background-color: white;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16px;
+}
