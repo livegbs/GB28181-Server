@@ -61,11 +61,12 @@
                   <span v-else>离线</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="Host" label="SIP服务IP" min-width="120"></el-table-column>
+              <el-table-column prop="Host" label="SIP服务IP" min-width="140"></el-table-column>
               <el-table-column prop="Port" label="SIP服务端口" min-width="120"></el-table-column>
               <el-table-column prop="RegisterTimeout" label="注册有效期(秒)" min-width="120"></el-table-column>
               <el-table-column prop="KeepaliveInterval" label="心跳周期(秒)" min-width="120"></el-table-column>
               <el-table-column prop="CatalogGroupSize" label="目录分组大小" min-width="120"></el-table-column>
+              <el-table-column prop="CommandTransport" label="信令传输" min-width="120"></el-table-column>
               <el-table-column prop="Charset" label="字符集" min-width="120"></el-table-column>
               <el-table-column label="操作" min-width="200" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">

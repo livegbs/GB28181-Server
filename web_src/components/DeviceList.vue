@@ -212,7 +212,8 @@ export default {
         name: row.Name,
         media_transport: row.MediaTransport,
         media_transport_mode: row.MediaTransportMode,
-        recv_stream_ip: row.RecvStreamIP
+        recv_stream_ip: row.RecvStreamIP,
+        catalog_interval: row.CatalogInterval || 300,
       });
     },
     formatName(row, col, cell) {

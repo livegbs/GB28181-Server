@@ -86,6 +86,17 @@
                 </select>
             </div>
         </div>
+        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('CommandTransport')}">
+            <label for="command-transport" class="col-sm-4 control-label">信令传输
+                <span class="text-red">*</span>
+            </label>
+            <div class="col-sm-7">
+                <select class="form-control" id="command-transport" name="CommandTransport" v-model.trim="form.CommandTransport" data-vv-as="信令传输" v-validate="">
+                    <option value="UDP">UDP</option>
+                    <option value="TCP">TCP</option>
+                </select>
+            </div>
+        </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('Charset')}">
             <label for="charset" class="col-sm-4 control-label">字符集
                 <span class="text-red">*</span>
@@ -135,9 +146,10 @@ export default {
                 Port: 5060,
                 Username: "",
                 Password: "",
-                RegisterTimeout: 3600,
+                RegisterTimeout: 300,
                 KeepaliveInterval: 60,
                 StreamKeepalive: false,
+                CommandTransport: "UDP",
                 Charset: "GB2312",
                 CatalogGroupSize: 1,
             }
