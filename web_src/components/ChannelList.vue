@@ -215,7 +215,7 @@ export default {
       this.doSearch();
     }, 500),
     getChannels() {
-      $.get("/api/v1/device/info", {
+      $.get("/api/v1/device/channellist", {
         serial: this.devid,
         q: this.q,
         start: (this.currentPage -1) * this.pageSize,

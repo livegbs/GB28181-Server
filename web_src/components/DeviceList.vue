@@ -43,11 +43,17 @@
           <el-table-column prop="Name" label="名称" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
           <el-table-column prop="MediaTransport" label="流传输模式" min-width="140">
             <template slot-scope="props">
-              <el-radio-group v-model.trim="props.row.MediaTransport" size="mini" @change="setMediaTransport($event, props.row)" v-if="userInfo">
-                <el-radio-button label="TCP"></el-radio-button>
-                <el-radio-button label="UDP"></el-radio-button>
-              </el-radio-group>
-              <span v-else>{{props.row.MediaTransport}}</span>
+              <el-dropdown size="small" trigger="click" v-if="userInfo" @command="setMediaTransport">
+                <span class="el-dropdown-link">
+                  {{formatTransport(props.row)}} <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item :command="{row: props.row, MediaTransport: 'UDP'}">UDP</el-dropdown-item>
+                  <el-dropdown-item :command="{row: props.row, MediaTransport: 'TCP', MediaTransportMode: 'passive'}">TCP 被动</el-dropdown-item>
+                  <el-dropdown-item :command="{row: props.row, MediaTransport: 'TCP', MediaTransportMode: 'active'}">TCP 主动</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+              <span v-else>{{formatTransport(props.row)}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="ChannelCount" label="通道数" min-width="100"></el-table-column>
@@ -213,10 +219,20 @@ export default {
       if (cell) return cell;
       return "-";
     },
-    setMediaTransport(val, row) {
+    formatTransport(row, col, cell) {
+      var ret = String(row.MediaTransport).toUpperCase();
+      if(ret == "TCP") {
+        ret += row.MediaTransportMode == 'active' ? " 主动" : " 被动";
+      }
+      return ret;
+    },
+    setMediaTransport(cmd) {
+      cmd.row.MediaTransport = cmd.MediaTransport || cmd.row.MediaTransport;
+      cmd.row.MediaTransportMode = cmd.MediaTransportMode || cmd.row.MediaTransportMode;
       $.get("/api/v1/device/setmediatransport", {
-        serial: row.ID,
-        media_transport: String(val).toUpperCase()
+        serial: cmd.row.ID,
+        media_transport: cmd.row.MediaTransport,
+        media_transport_mode: cmd.row.MediaTransportMode
       })
     }
   },

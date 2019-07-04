@@ -160,7 +160,7 @@ export default {
 
     $(document).on("mouseup", () => {
       if ($(this.$el).find(".ptz-cell.active").size() > 0) {
-        $.get("/api/v1/ptz/control", {
+        $.get("/api/v1/control/ptz", {
           serial: this.serial,
           code: this.code,
           command: "stop"
@@ -208,7 +208,7 @@ export default {
     },
     ptzControl(e) {
       var $target = $(e.currentTarget);
-      $.get("/api/v1/ptz/control", {
+      $.get("/api/v1/control/ptz", {
         serial: this.serial,
         code: this.code,
         command: $target.attr("command")
