@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="row" v-if="ptz">
                         <div class="col-sm-8 form-group">
-                            <LivePlayer v-if="bShow" :videoUrl="videoUrl" :snapUrl="snapUrl" :live="live" muted :hasaudio="hasAudio"
+                            <LivePlayer v-if="bShow" :videoUrl="videoUrl" :snapUrl="snapUrl2" :live="live" muted :hasaudio="hasAudio"
                               @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
                         </div>
                         <div class="col-sm-4 form-group">
@@ -115,6 +115,12 @@ export default {
   },
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
+    snapUrl2() {
+      if(this.protocol == "RTMP") {
+        return "";
+      }
+      return this.snapUrl;
+    }
   },
   beforeDestroy() {
     if (this.timer) {
