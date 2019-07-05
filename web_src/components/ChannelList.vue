@@ -88,6 +88,11 @@
                       <el-switch :value="props.row.Ondemand" @change="toggleOndemand(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
                   </template>
               </el-table-column>
+               <el-table-column prop="CloudRecord" label="云端录像" min-width="100" v-if="userInfo">
+                  <template slot-scope="props">
+                      <el-switch :value="props.row.CloudRecord" @change="toggleCloudRecord(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
+                  </template>
+              </el-table-column>
               <el-table-column prop="Shared" label="开启分享" min-width="100" v-if="userInfo">
                   <template slot-scope="props">
                       <el-switch :value="props.row.Shared" @change="toggleShared(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
@@ -109,7 +114,7 @@
                           <i class="fa fa-share"></i> 分享页
                         </a>
                         <router-link class="btn btn-info" :to="`/devices/playback/timebox/${devid}/${props.row.ID}`">
-                          <i class="fa fa-info"></i> 查看录像
+                          <i class="fa fa-info"></i> 设备录像
                         </router-link>
                     </div>
                     <div class="btn-group btn-group-xs" v-else>
@@ -258,6 +263,15 @@ export default {
         ondemand: !row.Ondemand,
       }).then(() => {
         row.Ondemand = !row.Ondemand;
+      })
+    },
+    toggleCloudRecord(row) {
+      $.get("/api/v1/device/setchannelcloudrecord", {
+        serial: row.DeviceID,
+        code: row.ID,
+        cloudrecord: !row.CloudRecord,
+      }).then(() => {
+        row.CloudRecord = !row.CloudRecord;
       })
     },
     toggleShared(row) {
