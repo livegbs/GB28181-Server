@@ -114,7 +114,7 @@
                           <i class="fa fa-share"></i> 分享页
                         </a>
                         <router-link class="btn btn-info" :to="`/devices/playback/timebox/${devid}/${props.row.ID}`">
-                          <i class="fa fa-info"></i> 设备录像
+                          <i class="fa fa-info"></i> 查看录像
                         </router-link>
                     </div>
                     <div class="btn-group btn-group-xs" v-else>
