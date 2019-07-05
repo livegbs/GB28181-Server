@@ -160,7 +160,7 @@ module.exports = {
 if (process.env.NODE_ENV == "production") {
     module.exports.plugins = (module.exports.plugins || []).concat([
         new CleanWebpackPlugin(['www'], {
-            root: resolve("../")
+            root: resolve("../../")
         }),
         new webpack.DefinePlugin({
             'process.env': {
