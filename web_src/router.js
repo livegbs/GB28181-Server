@@ -20,6 +20,11 @@ const CascadeList = () => import(/* webpackChunckName: 'cascade' */ 'components/
 const Config = () => import(/* webpackChunkName: 'config' */ 'components/Config.vue')
 const About = () => import(/* webpackChunkName: 'about' */ 'components/About.vue')
 
+const CloudRecordList = () => import(/* webpackChunkName: 'cloudrecord' */ 'components/CloudRecordList.vue')
+const CloudRecordListBox = () => import(/* webpackChunkName: 'cloudrecord' */ 'components/CloudRecordListBox.vue')
+const CloudRecordTimeBox = () => import(/* webpackChunkName: 'cloudrecord' */ 'components/CloudRecordTimeBox.vue')
+
+
 Vue.use(Router);
 
 const router = new Router({
@@ -66,6 +71,25 @@ const router = new Router({
             props: true
           }
         ]
+      }, {
+        path: 'cloudrecord',
+        component: ContentRoot,
+        children: [{
+          path: '',
+          redirect: '1'
+        },{
+          path: ':page',
+          component: CloudRecordList,
+          props: true
+        }, {
+          path: 'listview/:id/:day?',
+          component: CloudRecordListBox,
+          props: true
+        }, {
+          path: 'timeview/:id/:day?',
+          component: CloudRecordTimeBox,
+          props: true
+        }]
       },{
         path: 'alarms',
         meta: {},

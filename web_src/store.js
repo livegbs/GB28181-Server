@@ -24,6 +24,10 @@ const store = new Vuex.Store({
                 icon: "video-camera",
                 title: "国标设备"
             }, {
+                path: "/cloudrecord",
+                icon: "cloud",
+                title: "云端录像"
+            }, {
                 path: "/alarms",
                 icon: "bell",
                 title: "报警查询"
