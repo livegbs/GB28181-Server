@@ -1,5 +1,5 @@
 <template>
-    <FormDlg title="编辑级联" @hide="onHide" @show="onShow" @submit="onSubmit" ref="dlg" :disabled="errors.any()">
+    <FormDlg title="编辑上级平台级联" @hide="onHide" @show="onShow" @submit="onSubmit" ref="dlg" :disabled="errors.any()">
         <input type="hidden" name="ID" v-model.trim="form.ID">
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Name')}">
             <label for="name" class="col-sm-4 control-label">名称

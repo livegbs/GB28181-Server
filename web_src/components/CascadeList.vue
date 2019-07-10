@@ -2,14 +2,14 @@
     <div>
         <div class="box box-primary">
           <div class="box-header">
-            <h4 class="text-primary text-center">级联列表</h4>
+            <h4 class="text-primary text-center">上级平台级联列表</h4>
           </div>
           <div class="box-body">
             <form class="form-inline" autocomplete="off" spellcheck="false">
               <div class="form-group form-group-sm">
                   <div class="input-group input-group-sm">
                     <button type="button" class="btn btn-sm btn-primary" @click.prevent="$refs['cascadeEditDlg'].show()">
-                      <i class="fa fa-plus"></i> 添加
+                      <i class="fa fa-plus"></i> 添加上级平台
                     </button>
                   </div>
               </div>
