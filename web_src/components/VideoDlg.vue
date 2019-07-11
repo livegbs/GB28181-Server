@@ -66,7 +66,7 @@
                     </el-radio-group>
                     <button v-if="userInfo || !serverInfo.APIAuth" type="button" :class="['btn', {'btn-primary': !bRecording, 'btn-danger': bRecording}]" @click.prevent="toggleRecord()">
                       <i :class="['fa', {'fa-save': !bRecording, 'fa-stop': bRecording}]"></i>
-                      {{bRecording? '停止录像' : '开始录像'}}
+                      {{bRecording? '停止录像' : '实时录像'}}
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
