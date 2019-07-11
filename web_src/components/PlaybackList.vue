@@ -2,7 +2,7 @@
     <div class="">
         <div class="box box-primary">
           <div class="box-header">
-            <h4 class="text-primary text-center">录像列表({{devid}}-{{channel}})</h4>
+            <h4 class="text-primary text-center">设备录像列表({{devid}}-{{channel}})</h4>
           </div>
           <div class="box-body">
             <form class="form-inline">

@@ -1,7 +1,7 @@
 <template>
 <div class="box box-primary videos">
     <div class="box-header">
-        <h4 class="text-primary text-center">录像({{ name }}) - 列表视图</h4>
+        <h4 class="text-primary text-center">云端录像({{ name }}) - 列表视图</h4>
         <div class="form-inline">
             <div class="form-group">
                 <div class="btn-group">

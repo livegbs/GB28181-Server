@@ -1,7 +1,7 @@
 <template>
 <div class="box box-primary records">
     <div class="box-header">
-        <h4 class="text-primary text-center">录像({{ name }})-时间轴视图</h4>
+        <h4 class="text-primary text-center">云端录像({{ name }})-时间轴视图</h4>
         <div class="form-inline">
             <div class="form-group">
                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.go(-1)"> <i class="fa fa-chevron-left"></i> 返回 </button>
@@ -27,7 +27,7 @@
         </div>
         <br>
         <br>
-        <CloudRecordTimeRule :videos="videos" @timeChange="onTimeChange" ref="timeRule"  v-loading="loading"></CloudRecordTimeRule>
+        <CloudRecordTimeRule :videos="videos" @timeChange="onTimeChange" ref="timeRule"  v-loading="loadingRecords"></CloudRecordTimeRule>
         <br>
     </div>
     <div class="box-footer clearfix">
@@ -57,6 +57,7 @@ export default {
             currentTime: 0,
             bActive: false,
             loading: false,
+            loadingRecords: false,
             name: '',
             pathname: location.pathname == "/" ? "" : location.pathname.substring(0, location.pathname.length - 1)
         }
@@ -74,12 +75,15 @@ export default {
             $(this.$refs['datePicker'].$el).focus();
         },
         updateVideos() {
-            $.get("api/v1/cloudrecord/querydaily", {
+            this.loadingRecords = true;
+            $.get("/api/v1/cloudrecord/querydaily", {
                 id: this.id,
                 period: this.day
             }).then(data => {
                 this.name = data.name;
                 this.videos = data.list;
+            }).always(() => {
+                this.loadingRecords = false;
             })
         },
         onTimeChange(video) {

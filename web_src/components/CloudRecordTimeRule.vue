@@ -1,7 +1,7 @@
 <template>
     <div class="time-rule">
         <div class="time-day" ref="day" :style="{ left: timeDayX + 'px'}">
-            <div :class="['time-minute', minuteActiveClass((n - 1)*minutesPerUnit)]" :style="{width: minutesPerUnit + 'px'}" :title="minuteTitle(n - 1)*minutesPerUnit"
+            <div :class="['time-minute', minuteActiveClass((n - 1)*minutesPerUnit)]" :style="{width: minutesPerUnit + 'px'}" :title="minuteTitle((n - 1)*minutesPerUnit)"
                 v-for="n in (1440/minutesPerUnit)" :key="n" @click.prevent="clickMinute((n - 1)*minutesPerUnit)"></div>
             <div :class="[ n==1 ? 'time-text-first' : 'time-text']" v-for="n in 24" :key="n">{{hourText(n - 1)}}</div>
         </div>
@@ -168,11 +168,17 @@ export default {
                     })
                     continue
                 }
-                let mtext = m.format("HH:mm");
+                let secs = m.unix();
+                secs = secs - (secs % (this.minutesPerUnit * 60));
+                let _m = moment.unix(secs);
+                let mtext = _m.format("HH:mm");
                 minutes[mtext] = Object.assign({ currentTime: 0 }, video);
                 for (let i = 1; i <= s; i++) {
                     m.add(1, "seconds");
-                    let _mtext = m.format("HH:mm");
+                    secs = m.unix();
+                    secs = secs - (secs % (this.minutesPerUnit * 60));
+                    _m = moment.unix(secs);
+                    let _mtext = _m.format("HH:mm");
                     if(_mtext != mtext) {
                         mtext = _mtext;
                         minutes[mtext] = Object.assign({ currentTime: i }, video);

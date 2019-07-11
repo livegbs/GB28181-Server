@@ -1,7 +1,7 @@
 <template>
 <div class="box box-primary ids">
     <div class="box-header">
-        <h4 class="text-primary text-center">云端录像设备列表</h4>
+        <h4 class="text-primary text-center">云端录像通道列表</h4>
         <div class="form-inline">
             <div class="form-group pull-right">
                 <div class="input-group">
@@ -16,10 +16,11 @@
         </div>
     </div>
     <div class="box-body">
-        <el-table :data="pageData" stripe :default-sort="{prop: 'id', order: 'ascending'}" @sort-change="sortChange">
-            <el-table-column min-width="500" label="设备号" prop="id" show-overflow-tooltip></el-table-column>
+        <el-table :data="pageData" stripe :default-sort="{prop: 'serial', order: 'ascending'}" @sort-change="sortChange">
+            <!-- <el-table-column min-width="500" label="设备号" prop="id" show-overflow-tooltip></el-table-column> -->
             <el-table-column min-width="250" label="设备国标编号" prop="serial" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="250" label="通道国标编号" prop="code" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="250" label="通道名称" prop="name" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="150" label="操作" fixed="right">
                 <template slot-scope="scope">
                     <router-link :to="`/cloudrecord/timeview/${scope.row.id}`" class="btn btn-primary btn-xs">
@@ -79,7 +80,7 @@ export default {
             return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
         },
         load() {
-            $.get('api/v1/cloudrecord/querydevices', {
+            $.get('/api/v1/cloudrecord/querydevices', {
                 start: (this.page - 1) * this.pageSize,
                 limit: this.pageSize,
                 q: this.q,
@@ -111,7 +112,7 @@ export default {
         }, 500),
         async remove(row) {
             this.$confirm(`删除 ${row.name} ,会将设备所有录像删除，确认继续?`, '提示').then(() => {
-                $.get('api/v1/cloudrecord/removedevice', {
+                $.get('/api/v1/cloudrecord/removedevice', {
                     id: row.id
                 }).always(() => {
                     this.load();

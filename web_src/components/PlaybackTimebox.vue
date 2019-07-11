@@ -2,7 +2,7 @@
     <div class="">
         <div class="box box-primary">
           <div class="box-header">
-            <h4 class="text-primary text-center">录像时间轴({{devid}}-{{channel}})</h4>
+            <h4 class="text-primary text-center">设备录像时间轴({{devid}}-{{channel}})</h4>
           </div>
           <div class="box-body">
             <form class="form-inline">
@@ -27,7 +27,7 @@
             </form>
             <br>
             <div class="clearfix"></div>
-            <LivePlayer live muted :videoUrl="videoUrl" :currentTime="currentTime" @ended="onVideoEnd" @timeupdate="onVideoTimeUpdate"
+            <LivePlayer live muted :hasaudio="hasAudio" :videoUrl="videoUrl" :currentTime="currentTime" @ended="onVideoEnd" @timeupdate="onVideoTimeUpdate"
               v-loading="videoLoading" element-loading-text="加载中" element-loading-background="#000"
               style="margin:0 auto; max-width:700px;">
             </LivePlayer>
