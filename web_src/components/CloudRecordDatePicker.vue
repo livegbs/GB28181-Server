@@ -18,8 +18,11 @@ export default {
         }
     },
     props: {
-        id: {
-            default: ""
+		serial: {
+			default: ""
+		},
+		code: {
+			default: ""
 		},
 		day: {
 			default: () => moment().format("YYYYMMDD")
@@ -54,12 +57,14 @@ export default {
 				$(this.$el).datepicker("setDate", moment(val,"YYYYMMDD").toDate());
 			}
 		},
-		id: function(val){
+		id: function(val) {
 			this.update();
 		}
 	},
 	computed: {
-
+		id() {
+			return `${this.serial}_${this.code}`;
+		}
 	},
 	methods: {
 		update() {
@@ -67,14 +72,15 @@ export default {
 			$(this.$el).datepicker('update');
 		},
 		getFlagMap() {
-			if(!this.id) {
+			if(!this.serial || !this.code) {
 				return {};
 			}
-			$.ajax('api/v1/cloudrecord/queryflags',{
+			$.ajax('/api/v1/cloudrecord/queryflags',{
 				type: 'get',
 				async: false,
 				data: {
-					id: this.id
+					serial: this.serial,
+					code: this.code,
 				}
 			}).then(data => {
 				this.flags = data;

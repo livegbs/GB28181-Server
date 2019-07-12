@@ -17,12 +17,12 @@
             </div>
             <div class="form-group pull-right">
                 <div class="input-group input-group-sm">
-                    <CloudRecordDatePicker class="form-control" :day="day" @update:day="updateDay" ref="datePicker" :id="id"></CloudRecordDatePicker>
+                    <CloudRecordDatePicker class="form-control" :day="day" @update:day="updateDay" ref="datePicker" :serial="serial" :code="code"></CloudRecordDatePicker>
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-sm btn-default" @click.prevent="showCloudRecordDatePicker">
                             <i class="fa fa-calendar"></i>
                         </button>
-                        <router-link :to="`/cloudrecord/timeview/${this.id}/${this.day}`" replace class="btn btn-default btn-sm">
+                        <router-link :to="`/cloudrecord/timeview/${this.serial}/${this.code}/${this.day}`" replace class="btn btn-default btn-sm">
                             <i class="fa fa-hand-o-right"></i> 时间轴视图
                         </router-link>
                     </div>
@@ -100,7 +100,8 @@ import _ from 'lodash'
 
 export default {
     props: {
-        id: "",
+        serial: "",
+        code: "",
         day: ""
     },
     data() {
@@ -133,14 +134,15 @@ export default {
             return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
         },
         updateDay(day) {
-            this.$router.replace(`/cloudrecord/listview/${this.id}/${day}`);
+            this.$router.replace(`/cloudrecord/listview/${this.serial}/${this.code}/${day}`);
         },
         showCloudRecordDatePicker() {
             $(this.$refs.datePicker.$el).focus();
         },
         updateVideos() {
             $.get("/api/v1/cloudrecord/querydaily", {
-                id: this.id,
+                serial: this.serial,
+                code: this.code,
                 period: this.day,
                 sort: this.sort,
                 order: this.order
@@ -155,7 +157,7 @@ export default {
         play(row) {
             this.$refs["cloudRecordVideoDlg"].play(
                 row.hls,
-                `${this.name || this.id}(${row.startAt})`,
+                `${this.name}(${row.startAt})`,
                 row.Snap || "",
             );
         },
@@ -163,15 +165,11 @@ export default {
             window.open(`/api/v1/cloudrecord/download/${row.id}/${row._startAt}`);
         },
         removeDaily() {
-            this.$confirm(
-                    `确认删除 ${this.name} ${moment(this.period).format(
-          "YYYY-MM-DD"
-        )} 当天所有录像?`,
-                    "提示"
-                )
+            this.$confirm(`确认删除 ${this.name} ${moment(this.period).format("YYYY-MM-DD")} 当天所有录像?`,"提示")
                 .then(() => {
                     $.get("/api/v1/cloudrecord/removedaily", {
-                        id: this.id,
+                        serial: this.serial,
+                        code: this.code,
                         period: this.day
                     }).always(() => {
                         this.updateVideos();
@@ -184,7 +182,8 @@ export default {
             this.$confirm(`确认删除 ${row.name} ?`, "提示")
                 .then(() => {
                     $.get("/api/v1/cloudrecord/remove", {
-                        id: row.id,
+                        serial: this.serial,
+                        code: this.code,
                         period: row._startAt
                     }).always(() => {
                         this.updateVideos();
@@ -199,7 +198,8 @@ export default {
         },
         turnImportant(row) {
             $.get("/api/v1/cloudrecord/setimportant", {
-                id: row.id,
+                serial: row.serial,
+                code: row.code,
                 period: row._startAt,
                 important: row.important
             }).then(() => {
@@ -212,12 +212,12 @@ export default {
         }
     },
     mounted() {
-        if (!this.id) {
+        if (!this.serial || !this.code) {
             this.$router.replace("/cloudrecord");
             return;
         }
         if (!this.day) {
-            this.$router.replace(`/cloudrecord/${this.id}/${moment().format("YYYYMMDD")}`);
+            this.$router.replace(`/cloudrecord/${this.serial}/${this.code}/${moment().format("YYYYMMDD")}`);
             return;
         }
         // this.updateVideos();
@@ -231,8 +231,9 @@ export default {
             let start = (this.currentPage - 1) * this.pageSize;
             let end = start + this.pageSize;
             return this.videos.slice(start, end).map(row => {
-                if (!row.id) {
-                    row.id = this.id;
+                if (!row.serial) {
+                    row.serial = this.serial,
+                    row.code = this.code,
                     row.location = location;
                     row._startAt = row.startAt;
                     row.startAt = moment(row.startAt, "YYYYMMDDHHmmss").format("YYYY-MM-DD HH:mm:ss");
@@ -243,12 +244,12 @@ export default {
         }
     },
     beforeRouteUpdate(to, from, next) {
-        if (!to.params.id) {
+        if (!to.params.serial || !to.params.code) {
             this.$router.replace(`/cloudrecord`);
             return;
         }
         if (!to.params.day) {
-            this.$router.replace(`/cloudrecord/${to.params.id}/${moment().format("YYYYMMDD")}`);
+            this.$router.replace(`/cloudrecord/${to.params.serial}/${to.params.code}/${moment().format("YYYYMMDD")}`);
             return;
         }
         next();

@@ -25,7 +25,7 @@
             <el-table-column min-width="250" label="通道名称" prop="name" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="150" label="操作" fixed="right">
                 <template slot-scope="scope">
-                    <router-link :to="`/cloudrecord/timeview/${scope.row.id}`" class="btn btn-primary btn-xs">
+                    <router-link :to="`/cloudrecord/timeview/${scope.row.serial}/${scope.row.code}`" class="btn btn-primary btn-xs">
                         <i class="fa fa-file-video-o"></i> 查看录像
                     </router-link>
                     <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="userInfo">
@@ -82,7 +82,7 @@ export default {
             return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
         },
         load() {
-            $.get('/api/v1/cloudrecord/querydevices', {
+            $.get('/api/v1/cloudrecord/querychannels', {
                 start: (this.page - 1) * this.pageSize,
                 limit: this.pageSize,
                 q: this.q,
@@ -114,8 +114,9 @@ export default {
         }, 500),
         async remove(row) {
             this.$confirm(`删除 ${row.name} ,会将设备所有录像删除，确认继续?`, '提示').then(() => {
-                $.get('/api/v1/cloudrecord/removedevice', {
-                    id: row.id
+                $.get('/api/v1/cloudrecord/removechannel', {
+                    serial: row.serial,
+                    code: row.code,
                 }).always(() => {
                     this.load();
                 })

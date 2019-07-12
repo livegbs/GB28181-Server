@@ -10,10 +10,10 @@
             </div>
             <div class="form-group pull-right">
                 <div class="input-group input-group-sm">
-                    <CloudRecordDatePicker class="form-control" :day="day" @update:day="updateDay" ref="datePicker" :id="id"></CloudRecordDatePicker>
+                    <CloudRecordDatePicker class="form-control" :day="day" @update:day="updateDay" ref="datePicker" :serial="serial" :code="code"></CloudRecordDatePicker>
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-sm btn-default" @click.prevent="showCloudRecordDatePicker"> <i class="fa fa-calendar"></i> </button>
-                        <router-link :to="`/cloudrecord/listview/${this.id}/${this.day}`" replace class="btn btn-default btn-sm">
+                        <router-link :to="`/cloudrecord/listview/${this.serial}/${this.code}/${this.day}`" replace class="btn btn-default btn-sm">
                             <i class="fa fa-hand-o-right"></i> 列表视图
                         </router-link>
                     </div>
@@ -23,7 +23,7 @@
         <div class="clearfix"></div>
         <br>
         <LivePlayer :videoUrl="videoUrl" muted :currentTime="currentTime" @ended="onVideoEnd" @timeupdate="onVideoTimeUpdate" style="margin:0 auto; max-width:700px;" :loading.sync="loading" v-loading="loading" element-loading-text="加载中" element-loading-background="#000"></LivePlayer>
-        <div class="text-center" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.name == 'test'))">
+        <div class="text-center" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
             <br>
             提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
         </div>
@@ -49,7 +49,8 @@ import {
 
 export default {
     props: {
-        id: '',
+        serial: '',
+        code: '',
         day: ''
     },
     data() {
@@ -71,7 +72,7 @@ export default {
     },
     methods: {
         updateDay(day) {
-            this.$router.replace(`/cloudrecord/timeview/${this.id}/${day}`);
+            this.$router.replace(`/cloudrecord/timeview/${this.serial}/${this.code}/${day}`);
         },
         showCloudRecordDatePicker() {
             $(this.$refs['datePicker'].$el).focus();
@@ -79,7 +80,8 @@ export default {
         updateVideos() {
             this.loadingRecords = true;
             $.get("/api/v1/cloudrecord/querydaily", {
-                id: this.id,
+                serial: this.serial,
+                code: this.code,
                 period: this.day
             }).then(data => {
                 this.name = data.name;
@@ -127,18 +129,18 @@ export default {
         n -= 10;
         if (n < 0) n = 0;
         this.$refs.timeRule.clickMinute(n);
-        if (!this.id) {
+        if (!this.serial || !this.code) {
             this.$router.replace("/cloudrecord");
             return;
         }
         if (!this.day) {
-            this.$router.replace(`/cloudrecord/timeview/${this.id}/${moment().format('YYYYMMDD')}`);
+            this.$router.replace(`/cloudrecord/timeview/${this.serial}/${this.code}/${moment().format('YYYYMMDD')}`);
             return;
         }
         this.updateVideos();
     },
     beforeRouteUpdate(to, from, next) {
-        if (!to.params.id) {
+        if (!to.params.serial || !to.params.code) {
             next({
                 path: '/cloudrecord',
                 replace: true
@@ -147,7 +149,7 @@ export default {
         }
         if (!to.params.day) {
             next({
-                path: `/cloudrecord/timeview/${to.params.id}/${moment().format('YYYYMMDD')}`,
+                path: `/cloudrecord/timeview/${to.params.serial}/${to.params.code}/${moment().format('YYYYMMDD')}`,
                 replace: true
             })
             return;
