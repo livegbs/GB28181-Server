@@ -2,6 +2,8 @@
 <div class="box box-primary ids">
     <div class="box-header">
         <h4 class="text-primary text-center">云端录像通道列表</h4>
+    </div>
+    <div class="box-body">
         <div class="form-inline">
             <div class="form-group pull-right">
                 <div class="input-group">
@@ -14,8 +16,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="box-body">
+        <div class="clearfix"></div>
+        <br>
         <el-table :data="pageData" stripe :default-sort="{prop: 'serial', order: 'ascending'}" @sort-change="sortChange">
             <!-- <el-table-column min-width="500" label="设备号" prop="id" show-overflow-tooltip></el-table-column> -->
             <el-table-column min-width="250" label="设备国标编号" prop="serial" show-overflow-tooltip></el-table-column>

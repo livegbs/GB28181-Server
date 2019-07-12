@@ -2,6 +2,8 @@
 <div class="box box-primary videos">
     <div class="box-header">
         <h4 class="text-primary text-center">云端录像({{ name }}) - 列表视图</h4>
+    </div>
+    <div class="box-body">
         <div class="form-inline">
             <div class="form-group">
                 <div class="btn-group">
@@ -27,9 +29,8 @@
                 </div>
             </div>
         </div>
-
-    </div>
-    <div class="box-body">
+        <div class="clearfix"></div>
+        <br>
         <el-table :row-class-name="tableRowClassName" ref="recordTable" :data="pageData" empty-text="暂无数据, 请另选日期" :default-sort="{prop: 'startAt', order: 'descending'}" @sort-change="sortChange">
             <el-table-column min-width="120" label="名称" prop="name" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="200" label="操作" v-if="isMobile()">
@@ -54,10 +55,12 @@
                 </template>
             </el-table-column>
             <el-table-column min-width="120" label="录像时长" prop="duration" sortable="custom"></el-table-column>
-            <el-table-column min-width="400" label="视频地址" show-overflow-tooltip>
+            <el-table-column min-width="400" label="视频地址">
                 <template slot-scope="scope">
-                    <i title="点击拷贝" role="button" v-clipboard="scope.row.hls" @success="$message({type:'success', message:'成功拷贝到粘贴板'})" class="fa fa-copy"></i>
-                    <a role="button" class="text-primary" @click.prevent="play(scope.row)">{{scope.row.hls}}</a>
+                    <span class="ellipsis">
+                        <i title="点击拷贝" role="button" v-clipboard="scope.row.hls" @success="$message({type:'success', message:'成功拷贝到粘贴板'})" class="fa fa-copy"></i>
+                        <a role="button" class="text-primary" @click.prevent="play(scope.row)">{{scope.row.hls}}</a>
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column min-width="150" label="操作" fixed="right" v-if="!isMobile()">
@@ -136,7 +139,7 @@ export default {
             $(this.$refs.datePicker.$el).focus();
         },
         updateVideos() {
-            $.get("api/v1/cloudrecord/querydaily", {
+            $.get("/api/v1/cloudrecord/querydaily", {
                 id: this.id,
                 period: this.day,
                 sort: this.sort,
@@ -157,7 +160,7 @@ export default {
             );
         },
         download(row) {
-            window.open(`api/v1/cloudrecord/download/${row.id}/${row._startAt}`);
+            window.open(`/api/v1/cloudrecord/download/${row.id}/${row._startAt}`);
         },
         removeDaily() {
             this.$confirm(
@@ -167,7 +170,7 @@ export default {
                     "提示"
                 )
                 .then(() => {
-                    $.get("api/v1/cloudrecord/removedaily", {
+                    $.get("/api/v1/cloudrecord/removedaily", {
                         id: this.id,
                         period: this.day
                     }).always(() => {
@@ -180,7 +183,7 @@ export default {
         remove(row) {
             this.$confirm(`确认删除 ${row.name} ?`, "提示")
                 .then(() => {
-                    $.get("api/v1/cloudrecord/remove", {
+                    $.get("/api/v1/cloudrecord/remove", {
                         id: row.id,
                         period: row._startAt
                     }).always(() => {
@@ -195,7 +198,7 @@ export default {
             this.updateVideos();
         },
         turnImportant(row) {
-            $.get("api/v1/cloudrecord/setimportant", {
+            $.get("/api/v1/cloudrecord/setimportant", {
                 id: row.id,
                 period: row._startAt,
                 important: row.important
@@ -214,9 +217,7 @@ export default {
             return;
         }
         if (!this.day) {
-            this.$router.replace(
-                `/cloudrecord/${this.id}/${moment().format("YYYYMMDD")}`
-            );
+            this.$router.replace(`/cloudrecord/${this.id}/${moment().format("YYYYMMDD")}`);
             return;
         }
         // this.updateVideos();
@@ -247,9 +248,7 @@ export default {
             return;
         }
         if (!to.params.day) {
-            this.$router.replace(
-                `/cloudrecord/${to.params.id}/${moment().format("YYYYMMDD")}`
-            );
+            this.$router.replace(`/cloudrecord/${to.params.id}/${moment().format("YYYYMMDD")}`);
             return;
         }
         next();

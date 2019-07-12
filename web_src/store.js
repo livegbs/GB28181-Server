@@ -15,14 +15,14 @@ const store = new Vuex.Store({
                 title: "概览",
                 icon: 'dashboard'
             }, {
+                path: "/devices",
+                icon: "video-camera",
+                title: "国标设备"
+            }, {
                 id:"menu_screen",
                 path: '/screen',
                 title: "分屏展示",
                 icon: 'th-large'
-            }, {
-                path: "/devices",
-                icon: "video-camera",
-                title: "国标设备"
             }, {
                 path: "/cloudrecord",
                 icon: "cloud",

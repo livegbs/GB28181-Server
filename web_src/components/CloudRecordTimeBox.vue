@@ -2,6 +2,8 @@
 <div class="box box-primary records">
     <div class="box-header">
         <h4 class="text-primary text-center">云端录像({{ name }})-时间轴视图</h4>
+    </div>
+    <div class="box-body">
         <div class="form-inline">
             <div class="form-group">
                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.go(-1)"> <i class="fa fa-chevron-left"></i> 返回 </button>
@@ -18,8 +20,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="box-body">
+        <div class="clearfix"></div>
+        <br>
         <LivePlayer :videoUrl="videoUrl" muted :currentTime="currentTime" @ended="onVideoEnd" @timeupdate="onVideoTimeUpdate" style="margin:0 auto; max-width:700px;" :loading.sync="loading" v-loading="loading" element-loading-text="加载中" element-loading-background="#000"></LivePlayer>
         <div class="text-center" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.name == 'test'))">
             <br>
