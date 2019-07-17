@@ -54,7 +54,7 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="password" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" autocomplete="new-password" v-validate="" @keydown.enter="$el.querySelector('#register-timeout').focus()">
+                <input type="text" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" autocomplete="new-password" v-validate="" @keydown.enter="$el.querySelector('#register-timeout').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterTimeout')}">
@@ -62,7 +62,15 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="register-timeout" name="RegisterTimeout" v-model.trim="form.RegisterTimeout" data-vv-as="注册有效期" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#keepalive-interval').focus()">
+                <input type="text" class="form-control" id="register-timeout" name="RegisterTimeout" v-model.trim="form.RegisterTimeout" data-vv-as="注册有效期" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#register-interval').focus()">
+            </div>
+        </div>
+        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterInterval')}">
+            <label for="register-interval" class="col-sm-4 control-label">注册周期(秒)
+                <span class="text-red">*</span>
+            </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="register-interval" name="RegisterInterval" v-model.trim="form.RegisterInterval" data-vv-as="注册周期" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#keepalive-interval').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('KeepaliveInterval')}">
@@ -146,8 +154,9 @@ export default {
                 Port: 5060,
                 Username: "",
                 Password: "",
-                RegisterTimeout: 300,
+                RegisterTimeout: 3600,
                 KeepaliveInterval: 60,
+                RegisterInterval: 60,
                 StreamKeepalive: false,
                 CommandTransport: "UDP",
                 Charset: "GB2312",

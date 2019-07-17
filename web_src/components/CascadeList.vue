@@ -61,9 +61,11 @@
                   <span v-else>离线</span>
                 </template>
               </el-table-column>
+              <el-table-column prop="Status" label="状态描述" min-width="150" show-overflow-tooltip></el-table-column>
               <el-table-column prop="Host" label="SIP服务IP" min-width="140"></el-table-column>
               <el-table-column prop="Port" label="SIP服务端口" min-width="120"></el-table-column>
               <el-table-column prop="RegisterTimeout" label="注册有效期(秒)" min-width="120"></el-table-column>
+              <el-table-column prop="RegisterInterval" label="注册周期(秒)" min-width="120"></el-table-column>
               <el-table-column prop="KeepaliveInterval" label="心跳周期(秒)" min-width="120"></el-table-column>
               <el-table-column prop="CatalogGroupSize" label="目录分组大小" min-width="120"></el-table-column>
               <el-table-column prop="CommandTransport" label="信令传输" min-width="120"></el-table-column>
@@ -90,14 +92,14 @@
           </div>
         </div>
         <CascadeEditDlg ref="cascadeEditDlg" @submit="getCascades()"></CascadeEditDlg>
-        <ChannelListDlg ref="channelListDlg" size="modal-lg" title="选择通道"></ChannelListDlg>
+        <CascadeChannelListDlg ref="cascadeChannelListDlg" size="modal-lg" title="选择通道"></CascadeChannelListDlg>
     </div>
 </template>
 
 <script>
 import _ from "lodash";
 import CascadeEditDlg from "components/CascadeEditDlg";
-import ChannelListDlg from "components/ChannelListDlg";
+import CascadeChannelListDlg from "components/CascadeChannelListDlg";
 import { mapState } from "vuex";
 export default {
   props: {
@@ -131,7 +133,7 @@ export default {
     }
   },
   components: {
-    CascadeEditDlg, ChannelListDlg
+    CascadeEditDlg, CascadeChannelListDlg
   },
   mounted() {
     this.timer = setInterval(() => {
@@ -186,7 +188,7 @@ export default {
       this.$refs['cascadeEditDlg'].show(row);
     },
     editChannel(row) {
-      this.$refs['channelListDlg'].show(row.ID);
+      this.$refs['cascadeChannelListDlg'].show(row.ID);
     },
     removeCascade(row) {
       this.$confirm(`确认删除 ${row.Name || row.ID}`, "提示").then(() => {

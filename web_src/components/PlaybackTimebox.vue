@@ -19,7 +19,7 @@
                             <i class="fa fa-calendar"></i>
                           </button>
                           <router-link :to="`/devices/playback/list/${this.devid}/${this.channel}/${this.day}`" replace class="btn btn-default btn-sm">
-                              <i class="fa fa-hand-o-right"></i> 表列视图
+                              <i class="fa fa-hand-o-right"></i> 列表视图
                           </router-link>
                       </div>
                   </div>
