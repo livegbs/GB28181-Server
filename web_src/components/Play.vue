@@ -6,7 +6,7 @@
     </nav>
   </header>
   <div class="content-wrapper">
-    <section :class="['content', {'no-padding': fullscreen}]">
+    <section :class="[{'content': !fullscreen}, {'no-padding': fullscreen}]">
       <div class="player-wrapper" :style="{margin:'0 auto', width: fullscreen ? '100%' : '85%' }">
         <div class="play-area">
           <LivePlayer :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio"
@@ -214,7 +214,7 @@ export default {
   async mounted() {
     await this.getServerInfo();
     await this.getUserInfo();
-    this.aspect = this.getQueryString("aspect").replace("x", ":");
+    this.aspect = this.getQueryString("aspect","").replace("x", ":");
     this.autoplay = this.getQueryString("autoplay", "yes") == "yes";
     this.controls = this.getQueryString("controls", "yes") == "yes";
     this.ptz = this.getQueryString("ptz", "yes") == "yes";
@@ -386,7 +386,7 @@ export default {
   computed: {
     ...mapState(["serverInfo", "userInfo"]),
     fullscreen() {
-      return (this.aspect == "100%") || (this.aspect == "fullscreen");
+      return (this.aspect != "");
     },
     showPtzPanel() {
       return this.ptz && !this.isMobile();
