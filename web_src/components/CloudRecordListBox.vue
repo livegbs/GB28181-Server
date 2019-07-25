@@ -1,7 +1,7 @@
 <template>
 <div class="box box-primary videos">
     <div class="box-header">
-        <h4 class="text-primary text-center">云端录像({{ name }}) - 列表视图</h4>
+        <h4 class="text-primary text-center">云端录像 - 列表视图</h4>
     </div>
     <div class="box-body">
         <div class="form-inline">
@@ -32,16 +32,18 @@
         <div class="clearfix"></div>
         <br>
         <el-table :row-class-name="tableRowClassName" ref="recordTable" :data="pageData" empty-text="暂无数据, 请另选日期" :default-sort="{prop: 'startAt', order: 'descending'}" @sort-change="sortChange">
-            <el-table-column min-width="120" label="名称" prop="name" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="250" label="设备国标编号" prop="serial" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="250" label="通道国标编号" prop="code" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="200" label="通道名称" prop="name" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="200" label="操作" v-if="isMobile()">
                 <template slot-scope="scope">
                     <div class="btn-group">
                         <a role="button" class="btn btn-primary btn-xs" @click.prevent="play(scope.row)">
                             <i class='fa fa-play'></i> 播放
                         </a>
-                        <!-- <a role="button" class="btn btn-info btn-xs" @click.prevent="download(scope.row)" v-loading.fullscreen.lock="bDownloading" element-loading-text="拼命加载中">
+                        <a role="button" class="btn btn-info btn-xs" @click.prevent="download(scope.row)">
                             <i class='fa fa-download'></i> 下载
-                        </a> -->
+                        </a>
                         <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="userInfo">
                             <i class="fa fa-remove"></i> 删除
                         </a>
@@ -63,15 +65,15 @@
                     </span>
                 </template>
             </el-table-column>
-            <el-table-column min-width="150" label="操作" fixed="right" v-if="!isMobile()">
+            <el-table-column min-width="200" label="操作" fixed="right" v-if="!isMobile()">
                 <template slot-scope="scope">
                     <div class="btn-group">
                         <a role="button" class="btn btn-primary btn-xs" @click.prevent="play(scope.row)">
                             <i class='fa fa-play'></i> 播放
                         </a>
-                        <!-- <a role="button" class="btn btn-info btn-xs" @click.prevent="download(scope.row)" v-loading.fullscreen.lock="bDownloading" element-loading-text="拼命加载中">
+                        <a role="button" class="btn btn-info btn-xs" @click.prevent="download(scope.row)">
                             <i class='fa fa-download'></i> 下载
-                        </a> -->
+                        </a>
                         <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="userInfo">
                             <i class="fa fa-remove"></i> 删除
                         </a>
@@ -107,7 +109,6 @@ export default {
     data() {
         return {
             name: "",
-            bDownloading: false,
             currentPage: 1,
             pageSize: 10,
             sort: "startAt",
@@ -162,7 +163,7 @@ export default {
             );
         },
         download(row) {
-            window.open(`/api/v1/cloudrecord/download/${row.id}/${row._startAt}`);
+            window.open(`/api/v1/cloudrecord/download/${this.serial}/${this.code}/${row._startAt}`);
         },
         removeDaily() {
             this.$confirm(`确认删除 ${this.name} ${moment(this.period).format("YYYY-MM-DD")} 当天所有录像?`,"提示")
@@ -234,6 +235,7 @@ export default {
                 if (!row.serial) {
                     row.serial = this.serial,
                     row.code = this.code,
+                    row.name = this.name,
                     row.location = location;
                     row._startAt = row.startAt;
                     row.startAt = moment(row.startAt, "YYYYMMDDHHmmss").format("YYYY-MM-DD HH:mm:ss");

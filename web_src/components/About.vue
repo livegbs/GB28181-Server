@@ -50,7 +50,7 @@
                             <td v-if="!actived">剩余期限{{serverInfo.RemainDays}}天</td>
                             <td v-else>永久授权</td>
                         </tr>
-                        <tr v-if="serverInfo.ChannelCount && serverInfo.ChannelCount >= 0 && serverInfo.ChannelCount < 1000">
+                        <tr v-if="actived && serverInfo.ChannelCount && serverInfo.ChannelCount >= 0 && serverInfo.ChannelCount < 1000">
                             <td>通道数</td>
                             <td>{{serverInfo.ChannelCount}}</td>
                         </tr>

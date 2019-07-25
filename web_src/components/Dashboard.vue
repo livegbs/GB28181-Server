@@ -23,7 +23,7 @@
       <div class="view-dashboard  view-left view-split">
         <div class="panel">
           <div class="panel-body">
-            <ve-bar height="100%" :colors="chartColors" :data="storeData" :settings="storeSettings" legend-position="bottom" :title="{text:'存储使用', left: 'center'}"></ve-bar>
+            <ve-bar ref="storeChart" height="100%" :colors="chartColors" :data="storeData" :settings="storeSettings" legend-position="bottom" :title="{text:'存储使用', left: 'center'}"></ve-bar>
           </div>
         </div>
       </div>
@@ -32,14 +32,14 @@
       <div class="view-dashboard view-right">
         <div class="panel">
           <div class="panel-body">
-            <ve-line height="100%" :colors="chartColors" :data="cpuData" :settings="memSettings" :legend-visible="false" :title="{text:'CPU使用', left: 'center'}"></ve-line>
+            <ve-line ref="cpuChart" height="100%" :colors="chartColors" :data="cpuData" :settings="memSettings" :legend-visible="false" :title="{text:'CPU使用', left: 'center'}"></ve-line>
           </div>
         </div>
       </div>
       <div class="view-dashboard view-right view-split">
         <div class="panel">
           <div class="panel-body">
-            <ve-line height="100%" :colors="chartColors" :data="memData" :settings="memSettings" :legend-visible="false" :title="{text:'内存使用', left: 'center'}"></ve-line>
+            <ve-line ref="memChart" height="100%" :colors="chartColors" :data="memData" :settings="memSettings" :legend-visible="false" :title="{text:'内存使用', left: 'center'}"></ve-line>
           </div>
         </div>
       </div>
@@ -150,39 +150,15 @@ export default {
     this.timer2 = setInterval(() => {
       this.store();
     }, 5000);
+    $(document).on('expanded.pushMenu', this.resizeCharts);
+    $(document).on('collapsed.pushMenu', this.resizeCharts);
   },
   created() {
-    $(window).resize(function () {
-      var newPageWidth = window.innerWidth;
-      var newPageHeight = window.innerHeight;
-      if (typeof pageWidth != "number") {
-        if (document.compatMode == "CSS1Compat") {
-          newPageWidth = document.documentElement.clientWidth;
-          newPageHeight = document.documentElement.clientHeight;
-        } else {
-          newPageWidth = document.body.clientWidth;
-          newPageHeight = document.body.clientHeight;
-        }
-      }
-      if (newPageWidth != this.pageWidth || newPageHeight != this.pageHeight) {
-        this.pageWidth = newPageWidth;
-        this.pageHeight = newPageHeight;
-      }
-      if (this.pageHeight >= screen.height) {
-        $(".qcontent .container-fluid").css("height", this.pageHeight + "px");
-      } else {
-        $(".qcontent .container-fluid").css("height", (this.pageHeight - 140) + "px");
-      }
-      if (this.pageHeight > 800) {
-        $(".auth-view").css("padding-top", "16%")
-      } else if (this.pageHeight > 630) {
-        $(".auth-view").css("padding-top", "10%")
-      } else {
-        $(".auth-view").css("padding-top", "2%")
-      }
+    $(window).resize(() => {
+      this.resize();
     });
     this.initHeight();
-    $(".content").css("padding", "0")
+    $(".content").css("padding", "0");
   },
   beforeDestroy() {
     if (this.timer1) {
@@ -193,7 +169,9 @@ export default {
       clearInterval(this.timer2);
       this.timer2 = 0;
     }
-    $(".content").css("padding", "15px")
+    $(".content").css("padding", "15px");
+    $(document).off('expanded.pushMenu', this.resizeCharts);
+    $(document).off('collapsed.pushMenu', this.resizeCharts);
   },
   methods: {
     fullscreen() {
@@ -238,6 +216,40 @@ export default {
         }
       }
       this.pageHeight = this.pageHeight - 140;
+    },
+    resizeCharts() {
+      this.$refs["storeChart"].resize();
+      this.$refs["cpuChart"].resize();
+      this.$refs["memChart"].resize();
+    },
+    resize() {
+      var newPageWidth = window.innerWidth;
+      var newPageHeight = window.innerHeight;
+      if (typeof pageWidth != "number") {
+        if (document.compatMode == "CSS1Compat") {
+          newPageWidth = document.documentElement.clientWidth;
+          newPageHeight = document.documentElement.clientHeight;
+        } else {
+          newPageWidth = document.body.clientWidth;
+          newPageHeight = document.body.clientHeight;
+        }
+      }
+      if (newPageWidth != this.pageWidth || newPageHeight != this.pageHeight) {
+        this.pageWidth = newPageWidth;
+        this.pageHeight = newPageHeight;
+      }
+      if (this.pageHeight >= screen.height) {
+        $(".qcontent .container-fluid").css("height", this.pageHeight + "px");
+      } else {
+        $(".qcontent .container-fluid").css("height", (this.pageHeight - 140) + "px");
+      }
+      if (this.pageHeight > 800) {
+        $(".auth-view").css("padding-top", "16%")
+      } else if (this.pageHeight > 630) {
+        $(".auth-view").css("padding-top", "10%")
+      } else {
+        $(".auth-view").css("padding-top", "2%")
+      }
     }
   }
 };

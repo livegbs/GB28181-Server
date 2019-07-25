@@ -32,7 +32,7 @@
             <div class="clearfix"></div>
             <el-table :data="cascades" stripe :default-sort="{prop: 'Serial', order: 'ascending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
               <el-table-column prop="Name" label="名称" min-width="100" show-overflow-tooltip></el-table-column>
-              <el-table-column label="操作" min-width="200" v-if="isMobile()" class-name="opt-group">
+              <el-table-column label="操作" min-width="300" v-if="isMobile()" class-name="opt-group">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs">
                         <button type="button" class="btn btn-warning" @click.prevent="editCascade(props.row)">
@@ -40,6 +40,9 @@
                         </button>
                         <button type="button" class="btn btn-primary" @click.prevent="editChannel(props.row)">
                           <i class="fa fa-check"></i> 选择通道
+                        </button>
+                        <button type="button" class="btn btn-info" @click.prevent="pushChannel(props.row)" v-if="props.row.Online">
+                          <i class="fa fa-angle-double-up"></i> 推送通道
                         </button>
                         <button type="button" class="btn btn-danger" @click.prevent="removeCascade(props.row)">
                           <i class="fa fa-remove"></i> 删除
@@ -70,7 +73,7 @@
               <el-table-column prop="CatalogGroupSize" label="目录分组大小" min-width="120"></el-table-column>
               <el-table-column prop="CommandTransport" label="信令传输" min-width="120"></el-table-column>
               <el-table-column prop="Charset" label="字符集" min-width="120"></el-table-column>
-              <el-table-column label="操作" min-width="200" fixed="right" v-if="!isMobile()" class-name="opt-group">
+              <el-table-column label="操作" min-width="300" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs">
                         <button type="button" class="btn btn-warning" @click.prevent="editCascade(props.row)">
@@ -78,6 +81,9 @@
                         </button>
                         <button type="button" class="btn btn-primary" @click.prevent="editChannel(props.row)">
                           <i class="fa fa-check"></i> 选择通道
+                        </button>
+                        <button type="button" class="btn btn-info" @click.prevent="pushChannel(props.row)" v-if="props.row.Online">
+                          <i class="fa fa-angle-double-up"></i> 推送通道
                         </button>
                         <button type="button" class="btn btn-danger" @click.prevent="removeCascade(props.row)">
                           <i class="fa fa-remove"></i> 删除
@@ -189,6 +195,23 @@ export default {
     },
     editChannel(row) {
       this.$refs['cascadeChannelListDlg'].show(row.ID);
+    },
+    pushChannel(row) {
+      if(!row.Online) {
+        this.$message({
+          type: "error",
+          message: "平台不在线!"
+        })
+        return
+      }
+      $.get("/api/v1/cascade/pushcatalog", {
+        id: row.ID
+      }).then(() => {
+        this.$message({
+          type: "success",
+          message: "推送通道信息成功"
+        })
+      })
     },
     removeCascade(row) {
       this.$confirm(`确认删除 ${row.Name || row.ID}`, "提示").then(() => {

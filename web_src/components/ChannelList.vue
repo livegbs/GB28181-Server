@@ -107,6 +107,13 @@
                         <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
+                        <!--
+                          <button type="button" :class="['btn', {'btn-primary': !recorder, 'btn-danger': recorder}]" @click.prevent="toggleTalk(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
+                            <i class="fa fa-play-circle"></i>
+                            {{recorder? '停止对讲' : '开始对讲'}}
+                          </button>
+                          <audio autoplay ref="xxx"></audio>
+                        -->
                         <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && userInfo">
                           <i class="fa fa-stop"></i> 停止
                         </button>
@@ -162,7 +169,8 @@ export default {
       order: "asc",
       loading: false,
       timer: 0,
-      channels: []
+      channels: [],
+      recorder: null,
     };
   },
   computed: {
@@ -199,6 +207,10 @@ export default {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = 0;
+    }
+    if (this.recorder) {
+      this.recorder.stop();
+      this.recorder = null;
     }
   },
   methods: {
@@ -246,6 +258,38 @@ export default {
     formatName(row, col, cell) {
       if (cell) return cell;
       return "-";
+    },
+    toggleTalk(row) {
+      if(this.recorder) {
+        this.recorder.stop();
+        var pcm = this.recorder.getPCMBlob();
+        var reader = new window.FileReader();
+        this.recorder.play(this.$refs["xxx"]);
+        reader.onloadend = function() {
+            var base64 = reader.result;
+            var base64 = base64.split(',')[1];
+            $.get("/api/v1/broadcast/audio", {
+              serial: row.DeviceID,
+              code: row.ID,
+              audio: base64,
+            })
+        }
+        reader.readAsDataURL(pcm);
+        this.recorder = null;
+      } else {
+        LiveRecorder.get((rec, e) => {
+          if(e) {
+            alert(e);
+            return
+          }
+
+          this.recorder = rec;
+          this.recorder.start();
+        }, {
+          sampleBits: 16,
+          sampleRate: 8000,
+        })
+      }
     },
     toggleAudio(row) {
       $.get("/api/v1/device/setchannelaudio", {

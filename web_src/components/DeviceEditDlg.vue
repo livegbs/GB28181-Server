@@ -12,7 +12,7 @@
             <label for="input-name" class="col-sm-4 control-label">设备名称
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-name" v-model.trim="form.name" autocomplete="new-password" @keydown.enter="$el.querySelector('#input-recv-stream-ip').focus()">
+                <input type="text" class="form-control" id="input-name" v-model.trim="form.name" autocomplete="new-password" data-vv-as="设备名称" @keydown.enter="$el.querySelector('#input-recv-stream-ip').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('recv_stream_ip')}">
@@ -26,7 +26,14 @@
             <label for="input-catalog-interval" class="col-sm-4 control-label">通道更新周期(秒)
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" name="catalog_interval" id="input-catalog-interval" v-model="form.catalog_interval" placeholder="300" autocomplete="new-password" @keydown.enter="onSubmit">
+                <input type="text" class="form-control" name="catalog_interval" id="input-catalog-interval" v-model="form.catalog_interval" placeholder="3600" autocomplete="new-password" @keydown.enter="$el.querySelector('#input-subscribe-interval').focus()">
+            </div>
+        </div>
+        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('subscribe_interval')}">
+            <label for="input-catalog-interval" class="col-sm-4 control-label">订阅周期(秒)
+            </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="subscribe_interval" id="input-subscribe-interval" v-model="form.subscribe_interval" placeholder="600" autocomplete="new-password" @keydown.enter="onSubmit">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('media_transport')}">
@@ -68,7 +75,8 @@ export default {
                 media_transport: 'UDP',
                 media_transport_mode: 'passive',
                 recv_stream_ip: '',
-                catalog_interval: 300,
+                catalog_interval: 3600,
+                subscribe_interval: 600,
             }
         },
         onHide() {

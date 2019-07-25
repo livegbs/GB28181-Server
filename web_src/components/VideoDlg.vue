@@ -68,6 +68,13 @@
                       <i :class="['fa', {'fa-save': !bRecording, 'fa-stop': bRecording}]"></i>
                       {{bRecording? '停止录像' : '实时录像'}}
                     </button>
+                    <!--
+                      <button v-if="userInfo || !serverInfo.APIAuth" type="button" :class="['btn', {'btn-primary': !recorder, 'btn-danger': recorder}]" @click.prevent="toggleTalk()">
+                        <i :class="['fa', {'fa-save': !recorder, 'fa-stop': recorder}]"></i>
+                        {{recorder? '停止对讲' : '开始对讲'}}
+                      </button>
+                      <audio autoplay ref="xxx"></audio>
+                    -->
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -96,7 +103,8 @@ export default {
       bRecording: false,
       hasAudio: false,
       bShow: false,
-      bLoading: false
+      bLoading: false,
+      recorder: null,
     };
   },
   props: {
@@ -126,6 +134,10 @@ export default {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = 0;
+    }
+    if (this.recorder) {
+      this.recorder.stop();
+      this.recorder = null;
     }
   },
   mounted() {
@@ -220,6 +232,41 @@ export default {
         command: $target.attr("command")
       });
       $target.addClass("active");
+    },
+    toggleTalk() {
+      if(this.recorder) {
+        this.recorder.stop();
+        var pcm = this.recorder.getPCMBlob();
+        var reader = new window.FileReader();
+        this.recorder.play(this.$refs["xxx"]);
+        reader.onloadend = () => {
+            var dataUrl = reader.result;
+            var base64 = reader.result.toString();
+            var base64 = dataUrl.split(',')[1];
+            console.log(base64);
+            console.log(base64.length);
+            $.get("/api/v1/broadcast/audio", {
+              serial: this.serial,
+              code: this.code,
+              audio: base64,
+            })
+        }
+        reader.readAsDataURL(pcm);
+        this.recorder = null;
+      } else {
+        LiveRecorder.get((rec, e) => {
+          if(e) {
+            alert(e);
+            return
+          }
+
+          this.recorder = rec;
+          this.recorder.start();
+        }, {
+          sampleBits: 8,
+          sampleRate: 8000,
+        })
+      }
     },
     toggleRecord() {
       if(this.bRecording) {
