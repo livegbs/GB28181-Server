@@ -18,6 +18,11 @@
               <option value="false">离线</option>
             </select>
           </div>
+          <div class="form-group pull-right">
+            <router-link :to="`/devices/tree`" class="btn btn-default btn-sm">
+                <i class="fa fa-sitemap"></i> 树视图
+            </router-link>
+          </div>
         </form>
         <br>
         <el-table :data="devices" stripe :default-sort="{prop: 'ID', order: 'ascending'}" @sort-change="sortChange">

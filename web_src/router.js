@@ -12,6 +12,7 @@ const ContentRoot = () => import( /* webpackChunkName: 'root' */ 'components/Con
 const Screen  = () => import(/* webpackChunkName: 'screen' */ 'components/Screen.vue')
 
 const DeviceList = () => import( /* webpackChunkName: 'device' */ 'components/DeviceList.vue')
+const DeviceTree = () => import( /* webpackChunkName: 'device' */ 'components/DeviceTree.vue')
 const ChannelList = () => import( /* webpackChunkName: 'device' */ 'components/ChannelList.vue')
 const PlaybackList = () => import(/* webpackChunkName: 'device' */ 'components/PlaybackList.vue')
 const PlaybackTimebox = () => import(/* webpackChunkName: 'device' */ 'components/PlaybackTimebox.vue')
@@ -53,6 +54,10 @@ const router = new Router({
           {
             path: '',
             redirect: '1'
+          }, {
+            path: 'tree',
+            component: DeviceTree,
+            props: true,
           }, {
             path: ':page',
             component: DeviceList,
