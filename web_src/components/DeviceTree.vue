@@ -37,7 +37,7 @@
           <div class="col-sm-8">
             <br>
               <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
-                <LivePlayer :videoUrl="player.url" live muted :hasaudio="player.hasAudio" stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="player.bLoading" @message="$message"></LivePlayer>
+                <LivePlayer :videoUrl="player.url" live muted :hasaudio="player.hasAudio" stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
                 <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo()">关闭</div>
               </div>
             <br>
@@ -160,6 +160,7 @@ export default {
     },
     closeVideo() {
       this.player.url = "";
+      this.player.hasAudio = false;
       this.player.bLoading = false;
       this.player.bCloseShow = false;
     }
