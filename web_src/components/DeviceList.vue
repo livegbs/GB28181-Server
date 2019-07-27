@@ -25,6 +25,7 @@
           </div>
         </form>
         <br>
+        <div class="clearfix"></div>
         <el-table :data="devices" stripe :default-sort="{prop: 'ID', order: 'ascending'}" @sort-change="sortChange">
           <el-table-column prop="ID" label="设备国标编号" min-width="200" sortable="custom"></el-table-column>
           <el-table-column label="操作" min-width="220" v-if="isMobile()">

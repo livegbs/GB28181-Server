@@ -17,6 +17,7 @@
           </div>
         </form>
         <br>
+        <div class="clearfix"></div>
         <div class="content">
           <div class="col-sm-4">
             <el-tree ref="devTree"
