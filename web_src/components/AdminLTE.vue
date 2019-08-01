@@ -55,6 +55,9 @@ import BackToTop from 'vue-backtotop'
 Vue.use(BackToTop)
 
 import VeeValidate, { Validator } from "vee-validate";
+Vue.use(VeeValidate, {
+  fieldsBagName: 'veeFields'
+});
 import zh_CN from "vee-validate/dist/locale/zh_CN";
 Validator.localize("zh_CN", zh_CN);
 Vue.use(VeeValidate, {

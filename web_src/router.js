@@ -26,6 +26,9 @@ const CloudRecordListBox = () => import(/* webpackChunkName: 'cloudrecord' */ 'c
 const CloudRecordTimeBox = () => import(/* webpackChunkName: 'cloudrecord' */ 'components/CloudRecordTimeBox.vue')
 
 
+const Tester = () => import(/* webpackChunkName: 'tester' */ 'components/Tester.vue')
+
+
 Vue.use(Router);
 
 const router = new Router({
@@ -44,6 +47,16 @@ const router = new Router({
           {
             path: '',
             component: Screen,
+            props: true
+          }
+        ]
+      }, {
+        path: 'test',
+        component: ContentRoot,
+        children: [
+          {
+            path: '',
+            component: Tester,
             props: true
           }
         ]
