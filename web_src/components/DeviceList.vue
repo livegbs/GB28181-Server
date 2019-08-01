@@ -47,6 +47,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="Name" label="名称" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="CommandTransport" label="信令传输模式" min-width="140" :formatter="formatName" show-overflow-tooltip></el-table-column>
           <el-table-column prop="MediaTransport" label="流传输模式" min-width="140">
             <template slot-scope="props">
               <el-dropdown size="small" trigger="click" v-if="userInfo" @command="setMediaTransport">
