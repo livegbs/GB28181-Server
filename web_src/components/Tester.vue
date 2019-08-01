@@ -18,7 +18,7 @@
             </el-form>
         </div>
         <div class="col-md-5">
-            <el-tree style="width: 100%;height:700px;overflow-y: auto;" showCheckbox :data="data" node-key="id" :props="defaultProps"></el-tree>
+            <el-tree style="width: 100%;height:700px;overflow-y: auto;" ref="tree" showCheckbox :data="data" node-key="id" :props="defaultProps"></el-tree>
         </div>
         <div class="col-md-7">
             <div class="row">
@@ -63,992 +63,992 @@ export default {
             checkIDS: [],
             testerData: [],
             data: [{
-                id: 1,
+                id: 101,
                 label: '注册',
                 children: [{
-                    id: 11,
+                    id: 1011,
                     label: '注册应答',
                     children: [{
-                        id: 111,
+                        id: 10111,
                         label: '等待无鉴权注册',
                         disabled: false
                     }, {
-                        id: 112,
+                        id: 10112,
                         label: '等待有鉴权注册',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 2,
+                id: 102,
                 label: '心跳',
                 children: [{
-                    id: 21,
+                    id: 1021,
                     label: '心跳',
                     children: [{
-                        id: 211,
+                        id: 10211,
                         label: '等待心跳',
                         disabled: false
 
                     }]
                 }]
             }, {
-                id: 3,
+                id: 103,
                 label: '设备信息查询',
                 children: [{
-                    id: 31,
+                    id: 1031,
                     label: '设备信息查询',
                     children: [{
-                        id: 311,
+                        id: 10311,
                         label: '发送设备查询信息',
                         disabled: false
 
                     }, {
-                        id: 312,
+                        id: 10312,
                         label: '等待设备查询信息',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 4,
+                id: 104,
                 label: '设备目录查询',
                 children: [{
-                    id: 41,
+                    id: 1041,
                     label: '设备目录查询',
                     children: [{
-                        id: 411,
+                        id: 10411,
                         label: '发送设备目录查询命令',
                         disabled: false
 
                     }, {
-                        id: 412,
+                        id: 10412,
                         label: '等待设备目录信息',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 5,
+                id: 105,
                 label: '设备状态查询',
                 children: [{
-                    id: 51,
+                    id: 1051,
                     label: '设备状态查询',
                     children: [{
-                        id: 511,
+                        id: 10511,
                         label: '发送状态查询',
                         disabled: false
 
                     }, {
-                        id: 512,
+                        id: 10512,
                         label: '等待状态消息',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 6,
+                id: 106,
                 label: '配置查询',
                 children: [{
-                    id: 61,
+                    id: 1061,
                     label: '国标配置查询',
                     children: [{
-                        id: 611,
+                        id: 10611,
                         label: '国标编码配置查询',
                         disabled: false
 
                     }, {
-                        id: 612,
+                        id: 10612,
                         label: '等待国标配置',
                         disabled: false
                     }]
                 }, {
-                    id: 62,
+                    id: 1062,
                     label: '视频参数范围查询',
                     children: [{
-                        id: 621,
+                        id: 10621,
                         label: '视频参数范围查询',
                         disabled: false
 
                     }, {
-                        id: 622,
+                        id: 10622,
                         label: '等待回复视频参数范围',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 7,
+                id: 107,
                 label: '手动录像',
                 children: [{
-                    id: 71,
+                    id: 1071,
                     label: '开启手动录像',
                     children: [{
-                        id: 711,
+                        id: 10711,
                         label: '开始手动录像',
                         disabled: false
 
                     }, {
-                        id: 712,
+                        id: 10712,
                         label: '等待开启成功',
                         disabled: false
                     }]
                 }, {
-                    id: 72,
+                    id: 1072,
                     label: '等待录像',
                     children: [{
-                        id: 721,
+                        id: 10721,
                         label: '录像ing',
                         disabled: false
 
                     }]
                 }, {
-                    id: 73,
+                    id: 1073,
                     label: '停止手动录像',
                     children: [{
-                        id: 731,
+                        id: 10731,
                         label: '等待停止成功',
                         disabled: false
 
                     }, {
-                        id: 732,
+                        id: 10732,
                         label: '等待停止成功',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 8,
+                id: 108,
                 label: '实时视频',
                 children: [{
-                    id: 81,
+                    id: 1081,
                     label: '实时视频建立_UDP',
                     children: [{
-                        id: 811,
+                        id: 10811,
                         label: '打开视频端口',
                         disabled: false
 
                     }, {
-                        id: 812,
+                        id: 10812,
                         label: '发送实时视频请求',
                         disabled: false
                     }, {
-                        id: 813,
+                        id: 10813,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 814,
+                        id: 10814,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 815,
+                        id: 10815,
                         label: '播放码流',
                         disabled: false
                     }, {
-                        id: 816,
+                        id: 10816,
                         label: '停止视频请求',
                         disabled: false
                     }, {
-                        id: 817,
+                        id: 10817,
                         label: '关闭视频端口',
                         disabled: false
                     }, {
-                        id: 818,
+                        id: 10818,
                         label: '普通等待',
                         disabled: false
                     }]
                 }, {
-                    id: 82,
+                    id: 1082,
                     label: '实时视频建立_TCP',
                     children: [{
-                        id: 821,
+                        id: 10821,
                         label: '打开视频端口',
                         disabled: false
 
                     }, {
-                        id: 822,
+                        id: 10822,
                         label: '发送实时视频请求',
                         disabled: false
                     }, {
-                        id: 823,
+                        id: 10823,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 824,
+                        id: 10824,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 825,
+                        id: 10825,
                         label: '播放码流',
                         disabled: false
                     }, {
-                        id: 826,
+                        id: 10826,
                         label: '停止视频请求',
                         disabled: false
                     }, {
-                        id: 827,
+                        id: 10827,
                         label: '关闭视频端口',
                         disabled: false
                     }, {
-                        id: 828,
+                        id: 10828,
                         label: '普通等待',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 9,
+                id: 109,
                 label: '强制I帧',
                 children: [{
-                    id: 91,
+                    id: 1091,
                     label: '强制I帧',
                     children: [{
-                        id: 911,
+                        id: 10911,
                         label: '打开视频端口',
                         disabled: false
 
                     }, {
-                        id: 912,
+                        id: 10912,
                         label: '发送实时视频请求',
                         disabled: false
                     }, {
-                        id: 913,
+                        id: 10913,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 914,
+                        id: 10914,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 915,
+                        id: 10915,
                         label: '播放码流',
                         disabled: false
                     }, {
-                        id: 916,
+                        id: 10916,
                         label: '强制I帧检测',
                         disabled: false
                     }, {
-                        id: 917,
+                        id: 10917,
                         label: '播放码流',
                         disabled: false
                     }, {
-                        id: 918,
+                        id: 10918,
                         label: '停止视频请求',
                         disabled: false
                     }, {
-                        id: 919,
+                        id: 10919,
                         label: '关闭视频端口',
                         disabled: false
                     }, {
-                        id: 9110,
+                        id: 109110,
                         label: '普通等待',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 10,
+                id: 110,
                 label: '云台控制',
                 children: [{
-                    id: 101,
+                    id: 1101,
                     label: '云台控制',
                     children: [{
-                        id: 1011,
+                        id: 11011,
                         label: '打开视频端口',
                         disabled: false
 
                     }, {
-                        id: 1012,
+                        id: 11012,
                         label: '发送实时视频请求',
                         disabled: false
                     }, {
-                        id: 1013,
+                        id: 11013,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1014,
+                        id: 11014,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 1015,
+                        id: 11015,
                         label: '播放码流',
                         disabled: false
                     }, {
-                        id: 1016,
+                        id: 11016,
                         label: '向左转',
                         disabled: false
                     }, {
-                        id: 1017,
+                        id: 11017,
                         label: '停止向左转',
                         disabled: false
                     }, {
-                        id: 1018,
+                        id: 11018,
                         label: '等待1',
                         disabled: false
                     }, {
-                        id: 1019,
+                        id: 11019,
                         label: '向右转',
                         disabled: false
                     }, {
-                        id: 10110,
+                        id: 110110,
                         label: '停止向右转',
                         disabled: false
                     }, {
-                        id: 10111,
+                        id: 110111,
                         label: '等待2',
                         disabled: false
                     }, {
-                        id: 10112,
+                        id: 110112,
                         label: '向上转',
                         disabled: false
                     }, {
-                        id: 10113,
+                        id: 110113,
                         label: '停止向上转',
                         disabled: false
                     }, {
-                        id: 10114,
+                        id: 110114,
                         label: '等待3',
                         disabled: false
                     }, {
-                        id: 10115,
+                        id: 110115,
                         label: '向下转',
                         disabled: false
                     }, {
-                        id: 10116,
+                        id: 110116,
                         label: '停止向下转',
                         disabled: false
                     }, {
-                        id: 10117,
+                        id: 110117,
                         label: '等待4',
                         disabled: false
                     }, {
-                        id: 10118,
+                        id: 110118,
                         label: '焦距放大',
                         disabled: false
                     }, {
-                        id: 10119,
+                        id: 110119,
                         label: '停止放大',
                         disabled: false
                     }, {
-                        id: 10120,
+                        id: 110120,
                         label: '等待5',
                         disabled: false
                     }, {
-                        id: 10121,
+                        id: 110121,
                         label: '焦距缩小',
                         disabled: false
                     }, {
-                        id: 10122,
+                        id: 110122,
                         label: '停止缩小',
                         disabled: false
                     }, {
-                        id: 10123,
+                        id: 110123,
                         label: '停止视频请求',
                         disabled: false
                     }, {
-                        id: 10124,
+                        id: 110124,
                         label: '关闭视频端口',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 11,
+                id: 111,
                 label: '录像查询全部',
                 children: [{
-                    id: 111,
+                    id: 1111,
                     label: '录像查询_ALL',
                     children: [{
-                        id: 1111,
+                        id: 11111,
                         label: '查询录像(ALL)',
                         disabled: false
 
                     }, {
-                        id: 1112,
+                        id: 11112,
                         label: '等待录像(ALL)',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 12,
+                id: 112,
                 label: '录像回放',
                 children: [{
-                    id: 121,
+                    id: 1121,
                     label: '录像回放_UDP',
                     children: [{
-                        id: 1211,
+                        id: 11211,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1212,
+                        id: 11212,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1213,
+                        id: 11213,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1214,
+                        id: 11214,
                         label: '发送录像播放请求',
                         disabled: false
                     }, {
-                        id: 1215,
+                        id: 11215,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1216,
+                        id: 11216,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 1217,
+                        id: 11217,
                         label: '录像回放',
                         disabled: false
                     }, {
-                        id: 1218,
+                        id: 11218,
                         label: '等待录像结束消息',
                         disabled: false
                     }, {
-                        id: 1219,
+                        id: 11219,
                         label: '发送录像停止请求',
                         disabled: false
                     }, {
-                        id: 12110,
+                        id: 112110,
                         label: '关闭媒体端口',
                         disabled: false
                     }]
                 }, {
-                    id: 122,
+                    id: 1122,
                     label: '录像回放_TCP',
                     children: [{
-                        id: 1221,
+                        id: 11221,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1222,
+                        id: 11222,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1223,
+                        id: 11223,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1224,
+                        id: 11224,
                         label: '发送录像播放请求',
                         disabled: false
                     }, {
-                        id: 1225,
+                        id: 11225,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1226,
+                        id: 11226,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 1227,
+                        id: 11227,
                         label: '录像回放',
                         disabled: false
                     }, {
-                        id: 1228,
+                        id: 11228,
                         label: '等待录像结束消息',
                         disabled: false
                     }, {
-                        id: 1229,
+                        id: 11229,
                         label: '发送录像停止请求',
                         disabled: false
                     }, {
-                        id: 12210,
+                        id: 112210,
                         label: '关闭媒体端口',
                         disabled: false
                     }]
                 }, {
-                    id: 123,
+                    id: 1123,
                     label: '录像慢放',
                     children: [{
-                        id: 1231,
+                        id: 11231,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1232,
+                        id: 11232,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1233,
+                        id: 11233,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1234,
+                        id: 11234,
                         label: '发送录像播放请求',
                         disabled: false
                     }, {
-                        id: 1235,
+                        id: 11235,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1236,
+                        id: 11236,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 1237,
+                        id: 11237,
                         label: '录像回放',
                         disabled: false
                     }, {
-                        id: 1238,
+                        id: 11238,
                         label: '1/4速度播放',
                         disabled: false
                     }, {
-                        id: 1239,
+                        id: 11239,
                         label: '恢复正常播放',
                         disabled: false
                     }, {
-                        id: 12310,
+                        id: 112310,
                         label: '发送录像停止请求',
                         disabled: false
                     }, {
-                        id: 12311,
+                        id: 112311,
                         label: '关闭媒体端口',
                         disabled: false
                     }]
                 }, {
-                    id: 124,
+                    id: 1124,
                     label: '录像快放',
                     children: [{
-                        id: 1241,
+                        id: 11241,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1242,
+                        id: 11242,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1243,
+                        id: 11243,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1244,
+                        id: 11244,
                         label: '发送录像播放请求',
                         disabled: false
                     }, {
-                        id: 1245,
+                        id: 11245,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1246,
+                        id: 11246,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 1247,
+                        id: 11247,
                         label: '录像回放',
                         disabled: false
                     }, {
-                        id: 1248,
+                        id: 11248,
                         label: '4倍速度播放',
                         disabled: false
                     }, {
-                        id: 1249,
+                        id: 11249,
                         label: '恢复正常播放',
                         disabled: false
                     }, {
-                        id: 12410,
+                        id: 112410,
                         label: '发送录像停止请求',
                         disabled: false
                     }, {
-                        id: 12411,
+                        id: 112411,
                         label: '关闭媒体端口',
                         disabled: false
                     }]
                 }, {
-                    id: 125,
+                    id: 1125,
                     label: '录像暂停',
                     children: [{
-                        id: 1251,
+                        id: 11251,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1252,
+                        id: 11252,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1253,
+                        id: 11253,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1254,
+                        id: 11254,
                         label: '发送录像播放请求',
                         disabled: false
                     }, {
-                        id: 1255,
+                        id: 11255,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1256,
+                        id: 11256,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 1257,
+                        id: 11257,
                         label: '录像回放',
                         disabled: false
                     }, {
-                        id: 1258,
+                        id: 11258,
                         label: '录像暂停',
                         disabled: false
                     }, {
-                        id: 1259,
+                        id: 11259,
                         label: '恢复正常播放',
                         disabled: false
                     }, {
-                        id: 12510,
+                        id: 112510,
                         label: '发送录像停止请求',
                         disabled: false
                     }, {
-                        id: 12511,
+                        id: 112511,
                         label: '关闭媒体端口',
                         disabled: false
                     }]
                 }, {
-                    id: 126,
+                    id: 1126,
                     label: '录像拖放',
                     children: [{
-                        id: 1261,
+                        id: 11261,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1262,
+                        id: 11262,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1263,
+                        id: 11263,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1264,
+                        id: 11264,
                         label: '发送录像播放请求',
                         disabled: false
                     }, {
-                        id: 1265,
+                        id: 11265,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1266,
+                        id: 11266,
                         label: '发送ACK',
                         disabled: false
                     }, {
-                        id: 1267,
+                        id: 11267,
                         label: '录像回放',
                         disabled: false
                     }, {
-                        id: 1268,
+                        id: 11268,
                         label: '录像拖动',
                         disabled: false
                     }, {
-                        id: 1269,
+                        id: 11269,
                         label: '发送录像停止请求',
                         disabled: false
                     }, {
-                        id: 12610,
+                        id: 112610,
                         label: '关闭媒体端口',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 13,
+                id: 113,
                 label: '录像下载',
                 children: [{
-                    id: 131,
+                    id: 1131,
                     label: '录像下载_UDP',
                     children: [{
-                        id: 1311,
+                        id: 11311,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1312,
+                        id: 11312,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1313,
+                        id: 11313,
                         label: '切换到下载模式',
                         disabled: false
                     }, {
-                        id: 1314,
+                        id: 11314,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1315,
+                        id: 11315,
                         label: '发送录像下载请求',
                         disabled: false
                     }, {
-                        id: 1316,
+                        id: 11316,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1317,
+                        id: 11317,
                         label: '发送ACk',
                         disabled: false
                     }, {
-                        id: 1318,
+                        id: 11318,
                         label: '等待录像下载',
                         disabled: false
                     }, {
-                        id: 1319,
+                        id: 11319,
                         label: '等待录像下载结束',
                         disabled: false
                     }, {
-                        id: 13110,
+                        id: 113110,
                         label: '停止下载',
                         disabled: false
                     }, {
-                        id: 13111,
+                        id: 113111,
                         label: '关闭媒体端口',
                         disabled: false
                     }, {
-                        id: 13112,
+                        id: 113112,
                         label: '切换到播放模式',
                         disabled: false
                     }]
                 }, {
-                    id: 132,
+                    id: 1132,
                     label: '录像下载_TCP',
                     children: [{
-                        id: 1321,
+                        id: 11321,
                         label: '获取录像播放时间',
                         disabled: false
 
                     }, {
-                        id: 1322,
+                        id: 11322,
                         label: '等待录像(ALL)',
                         disabled: false
                     }, {
-                        id: 1323,
+                        id: 11323,
                         label: '切换到下载模式',
                         disabled: false
                     }, {
-                        id: 1324,
+                        id: 11324,
                         label: '打开媒体端口',
                         disabled: false
                     }, {
-                        id: 1325,
+                        id: 11325,
                         label: '发送录像下载请求',
                         disabled: false
                     }, {
-                        id: 1326,
+                        id: 11326,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1327,
+                        id: 11327,
                         label: '发送ACk',
                         disabled: false
                     }, {
-                        id: 1328,
+                        id: 11328,
                         label: '等待录像下载',
                         disabled: false
                     }, {
-                        id: 1329,
+                        id: 11329,
                         label: '等待录像下载结束',
                         disabled: false
                     }, {
-                        id: 13210,
+                        id: 113210,
                         label: '停止下载',
                         disabled: false
                     }, {
-                        id: 13211,
+                        id: 113211,
                         label: '关闭媒体端口',
                         disabled: false
                     }, {
-                        id: 13212,
+                        id: 113212,
                         label: '切换到播放模式',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 14,
+                id: 114,
                 label: '对讲与广播',
                 children: [{
-                    id: 141,
+                    id: 1141,
                     label: '语音对讲',
                     children: [{
-                        id: 1411,
+                        id: 11411,
                         label: '打开音频接收端口',
                         disabled: false
                     }, {
-                        id: 1412,
+                        id: 11412,
                         label: '发送语音对讲请求',
                         disabled: false
                     }, {
-                        id: 1413,
+                        id: 11413,
                         label: '等待设备回复200OK',
                         disabled: false
                     }, {
-                        id: 1414,
+                        id: 11414,
                         label: '发送ACk',
                         disabled: false
                     }, {
-                        id: 1415,
+                        id: 11415,
                         label: '语音对讲',
                         disabled: false
                     }, {
-                        id: 1416,
+                        id: 11416,
                         label: '停止语音对讲',
                         disabled: false
                     }, {
-                        id: 1417,
+                        id: 11417,
                         label: '关闭音频接收端口',
                         disabled: false
                     }, {
-                        id: 1418,
+                        id: 11418,
                         label: '确认语音对讲功能',
                         disabled: false
                     }, {
-                        id: 1419,
+                        id: 11419,
                         label: '普通等待',
                         disabled: false
                     }]
                 }, {
-                    id: 142,
+                    id: 1142,
                     label: '语音广播',
                     children: [{
-                        id: 1421,
+                        id: 11421,
                         label: '打开音频发送端口',
                         disabled: false
 
                     }, {
-                        id: 1422,
+                        id: 11422,
                         label: '发送语音广播通知',
                         disabled: false
                     }, {
-                        id: 1423,
+                        id: 11423,
                         label: '等待语音广播回复',
                         disabled: false
                     }, {
-                        id: 1424,
+                        id: 11424,
                         label: '等待语音广播请求',
                         disabled: false
                     }, {
-                        id: 1425,
+                        id: 11425,
                         label: '等待ACK',
                         disabled: false
                     }, {
-                        id: 1426,
+                        id: 11426,
                         label: '语音广播',
                         disabled: false
                     }, {
-                        id: 1427,
+                        id: 11427,
                         label: '关闭语音广播',
                         disabled: false
                     }, {
-                        id: 1428,
+                        id: 11428,
                         label: '关闭音频发送端口',
                         disabled: false
                     }, {
-                        id: 1429,
+                        id: 11429,
                         label: '确认语音广播功能',
                         disabled: false
                     }, {
-                        id: 14210,
+                        id: 114210,
                         label: '普通等待',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 15,
+                id: 115,
                 label: '订阅与通知',
                 children: [{
-                    id: 151,
+                    id: 1151,
                     label: '报警订阅',
                     children: [{
-                        id: 1511,
+                        id: 11511,
                         label: '布防通道',
                         disabled: false
                     }, {
-                        id: 1512,
+                        id: 11512,
                         label: '等待布放成功',
                         disabled: false
                     }, {
-                        id: 1513,
+                        id: 11513,
                         label: '报警订阅',
                         disabled: false
                     }, {
-                        id: 1514,
+                        id: 11514,
                         label: '等待报警信息',
                         disabled: false
                     }, {
-                        id: 1515,
+                        id: 11515,
                         label: '刷新订阅',
                         disabled: false
                     }, {
-                        id: 1516,
+                        id: 11516,
                         label: '等待报警信息',
                         disabled: false
                     }, {
-                        id: 1517,
+                        id: 11517,
                         label: '取消订阅',
                         disabled: false
                     }, {
-                        id: 1518,
+                        id: 11518,
                         label: '普通等待',
                         disabled: false
                     }]
                 }, {
-                    id: 152,
+                    id: 1152,
                     label: '目录订阅',
                     children: [{
-                        id: 1521,
+                        id: 11521,
                         label: '目录订阅',
                         disabled: false
 
                     }, {
-                        id: 1522,
+                        id: 11522,
                         label: '等待初始状态上报',
                         disabled: false
                     }, {
-                        id: 1523,
+                        id: 11523,
                         label: '等待目录改变通知',
                         disabled: false
                     }, {
-                        id: 1524,
+                        id: 11524,
                         label: '刷新订阅',
                         disabled: false
                     }, {
-                        id: 1525,
+                        id: 11525,
                         label: '等待初始状态上报',
                         disabled: false
                     }, {
-                        id: 1526,
+                        id: 11526,
                         label: '等待目录改变通知',
                         disabled: false
                     }, {
-                        id: 1527,
+                        id: 11527,
                         label: '取消订阅',
                         disabled: false
                     }, {
-                        id: 1528,
+                        id: 11528,
                         label: '普通等待',
                         disabled: false
                     }]
                 }]
             }, {
-                id: 16,
+                id: 116,
                 label: '远程协助',
                 children: [{
-                    id: 161,
+                    id: 1161,
                     label: '远程启动',
                     isLeaf: true,
                     children: [{
-                        id: 1611,
+                        id: 11611,
                         label: '发送重启命令'
                     }, {
-                        id: 1612,
+                        id: 11612,
                         label: '等待注销1'
                     }, {
-                        id: 1613,
+                        id: 11613,
                         label: '等待注销2'
                     }, {
-                        id: 1614,
+                        id: 11614,
                         label: '等待注册并响应失败'
                     }, {
-                        id: 1615,
+                        id: 11615,
                         label: '注册普通等待'
                     }, {
-                        id: 1616,
+                        id: 11616,
                         label: '等待注册1'
                     }, {
-                        id: 1617,
+                        id: 11617,
                         label: '等待注册2'
                     }]
                 }]
@@ -1059,8 +1059,37 @@ export default {
             }
         };
     },
+    mounted() {
+        this.updateSteps();
+        this.timer1 = setInterval(() => {
+            this.updateSteps();
+        }, 1000);
+    },
+    beforeDestroy() {
+        if (this.timer1) {
+            clearInterval(this.timer1);
+            this.timer1 = 0;
+        }
+    },
     methods: {
+        updateSteps() {
+            $.get("/api/v1/tester/logs", {}).then(ret => {
+                this.testerData = ret;
+            });
+        },
         onStart() {
+            var ids = this.$refs.tree.getCheckedKeys()
+            var hids = this.$refs.tree.getHalfCheckedKeys()
+            for (var i = 0; i < hids.length; i++) {
+                ids.push(hids[i])
+            }
+            if (ids.length == 0) {
+                this.$message({
+                    type: 'error',
+                    message: "没有选中任何测试"
+                })
+                return;
+            }
             if (this.code == "" || this.serial == "") {
                 this.$message({
                     type: 'error',
@@ -1068,28 +1097,25 @@ export default {
                 })
                 return;
             }
+            this.checkIDS = ""
+            for (var i = 0; i < ids.length; i++) {
+                if ((ids[i] + "").length == 4) {
+                    if (this.checkIDS == "") {
+                        this.checkIDS = ids[i]
+                    } else {
+                        this.checkIDS += "," + ids[i]
+                    }
+                }
+            }
             $.get("/api/v1/tester/status", {}).then(ret => {
                 if (!ret.Testing) {
                     this.testerData = []
                     this.testing = true
-                    this.testerData.push({
-                        TesterName: "注册应答",
-                        Result: "测试开始",
-                        Detail: "等待注册应答......"
-                    })
                     $.get("/api/v1/tester/start", {
                         serial: this.serial,
                         code: this.code,
-                        ids: "11",
-                    }).then(ret => {
-                        this.testing = false;
-                        console.log(ret)
-                        for (var i = 0; i < ret.length; i++) {
-                            this.testerData.push(ret[i]);
-                        }
-                    }).always(() => {
-                        this.testing = false
-                    });
+                        ids: this.checkIDS,
+                    })
                 } else {
                     this.testing = true
                     this.$message({
@@ -1112,6 +1138,7 @@ export default {
 
         },
         onRefresh() {
+            this.$refs.tree.setCheckedKeys([]);
             this.checkIDS = "";
             this.$message({
                 type: 'success',
