@@ -220,7 +220,8 @@ export default {
         media_transport: row.MediaTransport,
         media_transport_mode: row.MediaTransportMode,
         recv_stream_ip: row.RecvStreamIP,
-        catalog_interval: row.CatalogInterval || 300,
+        catalog_interval: row.CatalogInterval || 3600,
+        subscribe_interval: row.SubscribeInterval || 600,
       });
     },
     formatName(row, col, cell) {
