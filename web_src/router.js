@@ -27,7 +27,7 @@ const CloudRecordTimeBox = () => import(/* webpackChunkName: 'cloudrecord' */ 'c
 
 
 const Tester = () => import(/* webpackChunkName: 'tester' */ 'components/Tester.vue')
-
+const TesterReport =()  => import(/* webpackChunkName: 'tester' */ 'components/TesterReport.vue')
 
 Vue.use(Router);
 
@@ -57,6 +57,16 @@ const router = new Router({
           {
             path: '',
             component: Tester,
+            props: true
+          }
+        ]
+      }, {
+        path: 'testreport',
+        component: ContentRoot,
+        children: [
+          {
+            path: '',
+            component: TesterReport,
             props: true
           }
         ]

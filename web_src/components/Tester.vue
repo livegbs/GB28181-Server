@@ -13,9 +13,12 @@
                     <el-button type="primary" @click.prevent="onStart" v-if="!testing">运行</el-button>
                     <el-button type="danger" @click.prevent="onStop" v-if="testing">停止</el-button>
                     <el-button type="button" @click.prevent="onRefresh">刷新树</el-button>
-                    <el-button type="button" @click.prevent="onDoc">测试报告</el-button>
+                    <el-button type="button" @click.prevent="onReport">测试报告</el-button>
                 </el-form-item>
             </el-form>
+        </div>
+        <div class="col-md-12" v-if="teserNames != ''">
+            <div class="test-link">测试序列：{{teserNames}}</div>
         </div>
         <div class="col-md-5">
             <el-tree style="width: 100%;height:700px;overflow-y: auto;" ref="tree" showCheckbox :data="data" node-key="id" :props="defaultProps"></el-tree>
@@ -23,22 +26,29 @@
         <div class="col-md-7">
             <div class="row">
                 <el-table :data="testerData" height="300" style="width: 100%;" @row-click="onRowClick">
-                    <el-table-column type="index" width="50"></el-table-column>
-                    <el-table-column prop="TesterName" label="步骤" width="180">
+                    <el-table-column prop="Step" width="50" label="步骤"></el-table-column>
+                    <el-table-column prop="TesterName" label="测试对象" width="180">
                     </el-table-column>
-                    <el-table-column prop="Result" label="结果" width="180">
+                    <el-table-column prop="Result" label="结果" width="100">
+                        <template slot-scope="props">
+                            <span class="text-success" title="单击查看详细信令报文" style="cursor:pointer;" v-if="props.row.Result =='接收成功'||props.row.Result =='响应成功'">{{props.row.Result}}</span>
+                            <span style="color:red" v-else-if="props.row.Result=='失败'">{{props.row.Result}}</span>
+                            <span v-else>{{props.row.Result}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column prop="Detail" label="详细信息">
+                    </el-table-column>
+                    <el-table-column prop="Time" label="时间">
                     </el-table-column>
                 </el-table>
             </div>
             <div class="row">
                 <div class="col-md-12 card">
-                    <el-tabs>
-                        <el-tab-pane :label="TesterName+'服务接收信令'">
+                    <el-tabs v-model="activeName">
+                        <el-tab-pane name="in" :label="TesterName+'服务接收信令'">
                             <el-input placeholder="点击步骤查看详情" rows="14" type="textarea" v-model="TesterIn"></el-input>
                         </el-tab-pane>
-                        <el-tab-pane :label="TesterName+'服务反馈信令'">
+                        <el-tab-pane name="out" :label="TesterName+'服务反馈信令'">
                             <el-input placeholder="点击步骤查看详情" rows="14" class="card-content" type="textarea" v-model="TesterOut"></el-input>
                         </el-tab-pane>
                     </el-tabs>
@@ -54,6 +64,10 @@ import _ from 'lodash'
 export default {
     data() {
         return {
+            activeName: "in",
+            first: true,
+            index: 0,
+            teserNames: "",
             testing: false,
             serial: "",
             code: "",
@@ -1076,6 +1090,30 @@ export default {
             $.get("/api/v1/tester/logs", {}).then(ret => {
                 this.testerData = ret;
             });
+            if (this.index % 3 == 0) {
+                var tnames = ""
+                $.get("/api/v1/tester/names", {}).then(ret => {
+                    var names = ret.names;
+                    for (var i = 0; i < names.length; i++) {
+                        if (tnames == "") {
+                            tnames = (i + 1) + "-" + names[i]
+                        } else {
+                            tnames += "->" + (i + 1) + "-" + names[i]
+                        }
+                    }
+                    if (this.first) {
+                        this.first = false
+                        this.serial = ret.serial;
+                        this.code = ret.code;
+                        this.$refs.tree.setCheckedKeys(ret.ids);
+                    }
+                    this.teserNames = tnames
+                });
+                $.get("/api/v1/tester/status", {}).then(ret => {
+                    this.testing = ret.Testing
+                });
+            }
+            this.index++
         },
         onStart() {
             var ids = this.$refs.tree.getCheckedKeys()
@@ -1129,7 +1167,6 @@ export default {
         onStop() {
             $.get("/api/v1/tester/stop", {}).then(ret => {
                 this.testing = false;
-                this.testerData = []
                 this.$message({
                     type: 'success',
                     message: "停止成功"
@@ -1149,6 +1186,14 @@ export default {
             this.TesterName = row.TesterName;
             this.TesterIn = row.TesterIn;
             this.TesterOut = row.TesterOut;
+            if (row.Result == '响应成功') {
+                this.activeName = "out"
+            } else {
+                this.activeName = "in"
+            }
+        },
+        onReport() {
+            window.open('/#/testreport');
         }
     },
 };
@@ -1162,5 +1207,12 @@ export default {
     border-right-color: lightgrey;
     border-right-width: 1px;
     border-right-style: solid;
+}
+
+.test-link {
+    width: 100%;
+    line-height: 24px;
+    padding-left: 5px;
+    padding-bottom: 5px;
 }
 </style>
