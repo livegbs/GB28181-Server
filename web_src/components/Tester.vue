@@ -29,7 +29,7 @@
                     <el-table-column prop="Step" width="50" label="步骤"></el-table-column>
                     <el-table-column prop="TesterName" label="测试对象" width="180">
                     </el-table-column>
-                    <el-table-column prop="Result" label="结果" width="100">
+                    <el-table-column prop="Result" label="结果" width="150">
                         <template slot-scope="props">
                             <span class="text-success" title="单击查看详细信令报文" style="cursor:pointer;" v-if="props.row.Result =='接收成功'||props.row.Result =='响应成功'">{{props.row.Result}}</span>
                             <span style="color:red" v-else-if="props.row.Result=='失败'">{{props.row.Result}}</span>
@@ -45,10 +45,10 @@
             <div class="row">
                 <div class="col-md-12 card">
                     <el-tabs v-model="activeName">
-                        <el-tab-pane name="in" :label="TesterName+'服务接收信令'">
+                        <el-tab-pane name="in" :label="TesterName+' 信令(设备端>>>>服务端)'">
                             <el-input placeholder="点击步骤查看详情" rows="14" type="textarea" v-model="TesterIn"></el-input>
                         </el-tab-pane>
-                        <el-tab-pane name="out" :label="TesterName+'服务反馈信令'">
+                        <el-tab-pane name="out" :label="TesterName+' 信令(服务端>>>>设备端)'">
                             <el-input placeholder="点击步骤查看详情" rows="14" class="card-content" type="textarea" v-model="TesterOut"></el-input>
                         </el-tab-pane>
                     </el-tabs>
@@ -190,41 +190,34 @@ export default {
                 id: 107,
                 label: '手动录像',
                 children: [{
-                    id: 1071,
-                    label: '开启手动录像',
-                    children: [{
-                        id: 10711,
-                        label: '开始手动录像',
-                        disabled: false
+                        id: 1071,
+                        label: '开启手动录像',
+                        children: [{
+                            id: 10711,
+                            label: '开始手动录像',
+                            disabled: false
 
-                    }, {
-                        id: 10712,
-                        label: '等待开启成功',
-                        disabled: false
-                    }]
-                }, {
-                    id: 1072,
-                    label: '等待录像',
-                    children: [{
-                        id: 10721,
-                        label: '录像ing',
-                        disabled: false
+                        }, {
+                            id: 10712,
+                            label: '等待开启成功',
+                            disabled: false
+                        }]
+                    },
+                    {
+                        id: 1072,
+                        label: '停止手动录像',
+                        children: [{
+                            id: 10721,
+                            label: '停止手动录像',
+                            disabled: false
 
-                    }]
-                }, {
-                    id: 1073,
-                    label: '停止手动录像',
-                    children: [{
-                        id: 10731,
-                        label: '等待停止成功',
-                        disabled: false
-
-                    }, {
-                        id: 10732,
-                        label: '等待停止成功',
-                        disabled: false
-                    }]
-                }]
+                        }, {
+                            id: 10722,
+                            label: '等待停止成功',
+                            disabled: false
+                        }]
+                    }
+                ]
             }, {
                 id: 108,
                 label: '实时视频',
