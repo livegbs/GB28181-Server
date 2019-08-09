@@ -104,16 +104,14 @@
               <el-table-column label="操作" min-width="260" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0">
+                        <!--
+                        <button type="button" class="btn btn-info" @mousedown.prevent="talkStart(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
+                          <i class="fa fa-microphone"></i> 对讲
+                        </button>
+                        -->
                         <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
-                        <!--
-                          <button type="button" :class="['btn', {'btn-primary': !recorder, 'btn-danger': recorder}]" @click.prevent="toggleTalk(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
-                            <i class="fa fa-play-circle"></i>
-                            {{recorder? '停止对讲' : '开始对讲'}}
-                          </button>
-                          <audio autoplay ref="xxx"></audio>
-                        -->
                         <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && userInfo">
                           <i class="fa fa-stop"></i> 停止
                         </button>
@@ -171,6 +169,7 @@ export default {
       timer: 0,
       channels: [],
       recorder: null,
+      bAudioSending: false,
     };
   },
   computed: {
@@ -202,16 +201,15 @@ export default {
     this.timer = setInterval(() => {
         this.getChannels();
     }, 3000);
+    $(document).on("mouseup", this.talkStop);
   },
   beforeDestroy() {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = 0;
     }
-    if (this.recorder) {
-      this.recorder.stop();
-      this.recorder = null;
-    }
+    this.talkStop();
+    $(document).off("mouseup", this.talkStop);
   },
   methods: {
     isMobile() {
@@ -259,38 +257,6 @@ export default {
       if (cell) return cell;
       return "-";
     },
-    toggleTalk(row) {
-      if(this.recorder) {
-        this.recorder.stop();
-        var pcm = this.recorder.getPCMBlob();
-        var reader = new window.FileReader();
-        this.recorder.play(this.$refs["xxx"]);
-        reader.onloadend = function() {
-            var base64 = reader.result;
-            var base64 = base64.split(',')[1];
-            $.get("/api/v1/broadcast/audio", {
-              serial: row.DeviceID,
-              code: row.ID,
-              audio: base64,
-            })
-        }
-        reader.readAsDataURL(pcm);
-        this.recorder = null;
-      } else {
-        LiveRecorder.get((rec, e) => {
-          if(e) {
-            alert(e);
-            return
-          }
-
-          this.recorder = rec;
-          this.recorder.start();
-        }, {
-          sampleBits: 16,
-          sampleRate: 8000,
-        })
-      }
-    },
     toggleAudio(row) {
       $.get("/api/v1/device/setchannelaudio", {
         serial: row.DeviceID,
@@ -326,6 +292,47 @@ export default {
       }).then(() => {
         row.Shared = !row.Shared;
       })
+    },
+    talkStart(row) {
+      if(this.recorder) {
+        return;
+      }
+      LiveRecorder.get((rec, err) => {
+        if(err) {
+          alert(err);
+          return
+        }
+
+        this.recorder = rec;
+        this.recorder.start();
+      }, {
+        sampleBits: 16,
+        sampleRate: 8000,
+        pcmCallback: pcm => {
+          if(this.bAudioSending) return;
+          var reader = new window.FileReader();
+          reader.onloadend = () => {
+            var base64 = reader.result;
+            var base64 = base64.split(',')[1];
+            this.bAudioSending = true;
+            $.get("/api/v1/broadcast/wan/audio", {
+              serial: row.DeviceID,
+              code: row.ID,
+              audio: base64,
+            }).always(() => {
+              this.bAudioSending = false;
+            })
+          }
+          reader.readAsDataURL(pcm);
+        }
+      })
+    },
+    talkStop() {
+      if(this.recorder) {
+        this.recorder.stop();
+        this.recorder = null;
+        return;
+      }
     },
     playStream(row) {
       this.loading = true;

@@ -92,6 +92,9 @@ Vue.prototype.isMobile = () => {
 Vue.prototype.flvSupported = () => {
   return videojs.browser.IE_VERSION || (flvjs.getFeatureList() && flvjs.getFeatureList().mseLiveFlvPlayback);
 }
+Vue.prototype.canTalk = () => {
+  return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+}
 
 import $ from "jquery"
 $.ajaxSetup({ cache: false });

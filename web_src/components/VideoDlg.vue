@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="row" v-if="ptz">
                         <div class="col-sm-8 form-group">
-                            <LivePlayer v-if="bShow" :videoUrl="videoUrl" :snapUrl="snapUrl2" :live="live" muted :hasaudio="hasAudio"
+                            <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :snapUrl="snapUrl2" :live="live" muted :hasaudio="hasAudio"
                               @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
                         </div>
                         <div class="col-sm-4 form-group">
@@ -25,25 +25,25 @@
                             </div>
                             <div class="form-group">
                                 <div class="ptz-block">
-                                    <div class="ptz-cell ptz-up" command="up" title="Up" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-up" command="up" title="上" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-chevron-up"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-left" command="left" title="Left" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-left" command="left" title="左" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-chevron-left"></i>
                                     </div>
                                     <div class="ptz-cell ptz-center" title="云台控制">
-                                        <i class="fa fa-chevron-center"></i>
+                                        <i class="fa fa-microphone" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk()"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-right" command="right" title="Right" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-right" command="right" title="右" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-chevron-right"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-down" command="down" title="Down" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-down" command="down" title="下" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-chevron-down"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-zoomin" command="zoomin" title="Zoomin" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-zoomin" command="zoomin" title="放大" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-plus"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-zoomout" command="zoomout" title="Zoomout" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-zoomout" command="zoomout" title="缩小" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-minus"></i>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="row" v-else>
-                        <LivePlayer v-if="bShow" :videoUrl="videoUrl" :poster="snapUrl" :live="live" muted :hasaudio="hasAudio"
+                        <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="snapUrl" :live="live" muted :hasaudio="hasAudio"
                           @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
                     </div>
                     <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
@@ -68,13 +68,6 @@
                       <i :class="['fa', {'fa-save': !bRecording, 'fa-stop': bRecording}]"></i>
                       {{bRecording? '停止录像' : '实时录像'}}
                     </button>
-                    <!--
-                      <button v-if="userInfo || !serverInfo.APIAuth" type="button" :class="['btn', {'btn-primary': !recorder, 'btn-danger': recorder}]" @click.prevent="toggleTalk()">
-                        <i :class="['fa', {'fa-save': !recorder, 'fa-stop': recorder}]"></i>
-                        {{recorder? '停止对讲' : '开始对讲'}}
-                      </button>
-                      <audio autoplay ref="xxx"></audio>
-                    -->
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -105,6 +98,8 @@ export default {
       bShow: false,
       bLoading: false,
       recorder: null,
+      bAudioSending: false,
+      muted_bak: true,
     };
   },
   props: {
@@ -135,10 +130,8 @@ export default {
       clearInterval(this.timer);
       this.timer = 0;
     }
-    if (this.recorder) {
-      this.recorder.stop();
-      this.recorder = null;
-    }
+    this.ctrlStop();
+    $(document).off("mouseup", this.ctrlStop);
   },
   mounted() {
     $(this.$el)
@@ -175,17 +168,7 @@ export default {
           //   })
           // }, 15000);
       });
-
-    $(document).on("mouseup", () => {
-      if ($(this.$el).find(".ptz-cell.active").size() > 0) {
-        $.get("/api/v1/control/ptz", {
-          serial: this.serial,
-          code: this.code,
-          command: "stop"
-        });
-        $(this.$el).find(".ptz-cell.active").removeClass("active");
-      }
-    });
+    $(document).on("mouseup", this.ctrlStop);
   },
   components: { LivePlayer },
   methods: {
@@ -233,40 +216,65 @@ export default {
       });
       $target.addClass("active");
     },
-    toggleTalk() {
+    ptzStop() {
+      if ($(this.$el).find(".ptz-cell.active").size() > 0) {
+        $.get("/api/v1/control/ptz", {
+          serial: this.serial,
+          code: this.code,
+          command: "stop"
+        });
+        $(this.$el).find(".ptz-cell.active").removeClass("active");
+      }
+    },
+    talkStart(e) {
       if(this.recorder) {
-        this.recorder.stop();
-        var pcm = this.recorder.getPCMBlob();
-        var reader = new window.FileReader();
-        this.recorder.play(this.$refs["xxx"]);
-        reader.onloadend = () => {
-            var dataUrl = reader.result;
-            var base64 = reader.result.toString();
-            var base64 = dataUrl.split(',')[1];
-            console.log(base64);
-            console.log(base64.length);
-            $.get("/api/v1/broadcast/audio", {
+        return;
+      }
+      var $target = $(e.currentTarget);
+      LiveRecorder.get((rec, err) => {
+        if(err) {
+          alert(err);
+          return
+        }
+        this.muted_bak = this.muted;
+        this.$refs["player"].setMuted(true);
+        $target.addClass("active");
+        this.recorder = rec;
+        this.recorder.start();
+      }, {
+        sampleBits: 16,
+        sampleRate: 8000,
+        pcmCallback: pcm => {
+          // if(this.bAudioSending) return;
+          var reader = new window.FileReader();
+          reader.onloadend = () => {
+            var base64 = reader.result;
+            var base64 = base64.split(',')[1];
+            this.bAudioSending = true;
+            $.get("/api/v1/control/talk", {
               serial: this.serial,
               code: this.code,
               audio: base64,
+            }).always(() => {
+              this.bAudioSending = false;
             })
-        }
-        reader.readAsDataURL(pcm);
-        this.recorder = null;
-      } else {
-        LiveRecorder.get((rec, e) => {
-          if(e) {
-            alert(e);
-            return
           }
-
-          this.recorder = rec;
-          this.recorder.start();
-        }, {
-          sampleBits: 8,
-          sampleRate: 8000,
-        })
+          reader.readAsDataURL(pcm);
+        }
+      })
+    },
+    talkStop() {
+      if(this.recorder) {
+        this.recorder.stop();
+        this.recorder = null;
+        $(this.$el).find(".fa-microphone.active").removeClass("active");
+        this.$refs["player"].setMuted(this.muted_bak);
+        return;
       }
+    },
+    ctrlStop() {
+      this.talkStop();
+      this.ptzStop();
     },
     toggleRecord() {
       if(this.bRecording) {
@@ -317,6 +325,9 @@ export default {
   color: #ccc;
   font-size: 26px;
 }
+.fa-microphone.active {
+  color: #FFF;
+}
 
 .ptz-center {
   top: 50px;
@@ -359,6 +370,7 @@ export default {
 .ptz-left,
 .ptz-right,
 .ptz-down,
+.ptz-center > .fa-microphone,
 .ptz-zoomin,
 .ptz-zoomout {
   cursor: pointer;
