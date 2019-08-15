@@ -309,13 +309,13 @@ export default {
         sampleBits: 16,
         sampleRate: 8000,
         pcmCallback: pcm => {
-          if(this.bAudioSending) return;
+          // if(this.bAudioSending) return;
           var reader = new window.FileReader();
           reader.onloadend = () => {
             var base64 = reader.result;
             var base64 = base64.split(',')[1];
             this.bAudioSending = true;
-            $.get("/api/v1/broadcast/wan/audio", {
+            $.get("/api/v1/control/talk", {
               serial: row.DeviceID,
               code: row.ID,
               audio: base64,
