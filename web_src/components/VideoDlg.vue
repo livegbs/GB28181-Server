@@ -99,6 +99,7 @@ export default {
       bLoading: false,
       recorder: null,
       bAudioSending: false,
+      bAudioSendError: false,
       muted_bak: true,
     };
   },
@@ -245,7 +246,7 @@ export default {
         sampleBits: 16,
         sampleRate: 8000,
         pcmCallback: pcm => {
-          // if(this.bAudioSending) return;
+          if(this.bAudioSendError) return;
           var reader = new window.FileReader();
           reader.onloadend = () => {
             var base64 = reader.result;
@@ -255,6 +256,13 @@ export default {
               serial: this.serial,
               code: this.code,
               audio: base64,
+            }).fail(() => {
+              if(!this.bAudioSendError) {
+                this.bAudioSendError = true;
+                setTimeout(() => {
+                  this.bAudioSendError = false;
+                }, 10000);
+              }
             }).always(() => {
               this.bAudioSending = false;
             })

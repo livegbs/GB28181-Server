@@ -9,7 +9,7 @@
     <section :class="[{'content': !fullscreen}, {'no-padding': fullscreen}]">
       <div class="player-wrapper" :style="{margin:'0 auto', width: fullscreen ? '100%' : '85%' }">
         <div class="play-area">
-          <LivePlayer :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio"
+          <LivePlayer ref="player" :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio"
             v-loading="bLoading" :debug="debug" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="bLoading" @message="$message"
             :fluent="fluent" :stretch="stretch" :autoplay="autoplay" :controls="controls"></LivePlayer>
           <div class="ptz-block" v-show="showPtzPanel">
@@ -31,12 +31,15 @@
             <div class="ptz-cell ptz-plus" @mousedown.prevent="ptzControl('zoomin', $event)" title="缩">
               <i class="fa fa-plus-circle"></i>
             </div>
+            <div class="ptz-cell ptz-talk" @mousedown.prevent="talkStart" v-if="showTalk">
+              <i class="fa fa-microphone"></i>
+            </div>
             <div class="ptz-cell ptz-minus" @mousedown.prevent="ptzControl('zoomout', $event)" title="放">
               <i class="fa fa-minus-circle"></i>
             </div>
           </div>
         </div>
-        <div class="text-center" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+        <div class="text-center" v-if="!fullscreen && serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
           <br>
           提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
         </div>
@@ -90,7 +93,7 @@
                             <i class="fa fa-chevron-left"></i>
                         </div>
                         <div class="ptz-cell ptz-center" title="云台控制">
-                            <i class="fa fa-chevron-center"></i>
+                            <i class="fa fa-microphone" title="按住喊话" @touchstart.prevent="talkStart" v-if="showTalk"></i>
                         </div>
                         <div class="ptz-cell ptz-right" command="right" @mousedown.prevent="ptzControl('right', $event)" @touchstart.prevent="ptzControl('right', $event)" title="右">
                             <i class="fa fa-chevron-right"></i>
@@ -166,6 +169,9 @@ Vue.prototype.isMobile = () => {
 Vue.prototype.flvSupported = () => {
   return videojs.browser.IE_VERSION || (flvjs.getFeatureList() && flvjs.getFeatureList().mseLiveFlvPlayback);
 }
+Vue.prototype.canTalk = () => {
+  return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+}
 
 import Qrcode from "@xkeshi/vue-qrcode"
 import LivePlayer from "@liveqing/liveplayer"
@@ -205,11 +211,25 @@ export default {
       token: "",
       muted: true,
       audio: false,
+      talk: false,
       hasAudio: false,
       otherParams: "",
       sourceVideoCodecName: "",
       sourceAudioCodecName: "",
+      recorder: null,
+      bAudioSending: false,
+      bAudioSendError: false,
+      muted_bak: true,
     };
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = 0;
+    }
+    this.videoUrl = "";
+    this.ctrlStop();
+    $(document).off("mouseup touchend", this.ctrlStop);
   },
   async mounted() {
     await this.getServerInfo();
@@ -232,7 +252,8 @@ export default {
     this.token = this.getQueryString("token", "");
     this.muted = this.getQueryString("muted", "yes") == "yes";
     this.audio = this.getQueryString("audio", "no") == "yes";
-    this.otherParams = this.getOtherParams(["aspect", "autoplay", "controls", "ptz", "share", "fluent", "stretch", "type", "starttime", "endtime", "serial", "code", "channel", "protocol", "muted", "audio", "debug"])
+    this.talk = this.getQueryString("talk", "no") == "yes";
+    this.otherParams = this.getOtherParams(["aspect", "autoplay", "controls", "ptz", "share", "fluent", "stretch", "type", "starttime", "endtime", "serial", "code", "channel", "protocol", "muted", "audio", "talk", "debug"])
     this.shareUrl = location.href;
     $(document).ajaxError((evt, xhr, opts, ex) => {
       if (xhr.status == 401) {
@@ -259,17 +280,7 @@ export default {
         type: 'error',
         message: msg
       })
-    }).on("mouseup touchend", () => {
-      if ($(".ptz-cell.active").size() > 0) {
-        $.get("/api/v1/ptz/control", {
-          serial: this.serial,
-          code: this.code,
-          command: "stop",
-          token: this.token
-        })
-        $(".ptz-cell.active").removeClass("active");
-      }
-    }).ready(() => {
+    }).on("mouseup touchend", this.ctrlStop).ready(() => {
       this.$nextTick(() => {
         $("body").layout("fix");
         this.fixHover();
@@ -388,6 +399,9 @@ export default {
     fullscreen() {
       return (this.aspect != "");
     },
+    showTalk() {
+      return this.talk && this.canTalk();
+    },
     showPtzPanel() {
       return this.ptz && !this.isMobile();
     },
@@ -468,6 +482,73 @@ export default {
         token: this.token
       })
       $(event.target).closest('.ptz-cell').addClass("active");
+    },
+    ptzStop() {
+      if ($(this.$el).find(".ptz-cell.active").size() > 0) {
+        $.get("/api/v1/control/ptz", {
+          serial: this.serial,
+          code: this.code,
+          command: "stop"
+        });
+        $(this.$el).find(".ptz-cell.active").removeClass("active");
+      }
+    },
+    talkStart(e) {
+      if(this.recorder) {
+        return;
+      }
+      var $target = $(e.currentTarget);
+      LiveRecorder.get((rec, err) => {
+        if(err) {
+          alert(err);
+          return
+        }
+        this.muted_bak = this.muted;
+        this.$refs["player"].setMuted(true);
+        $target.addClass("active");
+        this.recorder = rec;
+        this.recorder.start();
+      }, {
+        sampleBits: 16,
+        sampleRate: 8000,
+        pcmCallback: pcm => {
+          if(this.bAudioSendError) return;
+          var reader = new window.FileReader();
+          reader.onloadend = () => {
+            var base64 = reader.result;
+            var base64 = base64.split(',')[1];
+            this.bAudioSending = true;
+            $.get("/api/v1/control/talk", {
+              serial: this.serial,
+              code: this.code,
+              audio: base64,
+            }).error(() => {
+              if(!this.bAudioSendError) {
+                this.bAudioSendError = true;
+                setTimeout(() => {
+                  this.bAudioSendError = false;
+                }, 10000);
+              }
+            }).always(() => {
+              this.bAudioSending = false;
+            })
+          }
+          reader.readAsDataURL(pcm);
+        }
+      })
+    },
+    talkStop() {
+      if(this.recorder) {
+        this.recorder.stop();
+        this.recorder = null;
+        $(this.$el).find(".fa-microphone.active, .ptz-talk.active").removeClass("active");
+        this.$refs["player"].setMuted(this.muted_bak);
+        return;
+      }
+    },
+    ctrlStop() {
+      this.talkStop();
+      this.ptzStop();
     }
   }
 };
@@ -515,6 +596,9 @@ export default {
   color: #ccc;
   font-size: 26px;
 }
+.fa-microphone.active {
+  color: #FFF;
+}
 
 .ptz-center {
   top: 50px;
@@ -548,6 +632,11 @@ export default {
   left: 20px;
 }
 
+.ptz-talk {
+  top: 150px;
+  left: 50px;
+}
+
 .ptz-zoomout {
   top: 150px;
   left: 80px;
@@ -558,6 +647,7 @@ export default {
 .ptz-right,
 .ptz-down,
 .ptz-zoomin,
+.ptz-talk,
 .ptz-zoomout {
   cursor: pointer;
 }
@@ -636,6 +726,11 @@ export default {
   .ptz-plus {
     top: 25px;
     left: 5px;
+  }
+
+  .ptz-talk {
+    top: 25px;
+    left: 50px;
   }
 
   .ptz-minus {

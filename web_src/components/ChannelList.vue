@@ -170,6 +170,7 @@ export default {
       channels: [],
       recorder: null,
       bAudioSending: false,
+      bAudioSendError: false,
     };
   },
   computed: {
@@ -309,7 +310,7 @@ export default {
         sampleBits: 16,
         sampleRate: 8000,
         pcmCallback: pcm => {
-          // if(this.bAudioSending) return;
+          if(this.bAudioSendError) return;
           var reader = new window.FileReader();
           reader.onloadend = () => {
             var base64 = reader.result;
@@ -319,6 +320,13 @@ export default {
               serial: row.DeviceID,
               code: row.ID,
               audio: base64,
+            }).error(() => {
+              if(!this.bAudioSendError) {
+                this.bAudioSendError = true;
+                setTimeout(() => {
+                  this.bAudioSendError = false;
+                }, 10000);
+              }
             }).always(() => {
               this.bAudioSending = false;
             })
