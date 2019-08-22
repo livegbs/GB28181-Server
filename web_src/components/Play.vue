@@ -476,7 +476,7 @@ export default {
       return theRequest;
     },
     ptzControl(cmd, event) {
-      $.get("/api/v1/ptz/control", {
+      $.get("/api/v1/control/ptz", {
         serial: this.serial,
         code: this.code,
         command: cmd,
