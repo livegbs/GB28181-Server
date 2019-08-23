@@ -105,12 +105,11 @@ export default {
   watch: {
     serverInfo(val) {
       if (val) {
-       document.title =  val.LogoText;
+       document.title = val.LogoText || "LiveGBS";
       }
     }
   },
   mounted() {
-    document.title = "后台管理"
     $(document).ajaxError((evt, xhr, opts, ex) => {
       if (xhr.status == 401) {
         location.href = `/login.html?r=${encodeURIComponent(window.location.href)}`;

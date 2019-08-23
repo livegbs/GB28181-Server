@@ -120,7 +120,7 @@ export default {
   },
   async mounted() {
     await this.getServerInfo();
-    document.title = this.serverInfo.LogoText
+    document.title = this.serverInfo.LogoText || "LiveGBS";
     var userInfo = await this.getUserInfo();
     if(userInfo) {
         window.location.href = "/"

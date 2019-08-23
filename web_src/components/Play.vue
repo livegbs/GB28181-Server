@@ -234,7 +234,7 @@ export default {
   async mounted() {
     await this.getServerInfo();
     await this.getUserInfo();
-    document.title = this.serverInfo.LogoText
+    document.title = this.serverInfo.LogoText || "LiveGBS";
     this.aspect = this.getQueryString("aspect","").replace("x", ":");
     this.autoplay = this.getQueryString("autoplay", "yes") == "yes";
     this.controls = this.getQueryString("controls", "yes") == "yes";
