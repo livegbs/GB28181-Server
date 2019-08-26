@@ -131,9 +131,9 @@ export default {
       }).then(stream => {
         var videoUrl = this.isMobile() ? stream.HLS : stream.RTMP;
         if(this.flvSupported()) {
-          if(index < 6 && stream.FLV) {
+          if(index < 4 && stream.FLV) {
             videoUrl = stream.FLV;
-          } else if (index >= 6 && stream.WS_FLV) {
+          } else if (index >= 4 && stream.WS_FLV) {
             videoUrl = stream.WS_FLV;
           }
         }
