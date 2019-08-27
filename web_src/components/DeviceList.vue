@@ -72,6 +72,7 @@
           </el-table-column>
           <el-table-column prop="RemoteIP" label="出口IP" min-width="140"></el-table-column>
           <el-table-column prop="RemotePort" label="端口" min-width="100"></el-table-column>
+          <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
           <el-table-column prop="CreatedAt" label="创建时间" min-width="160" sortable="custom"></el-table-column>
           <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" sortable="custom"></el-table-column>
           <el-table-column label="操作" min-width="220" fixed="right" v-if="!isMobile()">

@@ -277,13 +277,31 @@ export default {
       })
     },
     toggleCloudRecord(row) {
-      $.get("/api/v1/device/setchannelcloudrecord", {
-        serial: row.DeviceID,
-        code: row.ID,
-        cloudrecord: !row.CloudRecord,
+      var tip = row.CloudRecord ? "关闭云端录像, 是否同时设置 开启 按需直播?" : "开启云端录像, 是否同时设置 关闭 按需直播?";
+      this.$confirm(tip, "提示", {
+        distinguishCancelAndClose: true,
+        cancelButtonText: "不设置",
       }).then(() => {
-        row.CloudRecord = !row.CloudRecord;
-      })
+         $.get("/api/v1/device/setchannelcloudrecord", {
+          serial: row.DeviceID,
+          code: row.ID,
+          cloudrecord: !row.CloudRecord,
+          ondemand: row.CloudRecord,
+        }).always(() => {
+          row.Ondemand = row.CloudRecord;
+          row.CloudRecord = !row.CloudRecord;
+        });
+      }).catch(action => {
+        if(action === 'cancel') {
+          $.get("/api/v1/device/setchannelcloudrecord", {
+            serial: row.DeviceID,
+            code: row.ID,
+            cloudrecord: !row.CloudRecord,
+          }).then(() => {
+            row.CloudRecord = !row.CloudRecord;
+          })
+        }
+      });
     },
     toggleShared(row) {
       $.get("/api/v1/device/setchannelshared", {
