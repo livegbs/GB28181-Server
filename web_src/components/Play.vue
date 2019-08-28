@@ -175,7 +175,9 @@ Vue.prototype.canTalk = () => {
 
 import Qrcode from "@xkeshi/vue-qrcode"
 import LivePlayer from "@liveqing/liveplayer"
-import $ from "jquery";
+import $ from "jquery"
+import "@penggy/jquery.nicescroll"
+
 $.ajaxSetup({
   cache: false
 });
@@ -285,6 +287,11 @@ export default {
       this.$nextTick(() => {
         $("body").layout("fix");
         this.fixHover();
+        $("body").niceScroll({
+            zindex: 999999,
+            cursorwidth: "10px",
+            cursoropacitymax: 0.5,
+        });
       })
     });
     $(".ptz-block").draggable({
