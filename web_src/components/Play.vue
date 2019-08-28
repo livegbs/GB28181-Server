@@ -408,7 +408,7 @@ export default {
       return (this.aspect != "");
     },
     showTalk() {
-      return this.talk && this.canTalk();
+      return this.talk && this.canTalk() && this.serverInfo.VersionType == '旗舰版';
     },
     showPtzPanel() {
       return this.ptz && !this.isMobile();

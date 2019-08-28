@@ -26,7 +26,8 @@ const store = new Vuex.Store({
             }, {
                 path: "/cloudrecord",
                 icon: "cloud",
-                title: "云端录像"
+                title: "云端录像",
+                versionType: "旗舰版"
             }, {
                 path: "/alarms",
                 icon: "bell",
@@ -34,7 +35,8 @@ const store = new Vuex.Store({
             }, {
                 path: "/cascade",
                 icon: "cloud-upload",
-                title: "国标级联"
+                title: "国标级联",
+                versionType: "旗舰版"
             }, {
                 path: "/config",
                 icon: "cogs",

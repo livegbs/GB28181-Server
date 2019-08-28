@@ -88,7 +88,7 @@
                       <el-switch :value="props.row.Ondemand" @change="toggleOndemand(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
                   </template>
               </el-table-column>
-               <el-table-column prop="CloudRecord" label="云端录像" min-width="100" v-if="userInfo">
+               <el-table-column prop="CloudRecord" label="云端录像" min-width="100" v-if="userInfo && serverInfo.VersionType == '旗舰版'">
                   <template slot-scope="props">
                       <el-switch :value="props.row.CloudRecord" @change="toggleCloudRecord(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
                   </template>

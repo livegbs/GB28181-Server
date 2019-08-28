@@ -32,7 +32,7 @@
                                         <i class="fa fa-chevron-left"></i>
                                     </div>
                                     <div class="ptz-cell ptz-center" title="云台控制">
-                                        <i class="fa fa-microphone" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk()"></i>
+                                        <i class="fa fa-microphone" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
                                     </div>
                                     <div class="ptz-cell ptz-right" command="right" title="右" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-chevron-right"></i>
@@ -64,7 +64,7 @@
                       <el-radio-button label="RTMP"></el-radio-button>
                       <el-radio-button label="HLS"></el-radio-button>
                     </el-radio-group>
-                    <button v-if="userInfo || !serverInfo.APIAuth" type="button" :class="['btn', {'btn-primary': !bRecording, 'btn-danger': bRecording}]" @click.prevent="toggleRecord()">
+                    <button v-if="(userInfo || !serverInfo.APIAuth) && serverInfo.VersionType == '旗舰版'" type="button" :class="['btn', {'btn-primary': !bRecording, 'btn-danger': bRecording}]" @click.prevent="toggleRecord()">
                       <i :class="['fa', {'fa-save': !bRecording, 'fa-stop': bRecording}]"></i>
                       {{bRecording? '停止录像' : '实时录像'}}
                     </button>

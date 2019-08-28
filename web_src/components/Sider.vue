@@ -3,10 +3,10 @@
     <section class="sidebar">
       <ul class="sidebar-menu">
         <template v-for="(item,index) in menus">
-          <router-link class="treeview" :key="index" :to="item.path" tag="li" :exact="item.path == '/'">
+          <router-link class="treeview" :key="index" :to="item.path" tag="li" :exact="item.path == '/'" v-if="!item.versionType || item.versionType == serverInfo.VersionType">
             <a>
               <i :class="['fa', 'fa-' + item.icon]"></i>
-              <span>{{item.title}}</span>           
+              <span>{{item.title}}</span>
             </a>
           </router-link>
         </template>

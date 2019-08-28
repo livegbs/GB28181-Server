@@ -57,7 +57,7 @@
                         <tr v-if="!actived">
                             <td>机器码</td>
                             <td>
-                                <span id="key-info">CMS{{requestkey}}</span>
+                                <span id="key-info">CMS{{(serverInfo.Server||"").indexOf("Linux") >= 0 ? "L":"W"}}{{requestkey}}</span>
                                 <br>
                                 <span style="color:#bbb">(通过邮箱：support@liveqing.com 向商务人员咨询永久授权信息)</span>
                             </td>
