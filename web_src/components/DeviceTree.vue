@@ -85,7 +85,7 @@ export default {
           return label;
         },
         isLeaf: (data, node) => {
-          return data.subCount === 0;
+          return data.subCount === 0 && data.code;
         },
         disabled: (data, node) => {
           return data.subCount === 0 && data.status != "ON";
