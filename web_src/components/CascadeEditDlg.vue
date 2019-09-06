@@ -38,15 +38,15 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="port" name="Port" v-model.trim="form.Port" data-vv-as="SIP服务端口" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#username').focus()">
+                <input type="text" class="form-control" id="port" name="Port" v-model.trim="form.Port" data-vv-as="SIP服务端口" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#local-serial').focus()">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('Username')}">
-            <label for="username" class="col-sm-4 control-label">SIP认证用户
+        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalSerial')}">
+            <label for="local-serial" class="col-sm-4 control-label">设备国标编号
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="username" name="Username" v-model.trim="form.Username" data-vv-as="SIP认证用户" autocomplete="new-password" v-validate="" placeholder="默认使用 livecms.ini sip serial" @keydown.enter="$el.querySelector('#password').focus()">
+                <input type="text" class="form-control" id="local-serial" name="LocalSerial" v-model.trim="form.LocalSerial" data-vv-as="设备国标编号" autocomplete="new-password" v-validate="" placeholder="默认使用 livecms.ini sip serial" @keydown.enter="$el.querySelector('#password').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('Password')}">
@@ -152,6 +152,7 @@ export default {
                 Realm: "",
                 Host: "",
                 Port: 5060,
+                LocalSerial: "",
                 Username: "",
                 Password: "",
                 RegisterTimeout: 3600,
