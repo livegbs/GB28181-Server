@@ -242,22 +242,22 @@ export default {
     .col-sm-6 {
       &:nth-child(1),
       &:nth-child(2) {
-        border-top-color: black;
+        border-top-color: transparent;
       }
 
       &:nth-child(2),
       &:nth-child(4) {
-        border-right-color: black;
+        border-right-color: transparent;
       }
 
       &:nth-child(1),
       &:nth-child(3) {
-        border-left-color: black;
+        border-left-color: transparent;
       }
 
       &:nth-child(3),
       &:nth-child(4) {
-        border-bottom-color: black;
+        border-bottom-color: transparent;
       }
     }
 
@@ -265,25 +265,25 @@ export default {
       &:nth-child(1),
       &:nth-child(2),
       &:nth-child(3) {
-        border-top-color: black;
+        border-top-color: transparent;
       }
 
       &:nth-child(3),
       &:nth-child(6),
       &:nth-child(9) {
-        border-right-color: black;
+        border-right-color: transparent;
       }
 
       &:nth-child(7),
       &:nth-child(8),
       &:nth-child(9) {
-        border-bottom-color: black;
+        border-bottom-color: transparent;
       }
 
       &:nth-child(1),
       &:nth-child(4),
       &:nth-child(7) {
-        border-left-color: black;
+        border-left-color: transparent;
       }
     }
 
@@ -292,28 +292,28 @@ export default {
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
-        border-top-color: black;
+        border-top-color: transparent;
       }
 
       &:nth-child(4),
       &:nth-child(8),
       &:nth-child(12),
       &:nth-child(16) {
-        border-right-color: black;
+        border-right-color: transparent;
       }
 
       &:nth-child(13),
       &:nth-child(14),
       &:nth-child(15),
       &:nth-child(16) {
-        border-bottom-color: black;
+        border-bottom-color: transparent;
       }
 
       &:nth-child(1),
       &:nth-child(5),
       &:nth-child(9),
       &:nth-child(13) {
-        border-left-color: black;
+        border-left-color: transparent;
       }
     }
   }

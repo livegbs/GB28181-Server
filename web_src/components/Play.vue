@@ -293,7 +293,7 @@ export default {
       this.$nextTick(() => {
         $("body").layout("fix");
         this.fixHover();
-        if(!this.isIE()) {
+        if(!this.isIE() && !this.isMobile()) {
           this.nice = $("body").niceScroll({
               zindex: 999999,
               cursorwidth: "10px",
