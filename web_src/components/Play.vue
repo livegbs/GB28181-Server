@@ -298,6 +298,7 @@ export default {
               zindex: 999999,
               cursorwidth: "10px",
               cursoropacitymax: 0.5,
+              enablekeyboard: false,
           });
         }
       })
