@@ -121,6 +121,7 @@
     </div>
     Copyright &copy; {{ thisYear() }} <a href="http://www.liveqing.com" target="_blank">www.liveqing.com</a>. All rights reserved.
   </footer>
+  <resize-observer @notify="handleResize"/>
 </div>
 </template>
 
@@ -130,6 +131,7 @@ import "bootstrap/dist/css/bootstrap.css"
 import "admin-lte/dist/css/AdminLTE.css"
 import "admin-lte/dist/css/skins/_all-skins.css"
 import "assets/styles/custom.less"
+import 'vue-resize/dist/vue-resize.css'
 
 import "bootstrap/dist/js/bootstrap.js"
 import "admin-lte/dist/js/adminlte.js"
@@ -150,6 +152,9 @@ Vue.use(ElementUI);
 import VueClipboards from "vue-clipboards"
 Vue.use(VueClipboards);
 
+import VueResize from 'vue-resize'
+Vue.use(VueResize);
+
 Vue.prototype.$updateQueryString = (uri, key, value) => {
   var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
   var separator = uri.indexOf('?') !== -1 ? "&" : "?";
@@ -166,6 +171,9 @@ Vue.prototype.$iframe = (link, w, h) => {
 Vue.prototype.isMobile = () => {
   return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
 }
+Vue.prototype.isIE = () => {
+  return !!videojs.browser.IE_VERSION;
+}
 Vue.prototype.flvSupported = () => {
   return videojs.browser.IE_VERSION || (flvjs.getFeatureList() && flvjs.getFeatureList().mseLiveFlvPlayback);
 }
@@ -177,10 +185,7 @@ import Qrcode from "@xkeshi/vue-qrcode"
 import LivePlayer from "@liveqing/liveplayer"
 import $ from "jquery"
 import "@penggy/jquery.nicescroll"
-
-$.ajaxSetup({
-  cache: false
-});
+$.ajaxSetup({ cache: false });
 export default {
   components: {
     LivePlayer,
@@ -222,6 +227,7 @@ export default {
       bAudioSending: false,
       bAudioSendError: false,
       muted_bak: true,
+      nice: null,
     };
   },
   beforeDestroy() {
@@ -287,11 +293,13 @@ export default {
       this.$nextTick(() => {
         $("body").layout("fix");
         this.fixHover();
-        $("body").niceScroll({
-            zindex: 999999,
-            cursorwidth: "10px",
-            cursoropacitymax: 0.5,
-        });
+        if(!this.isIE()) {
+          this.nice = $("body").niceScroll({
+              zindex: 999999,
+              cursorwidth: "10px",
+              cursoropacitymax: 0.5,
+          });
+        }
       })
     });
     $(".ptz-block").draggable({
@@ -557,6 +565,9 @@ export default {
     ctrlStop() {
       this.talkStop();
       this.ptzStop();
+    },
+    handleResize() {
+      this.nice && this.nice.resize();
     }
   }
 };

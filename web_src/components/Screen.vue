@@ -30,6 +30,7 @@
     <br>
     提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
   </div>
+  <br>
 </div>
 </template>
 
@@ -48,7 +49,14 @@ export default {
     return {
       players: [],
       playerLength: 4,
-      playerBtnGroup: [{
+      channelListDlgTitle: "",
+      protocol: "",
+    };
+  },
+  computed: {
+    ...mapState(["userInfo", "serverInfo"]),
+    playerBtnGroup() {
+      var list = [{
         num: 1,
         name: "单屏"
       }, {
@@ -57,16 +65,15 @@ export default {
       }, {
         num: 9,
         name: "九分屏"
-      }, {
-        num: 16,
-        name: "十六分屏"
-      }],
-      channelListDlgTitle: "",
-      protocol: "",
-    };
-  },
-  computed: {
-    ...mapState(["userInfo", "serverInfo"])
+      }];
+      if(!this.isIE()) {
+        list.push({
+          num: 16,
+          name: "十六分屏"
+        })
+      }
+      return list;
+    }
   },
   mounted() {
     this.setPlayerLength(this.playerLength);
@@ -131,11 +138,14 @@ export default {
       }).then(stream => {
         var videoUrl = this.isMobile() ? stream.HLS : stream.RTMP;
         if(this.flvSupported()) {
-          if(stream.WS_FLV) {
+          if(stream.WS_FLV && i > 0) {
             videoUrl = stream.WS_FLV;
           } else if(stream.FLV) {
             videoUrl = stream.FLV;
           }
+        }
+        if(this.isIE() && i > 0) {
+          videoUrl = stream.HLS;
         }
         var _protocol = String(this.protocol).toUpperCase();
         switch (_protocol) {
@@ -232,22 +242,22 @@ export default {
     .col-sm-6 {
       &:nth-child(1),
       &:nth-child(2) {
-        border-top-color: transparent;
+        border-top-color: black;
       }
 
       &:nth-child(2),
       &:nth-child(4) {
-        border-right-color: transparent;
+        border-right-color: black;
       }
 
       &:nth-child(1),
       &:nth-child(3) {
-        border-left-color: transparent;
+        border-left-color: black;
       }
 
       &:nth-child(3),
       &:nth-child(4) {
-        border-bottom-color: transparent;
+        border-bottom-color: black;
       }
     }
 
@@ -255,25 +265,25 @@ export default {
       &:nth-child(1),
       &:nth-child(2),
       &:nth-child(3) {
-        border-top-color: transparent;
+        border-top-color: black;
       }
 
       &:nth-child(3),
       &:nth-child(6),
       &:nth-child(9) {
-        border-right-color: transparent;
+        border-right-color: black;
       }
 
       &:nth-child(7),
       &:nth-child(8),
       &:nth-child(9) {
-        border-bottom-color: transparent;
+        border-bottom-color: black;
       }
 
       &:nth-child(1),
       &:nth-child(4),
       &:nth-child(7) {
-        border-left-color: transparent;
+        border-left-color: black;
       }
     }
 
@@ -282,31 +292,35 @@ export default {
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
-        border-top-color: transparent;
+        border-top-color: black;
       }
 
       &:nth-child(4),
       &:nth-child(8),
       &:nth-child(12),
       &:nth-child(16) {
-        border-right-color: transparent;
+        border-right-color: black;
       }
 
       &:nth-child(13),
       &:nth-child(14),
       &:nth-child(15),
       &:nth-child(16) {
-        border-bottom-color: transparent;
+        border-bottom-color: black;
       }
 
       &:nth-child(1),
       &:nth-child(5),
       &:nth-child(9),
       &:nth-child(13) {
-        border-left-color: transparent;
+        border-left-color: black;
       }
     }
   }
+}
+
+.fullscreen {
+  width: 100% !important;
 }
 
 .video-close {

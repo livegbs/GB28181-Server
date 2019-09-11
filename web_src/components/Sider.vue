@@ -3,7 +3,7 @@
     <section class="sidebar">
       <ul class="sidebar-menu">
         <template v-for="(item,index) in menus">
-          <router-link class="treeview" :key="index" :to="item.path" tag="li" :exact="item.path == '/'" v-if="!item.versionType || item.versionType == serverInfo.VersionType">
+          <router-link class="treeview" :key="index" :to="item.path" tag="li" :exact="item.path == '/'" v-if="showMenu(item)">
             <a>
               <i :class="['fa', 'fa-' + item.icon]"></i>
               <span>{{item.title}}</span>
@@ -31,7 +31,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getServerInfo"])
+    ...mapActions(["getServerInfo"]),
+    showMenu(item) {
+      if(item.versionType && item.versionType != this.serverInfo.VersionType) {
+        return false;
+      }
+      if(item.hideInIE && videojs.browser.IE_VERSION) {
+        return false;
+      }
+      return true;
+    }
   }
 }
 

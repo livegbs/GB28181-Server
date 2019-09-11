@@ -16,6 +16,7 @@
       <span v-html="serverInfo.CopyrightText"></span>
     </footer>
     <back-to-top text="返回顶部" class="hidden-xs"></back-to-top>
+    <resize-observer @notify="handleResize"/>
   </div>
 </template>
 
@@ -25,6 +26,7 @@ import "bootstrap/dist/css/bootstrap.css"
 import "admin-lte/dist/css/AdminLTE.css"
 import "admin-lte/dist/css/skins/_all-skins.css"
 import "assets/styles/custom.less"
+import 'vue-resize/dist/vue-resize.css'
 
 import "bootstrap/dist/js/bootstrap.js"
 import "admin-lte/dist/js/adminlte.js"
@@ -52,7 +54,10 @@ import fullscreen from 'vue-fullscreen'
 Vue.use(fullscreen);
 
 import BackToTop from 'vue-backtotop'
-Vue.use(BackToTop)
+Vue.use(BackToTop);
+
+import VueResize from 'vue-resize'
+Vue.use(VueResize);
 
 import VeeValidate, { Validator } from "vee-validate";
 Vue.use(VeeValidate, {
@@ -89,6 +94,9 @@ Vue.prototype.$iframe = (link, w, h) => {
 Vue.prototype.isMobile = () => {
   return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
 }
+Vue.prototype.isIE = () => {
+  return !!videojs.browser.IE_VERSION;
+}
 Vue.prototype.flvSupported = () => {
   return videojs.browser.IE_VERSION || (flvjs.getFeatureList() && flvjs.getFeatureList().mseLiveFlvPlayback);
 }
@@ -97,10 +105,13 @@ Vue.prototype.canTalk = () => {
 }
 
 import $ from "jquery"
+import "@penggy/jquery.nicescroll"
 $.ajaxSetup({ cache: false });
 export default {
   data() {
-    return {}
+    return {
+      nice: null,
+    }
   },
   watch: {
     serverInfo(val) {
@@ -136,6 +147,13 @@ export default {
         this.getServerInfo().then(() => {
           $("body").layout("fix");
           this.fixHover();
+          if(!this.isIE()) {
+            this.nice = $("body").niceScroll({
+                zindex: 999999,
+                cursorwidth: "10px",
+                cursoropacitymax: 0.5,
+            });
+          }
         })
     });
     $("body").addClass(localStorage["sidebar-collapse"]);
@@ -180,6 +198,9 @@ export default {
                 }
             }
         }
+    },
+    handleResize() {
+      this.nice && this.nice.resize();
     },
     play(video){
       this.$refs['videoDlg'].play(video.videoUrl, video.videoTitle, video.snapUrl);

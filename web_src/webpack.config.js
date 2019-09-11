@@ -38,7 +38,7 @@ module.exports = {
         host: '0.0.0.0',
         useLocalIp: true,
         proxy: {
-            "/api/v1/playback/progress": {
+            "**/ws-flv/**/*.flv": {
                 target: `ws://127.0.0.1:10000`,
                 ws: true,
                 secure: false
