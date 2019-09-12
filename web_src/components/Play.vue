@@ -239,10 +239,7 @@ export default {
     this.ctrlStop();
     $(document).off("mouseup touchend", this.ctrlStop);
   },
-  async mounted() {
-    await this.getServerInfo();
-    await this.getUserInfo();
-    document.title = this.serverInfo.LogoText || "LiveGBS";
+  created() {
     this.aspect = this.getQueryString("aspect","").replace("x", ":");
     this.autoplay = this.getQueryString("autoplay", "yes") == "yes";
     this.controls = this.getQueryString("controls", "yes") == "yes";
@@ -264,6 +261,11 @@ export default {
     this.talk = this.getQueryString("talk", "no") == "yes";
     this.otherParams = this.getOtherParams(["aspect", "autoplay", "controls", "ptz", "share", "fluent", "stretch", "type", "starttime", "endtime", "serial", "code", "channel", "protocol", "muted", "audio", "talk", "debug"])
     this.shareUrl = location.href;
+  },
+  async mounted() {
+    await this.getServerInfo();
+    await this.getUserInfo();
+    document.title = this.serverInfo.LogoText || "LiveGBS";
     $(document).ajaxError((evt, xhr, opts, ex) => {
       if (xhr.status == 401) {
         if (this.serverInfo.IsDemo) {
