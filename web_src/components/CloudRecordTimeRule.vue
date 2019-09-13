@@ -159,6 +159,7 @@ export default {
         activeMinutes() {
             let minutes = {};
             for (let video of this.videos) {
+                let start = moment(video.startAt, "YYYYMMDDHHmmss");
                 let m = moment(video.startAt, "YYYYMMDDHHmmss");
                 let s = parseInt(video.duration);
                 if (s > 8640000) {
@@ -171,6 +172,9 @@ export default {
                 let secs = m.unix();
                 secs = secs - (secs % (this.minutesPerUnit * 60));
                 let _m = moment.unix(secs);
+                if(!start.isSame(_m, "day")) { // 跨天
+                    continue
+                }
                 let mtext = _m.format("HH:mm");
                 minutes[mtext] = Object.assign({ currentTime: 0 }, video);
                 for (let i = 1; i <= s; i++) {
@@ -178,6 +182,9 @@ export default {
                     secs = m.unix();
                     secs = secs - (secs % (this.minutesPerUnit * 60));
                     _m = moment.unix(secs);
+                    if(!start.isSame(_m, "day")) { // 跨天
+                        continue
+                    }
                     let _mtext = _m.format("HH:mm");
                     if(_mtext != mtext) {
                         mtext = _mtext;
