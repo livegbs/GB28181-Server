@@ -146,9 +146,9 @@
                             </div>
                         </div>
                         <div :class="['form-group' , {'has-error': errors.has('RecordPath')}]">
-                            <label class="col-sm-4 control-label">云端录像存储位置</label>
+                            <label class="col-sm-4 control-label">云录像目录</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" name="RecordPath" data-vv-as="云端录像存储位置" v-model.trim="smsbaseconfig.RecordPath">
+                                <input type="text" class="form-control" name="RecordPath" data-vv-as="云录像目录" v-model.trim="smsbaseconfig.RecordPath">
                                 <span class="help-block">{{errors.first('RecordPath')}}</span>
                             </div>
                         </div>
@@ -201,7 +201,6 @@ export default {
             smss: [],
             sms: {},
             smsbaseconfig: {},
-            activeNames: ["serverinfo", "baseconfig"],
         };
     },
     mounted() {
