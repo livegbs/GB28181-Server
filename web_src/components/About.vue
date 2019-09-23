@@ -104,12 +104,12 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr>
-                                <td style="width:20%;">负载</td>
-                                <td><span>{{sms.Load}}</span></td>
-                            </tr>
-                            <tr>
                                 <td style="width:20%;">硬件信息</td>
                                 <td><span>{{smsserverinfo.Hardware}}</span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%;">负载</td>
+                                <td><span>{{sms.Load}}</span></td>
                             </tr>
                             <tr>
                                 <td>运行时间</td>

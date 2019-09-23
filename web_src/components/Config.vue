@@ -95,12 +95,6 @@
                                 SMS流媒体服务尚未启动
                             </div>
                         </div>
-                        <div class="form-group" v-if="sms.Load">
-                            <label class="col-sm-4 control-label">负载</label>
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" readonly :value="sms.Load">
-                            </div>
-                        </div>
                     </form>
                     <form v-if="smsbaseconfig.Host" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
                         <div :class="['form-group' , {'has-error': errors.has('Serial')}]">
