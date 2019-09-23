@@ -123,7 +123,7 @@
                             </tr>
                             <tr>
                                 <td>软件信息</td>
-                                <td><span id="software-info">{{serverInfo.Server}}</span></td>
+                                <td><span id="software-info">{{smsserverinfo.Server}}</span></td>
                             </tr>
                         </tbody>
                     </table>
