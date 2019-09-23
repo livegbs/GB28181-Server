@@ -1,6 +1,6 @@
 <template>
-<div class="container-fluid no-padding">
-    <el-card class="box-card col-lg-6" shadow="never" style="min-height:660px;">
+<div class="container-fluid no-padding box-cards">
+    <el-card class="box-card col-lg-6" shadow="never">
         <div slot="header" class="clearfix">
             <div class="col-md-12 no-padding">
                 <h3>信令服务</h3>
@@ -83,14 +83,14 @@
             </div>
         </div>
     </el-card>
-    <el-card class="box-card col-lg-6" shadow="never" style="min-height:660px;">
+    <el-card class="box-card col-lg-6" shadow="never">
         <div slot="header" class="clearfix">
             <div class="col-md-6 no-padding">
                 <h3>流媒体服务</h3>
             </div>
             <div class="col-md-6 no-padding" v-if="sms.Load">
                 <select style="margin-top: 23px;width:100%" :value="smsserial" @change="smschange">
-                    <option v-for="c in smss" :value="c.Serial"> SMS-{{c.Serial}}</option>
+                    <option v-for="(c, idx) in smss" :value="c.Serial" :key="idx"> SMS-{{c.Serial}}</option>
                 </select>
             </div>
         </div>
@@ -381,3 +381,16 @@ export default {
     }
 }
 </script>
+
+<style lang="less" scoped>
+.container-fluid.no-padding.box-cards {
+    overflow: hidden;
+
+    .box-card {
+        &[class*="col-"]{
+            margin-bottom: -99999px;
+            padding-bottom: 99999px;
+        }
+    }
+}
+</style>

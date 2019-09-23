@@ -85,7 +85,7 @@
                             <label class="col-sm-4 control-label">SMS 服务</label>
                             <div class="col-sm-7">
                                 <select class="form-control" :value="smsserial" @change="smschange">
-                                    <option v-for="c in smss" :value="c.Serial">{{c.Serial}}</option>
+                                    <option v-for="(c, idx) in smss" :value="c.Serial" :key="idx">{{c.Serial}}</option>
                                 </select>
                             </div>
                         </div>
