@@ -18,9 +18,9 @@
                         <div class="form-group form-group-sm">
                             <label>通道类型</label>
                             <select class="form-control" v-model.trim="channel_type">
-                            <option value="">全部</option>
-                            <option value="device">设备</option>
-                            <option value="dir">子目录</option>
+                                <option value="">全部</option>
+                                <option value="device">设备</option>
+                                <option value="dir">子目录</option>
                             </select>
                         </div>
                         <span class="hidden-xs">&nbsp;&nbsp;</span>
@@ -29,11 +29,17 @@
                                 <el-checkbox style="margin-top:-5px;padding-left:0;" size="small" v-model.trim="related" name="Enable">只看已选</el-checkbox>
                             </div>
                         </div>
+                        <span class="hidden-xs">&nbsp;&nbsp;</span>
+                        <div class="form-group form-group-sm">
+                            <div class="checkbox">
+                                <el-checkbox style="margin-top:-5px;padding-left:0;" size="small" v-model="shareAllChannel" @change="toggleShareAllChannel" name="ShareAllChannel">全部共享</el-checkbox>
+                            </div>
+                        </div>
                     </form>
                     <br>
                     <el-table :data="channels" stripe @sort-change="sortChange" @select="select" @select-all="selectAll" :max-height="500"
                         ref="channelTable" v-loading="loading" element-loading-text="加载中...">
-                        <el-table-column type="selection" width="55" fixed></el-table-column>
+                        <el-table-column type="selection" width="55" fixed :selectable="selectable"></el-table-column>
                         <el-table-column prop="DeviceID" label="设备国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                         <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                         <el-table-column prop="Name" label="通道名称" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
@@ -88,6 +94,7 @@
                 sort: "",
                 order: "",
                 related: false,
+                shareAllChannel: false,
                 loading: false,
                 channels: [],
                 selection: [],
@@ -150,6 +157,7 @@
                 this.getChannels();
             },
             selectAll(selection) {
+                if(this.shareAllChannel) return;
                 var keys = [];
                 if(selection.length) {
                     for(var row of selection) {
@@ -184,6 +192,12 @@
                 if (cell) return cell;
                 return "-";
             },
+            selectable(row, index) {
+                if(!this.shareAllChannel) {
+                    return true;
+                }
+                return false;
+            },
             getChannels() {
                 if(!this.id) return;
                 this.loading = true;
@@ -200,6 +214,7 @@
                     this.$refs["channelTable"].clearSelection();
                     this.total = ret.ChannelCount;
                     this.relateCnt = ret.ChannelRelateCount;
+                    this.shareAllChannel = !!ret.ShareAllChannel;
                     this.channels = ret.ChannelList || [];
                     this.selection = [];
                     this.$nextTick(() => {
@@ -222,8 +237,18 @@
                 this.selection = [];
                 this.q = "";
                 this.channel_type = "";
+                this.related = false;
+                this.shareAllChannel = false;
                 this.currentPage = 1;
                 this.pageSize = 10;
+            },
+            toggleShareAllChannel(val) {
+                $.get("/api/v1/cascade/setshareallchannel", {
+                    id: this.id,
+                    shareallchannel: val,
+                }).then(() => {
+                    this.doSearch();
+                })
             },
             show(id) {
                 this.id = id;
