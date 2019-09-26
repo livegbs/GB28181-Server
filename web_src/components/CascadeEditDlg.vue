@@ -19,10 +19,10 @@
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Realm')}">
             <label for="realm" class="col-sm-4 control-label">SIP服务国标域
-                <span class="text-red">*</span>
+                <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="realm" name="Realm" v-model.trim="form.Realm" data-vv-as="SIP服务国标域" autocomplete="new-password" v-validate="'required'" @keydown.enter="$el.querySelector('#host').focus()">
+                <input type="text" class="form-control" id="realm" name="Realm" v-model.trim="form.Realm" data-vv-as="SIP服务国标域" autocomplete="new-password" v-validate="" placeholder="选填" @keydown.enter="$el.querySelector('#host').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Host')}">
@@ -177,6 +177,7 @@ export default {
                 KeepaliveInterval: 60,
                 RegisterInterval: 60,
                 StreamKeepalive: false,
+                ShareAllChannel: false,
                 CommandTransport: "UDP",
                 Charset: "GB2312",
                 CatalogGroupSize: 1,
