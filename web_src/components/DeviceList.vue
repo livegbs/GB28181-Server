@@ -221,6 +221,7 @@ export default {
         media_transport: row.MediaTransport,
         media_transport_mode: row.MediaTransportMode,
         recv_stream_ip: row.RecvStreamIP,
+        contact_ip: row.ContactIP,
         catalog_interval: row.CatalogInterval,
         subscribe_interval: row.SubscribeInterval,
       });
