@@ -3,17 +3,17 @@
     <div class="qcontent-header hidden-xs">服务器概览 <button type="button" class="btn btn-xs btn-default full-btn" @click.prevent="fullscreen" title="点击大屏展示"><i class="fa fa-arrows-alt"></i></button></div>
     <div class="container-fluid" :style="`height:${this.pageHeight}px;min-height:500px;`">
         <div class="col-xs-12 col-md-6">
-            <div class="view-dashboard view-channel view-left">
+            <div class="view-dashboard view-left">
                 <div class="panel">
                     <div class="panel-body">
                         <div class="col-md-12 panel-title">
                             通道信息
                         </div>
-                        <div class="col-md-6 auth-view" style="text-align:center;">
+                        <div class="col-xs-6 auth-view" style="text-align:center;">
                             <el-progress color="#337ab7" type="circle" :height="this.authViewHeight" :width="this.authViewHeight" :percentage="authData.DeviceTotal == 0 ? 0:  parseFloat((authData.DeviceOnline/authData.DeviceTotal*100).toFixed(2))"></el-progress>
                             <div class="auth-title">在线数:<span class="auth-num">{{authData.DeviceOnline}}</span><br>总设备:<span class="auth-num">{{authData.DeviceTotal}}</span></div>
                         </div>
-                        <div class="col-md-6 auth-view" style="text-align:center">
+                        <div class="col-xs-6 auth-view" style="text-align:center">
                             <el-progress color="#337ab7" type="circle" :height="this.authViewHeight" :width="this.authViewHeight" :percentage="authData.ChannelTotal == 0 ? 0:  parseFloat((authData.ChannelOnline/authData.ChannelTotal*100).toFixed(2))"></el-progress>
                             <div class="auth-title">在线数:<span class="auth-num">{{authData.ChannelOnline}}</span><br>总通道:<span class="auth-num">{{authData.ChannelTotal}}</span></div>
                         </div>
@@ -355,10 +355,6 @@ export default {
         height: 320px;
     }
 
-    .view-channel {
-        height: 480px !important;
-    }
-
     .view-left {
         margin-right: 0;
     }
@@ -385,8 +381,8 @@ export default {
     }
 
     .auth-view {
-        height: 180px !important;
-        padding-top: 40px;
+        height: 200px !important;
+        padding-top: 78px !important;
     }
 
     .qcontent .container-fluid {
