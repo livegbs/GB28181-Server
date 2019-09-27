@@ -76,6 +76,12 @@
             <el-pagination layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
           </div>
         </div>
+        <div class="alert text-center" v-if="alarmPublishToRedis">
+            <small>
+                <strong><i class="fa fa-info-circle"></i> 提示 : </strong>
+                已开启报警消息发布到 Redis, 可向 Redis 订阅 alarm 消息以获取实时报警 > SUBSCRIBE alarm; 消息内容为报警信息 JSON 序列化字符串
+            </small>
+        </div>
     </div>
 </template>
 
@@ -97,7 +103,8 @@ export default {
       order: "desc",
       loading: false,
       timer: 0,
-      alarms: []
+      alarms: [],
+      alarmPublishToRedis: false,
     };
   },
   computed: {
@@ -158,6 +165,7 @@ export default {
       .then(ret => {
         this.total = ret.AlarmCount;
         this.alarms = ret.AlarmList;
+        this.alarmPublishToRedis = ret.AlarmPublishToRedis;
       })
       .always(() => {
       });

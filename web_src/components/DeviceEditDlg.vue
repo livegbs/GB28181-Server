@@ -12,28 +12,35 @@
             <label for="input-name" class="col-sm-4 control-label">设备名称
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-name" v-model.trim="form.name" autocomplete="new-password" data-vv-as="设备名称" @keydown.enter="$el.querySelector('#input-recv-stream-ip').focus()">
+                <input type="text" class="form-control" id="input-name" v-model.trim="form.name" autocomplete="new-password" data-vv-as="设备名称" @keydown.enter="$el.querySelector('#input-contact-ip').focus()">
+            </div>
+        </div>
+        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('contact_ip')}">
+            <label for="input-contact-ip" class="col-sm-4 control-label">信令联络 IP
+            </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="contact_ip" id="input-contact-ip" v-model.trim="form.contact_ip" placeholder="默认使用 livecms.ini > sip > host" autocomplete="new-password" data-vv-as="信令联络 IP" @keydown.enter="$el.querySelector('#input-recv-stream-ip').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('recv_stream_ip')}">
             <label for="input-recv-stream-ip" class="col-sm-4 control-label">收流 IP
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" name="recv_stream_ip" id="input-recv-stream-ip" v-model="form.recv_stream_ip" placeholder="默认使用 sms.ini sip host" autocomplete="new-password" @keydown.enter="$el.querySelector('#input-catalog-interval').focus()">
+                <input type="text" class="form-control" name="recv_stream_ip" id="input-recv-stream-ip" v-model.trim="form.recv_stream_ip" placeholder="默认使用 livesms.ini > sip > host" autocomplete="new-password" data-vv-as="收流 IP" @keydown.enter="$el.querySelector('#input-catalog-interval').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('catalog_interval')}">
             <label for="input-catalog-interval" class="col-sm-4 control-label">通道更新周期(秒)
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" name="catalog_interval" id="input-catalog-interval" v-model="form.catalog_interval" placeholder="3600" autocomplete="new-password" @keydown.enter="$el.querySelector('#input-subscribe-interval').focus()">
+                <input type="text" class="form-control" name="catalog_interval" id="input-catalog-interval" v-model.trim="form.catalog_interval" placeholder="3600" autocomplete="new-password" @keydown.enter="$el.querySelector('#input-subscribe-interval').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('subscribe_interval')}">
             <label for="input-catalog-interval" class="col-sm-4 control-label">订阅周期(秒)
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" name="subscribe_interval" id="input-subscribe-interval" v-model="form.subscribe_interval" placeholder="600" autocomplete="new-password" @keydown.enter="onSubmit">
+                <input type="text" class="form-control" name="subscribe_interval" id="input-subscribe-interval" v-model.trim="form.subscribe_interval" placeholder="默认不订阅" autocomplete="new-password" @keydown.enter="onSubmit">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('media_transport')}">
@@ -75,6 +82,7 @@ export default {
                 media_transport: 'UDP',
                 media_transport_mode: 'passive',
                 recv_stream_ip: '',
+                contact_ip: '',
                 catalog_interval: 3600,
                 subscribe_interval: 600,
             }
@@ -107,6 +115,9 @@ export default {
             this.errors.clear();
             if(data) {
                 Object.assign(this.form, data);
+            }
+            if(!this.form['subscribe_interval']) {
+                this.form['subscribe_interval'] = '';
             }
             this.$nextTick(() => {
                 this.$refs['dlg'].show();

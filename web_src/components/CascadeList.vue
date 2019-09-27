@@ -51,7 +51,7 @@
                 </template>
               </el-table-column>
               <el-table-column prop="Serial" label="SIP服务国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
-              <el-table-column prop="Realm" label="SIP服务国标域" min-width="120" show-overflow-tooltip></el-table-column>
+              <!-- <el-table-column prop="Realm" label="SIP服务国标域" min-width="120" show-overflow-tooltip></el-table-column> -->
               <el-table-column prop="Enable" label="是否启用" min-width="100">
                 <template slot-scope="props">
                   <span v-if="props.row.Enable" class="text-success">启用</span>

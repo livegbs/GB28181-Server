@@ -19,10 +19,10 @@
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Realm')}">
             <label for="realm" class="col-sm-4 control-label">SIP服务国标域
-                <span class="text-red">*</span>
+                <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="realm" name="Realm" v-model.trim="form.Realm" data-vv-as="SIP服务国标域" autocomplete="new-password" v-validate="'required'" @keydown.enter="$el.querySelector('#host').focus()">
+                <input type="text" class="form-control" id="realm" name="Realm" v-model.trim="form.Realm" data-vv-as="SIP服务国标域" autocomplete="new-password" v-validate="" placeholder="选填" @keydown.enter="$el.querySelector('#host').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Host')}">
@@ -46,7 +46,23 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="local-serial" name="LocalSerial" v-model.trim="form.LocalSerial" data-vv-as="设备国标编号" autocomplete="new-password" v-validate="" placeholder="默认使用 livecms.ini sip serial" @keydown.enter="$el.querySelector('#password').focus()">
+                <input type="text" class="form-control" id="local-serial" name="LocalSerial" v-model.trim="form.LocalSerial" data-vv-as="设备国标编号" autocomplete="new-password" v-validate="" placeholder="默认使用 livecms.ini > sip > serial" @keydown.enter="$el.querySelector('#local-host').focus()">
+            </div>
+        </div>
+        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalHost')}">
+            <label for="local-host" class="col-sm-4 control-label">本地IP
+                <!-- <span class="text-red">*</span> -->
+            </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="local-host" name="LocalHost" v-model.trim="form.LocalHost" data-vv-as="本地IP" autocomplete="new-password" v-validate="" placeholder="默认使用 livecms.ini > sip > host" @keydown.enter="$el.querySelector('#local-port').focus()">
+            </div>
+        </div>
+        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalPort')}">
+            <label for="local-port" class="col-sm-4 control-label">本地端口
+                <!-- <span class="text-red">*</span> -->
+            </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="local-port" name="LocalPort" v-model.trim="form.LocalPort" data-vv-as="本地端口" autocomplete="new-password" v-validate="'numeric'" placeholder="选填" @keydown.enter="$el.querySelector('#password').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('Password')}">
@@ -153,12 +169,15 @@ export default {
                 Host: "",
                 Port: 5060,
                 LocalSerial: "",
+                LocalHost: "",
+                LocalPort: "",
                 Username: "",
                 Password: "",
                 RegisterTimeout: 3600,
                 KeepaliveInterval: 60,
                 RegisterInterval: 60,
                 StreamKeepalive: false,
+                ShareAllChannel: false,
                 CommandTransport: "UDP",
                 Charset: "GB2312",
                 CatalogGroupSize: 1,
@@ -190,6 +209,9 @@ export default {
             this.errors.clear();
             if(data) {
                 Object.assign(this.form, data);
+            }
+            if(!this.form["LocalPort"]) {
+                this.form["LocalPort"] = ""
             }
             this.$nextTick(() => {
                 this.$refs['dlg'].show();
