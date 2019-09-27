@@ -2,7 +2,7 @@
 <div class="qcontent">
     <div class="qcontent-header hidden-xs">服务器概览 <button type="button" class="btn btn-xs btn-default full-btn" @click.prevent="fullscreen" title="点击大屏展示"><i class="fa fa-arrows-alt"></i></button></div>
     <div class="container-fluid" :style="`height:${this.pageHeight}px;min-height:500px;`">
-        <div class="col-md-6">
+        <div class="col-xs-12 col-md-6">
             <div class="view-dashboard view-channel view-left">
                 <div class="panel">
                     <div class="panel-body">
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-xs-12 col-md-6">
             <div class="view-dashboard view-right view-split-m">
                 <div class="panel">
                     <div class="panel-body">
@@ -299,55 +299,54 @@ export default {
     margin: -15px;
 }
 
-@screen-sm-min: 768px;
-@screen-md-min: 992px;
-@screen-lg-min: 1200px;
-
-@media (min-width: @screen-lg-min) {
-    .view-dashboard {
-        height: 50%;
-    }
-
-    .view-left {
-        margin-right: 5px;
-    }
-
-    .view-right {
-        margin-left: 5px;
-    }
-
-    .view-split {
-        margin-top: 10px;
-    }
-
-    .auth-vlive,
-    .auth-live {
-        margin-top: 6%;
-    }
-
-    .auth-num {
-        margin-top: 20%;
-        font-size: 14px;
-        font-weight: bold;
-        color: #337ab7;
-    }
-
-    .auth-view {
-        min-height: 200px;
-        padding-top: 10%;
-    }
-
-    .auth-title {
-        font-size: 12px;
-        color: #1d3b55;
-    }
-
-    .auth-promt-div {
-        margin-top: 10%;
-    }
+.view-dashboard {
+    height: 50%;
 }
 
-@media (max-width: @screen-lg-min) {
+.view-left {
+    margin-right: 5px;
+}
+
+.view-right {
+    margin-left: 5px;
+}
+
+.view-split {
+    margin-top: 10px;
+}
+
+.auth-vlive,
+.auth-live {
+    margin-top: 6%;
+}
+
+.auth-num {
+    margin-top: 20%;
+    font-size: 14px;
+    font-weight: bold;
+    color: #337ab7;
+}
+
+.auth-view {
+    min-height: 200px;
+    padding-top: 10%;
+}
+
+.auth-title {
+    font-size: 12px;
+    color: #1d3b55;
+}
+
+.auth-promt-div {
+    margin-top: 10%;
+}
+
+@screen-md-min: 992px;
+
+@media (max-width: @screen-md-min) {
+    .col-md-6 {
+        width: 100%;
+    }
     .container-fluid {
         height: 100% !important;
     }
@@ -367,6 +366,7 @@ export default {
     .view-right {
         margin-left: 0;
     }
+
     .view-split-m,
     .view-split {
         margin-top: 10px;
@@ -389,14 +389,6 @@ export default {
         padding-top: 40px;
     }
 
-    .auth-title {
-        font-size: 12px;
-        color: #1d3b55;
-    }
-
-    .auth-promt-div {
-        margin-top: 10%;
-    }
     .qcontent .container-fluid {
         padding-bottom: 10px;
     }
