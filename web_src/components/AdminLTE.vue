@@ -209,6 +209,10 @@ export default {
     thisYear() {
       return moment().format('YYYY');
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    $('.modal').modal('hide') // closes all active pop ups.
+    next();
   }
 }
 </script>
