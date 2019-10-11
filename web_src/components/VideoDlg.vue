@@ -229,6 +229,7 @@ export default {
     },
     talkStart(e) {
       if(this.recorder) {
+        this.recorder.start();
         return;
       }
       var $target = $(e.currentTarget);
@@ -237,8 +238,8 @@ export default {
           alert(err);
           return
         }
-        this.muted_bak = this.muted;
-        this.$refs["player"].setMuted(true);
+        // this.muted_bak = this.muted;
+        // this.$refs["player"].setMuted(true);
         $target.addClass("active");
         this.recorder = rec;
         this.recorder.start();
@@ -274,9 +275,9 @@ export default {
     talkStop() {
       if(this.recorder) {
         this.recorder.stop();
-        this.recorder = null;
+        // this.recorder = null;
         $(this.$el).find(".fa-microphone.active").removeClass("active");
-        this.$refs["player"].setMuted(this.muted_bak);
+        // this.$refs["player"].setMuted(this.muted_bak);
         return;
       }
     },
