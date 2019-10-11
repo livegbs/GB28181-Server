@@ -227,11 +227,12 @@ export default {
       }
     },
     talkStart(e) {
+      var $target = $(e.currentTarget);
       if(this.recorder) {
+        $target.addClass("active");
         this.recorder.start();
         return;
       }
-      var $target = $(e.currentTarget);
       LiveRecorder.get((rec, err) => {
         if(err) {
           alert(err);
