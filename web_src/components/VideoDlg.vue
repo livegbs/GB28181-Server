@@ -100,7 +100,6 @@ export default {
       recorder: null,
       bAudioSending: false,
       bAudioSendError: false,
-      muted_bak: true,
     };
   },
   props: {
@@ -238,7 +237,6 @@ export default {
           alert(err);
           return
         }
-        // this.muted_bak = this.muted;
         // this.$refs["player"].setMuted(true);
         $target.addClass("active");
         this.recorder = rec;
@@ -277,7 +275,7 @@ export default {
         this.recorder.stop();
         // this.recorder = null;
         $(this.$el).find(".fa-microphone.active").removeClass("active");
-        // this.$refs["player"].setMuted(this.muted_bak);
+        // this.$refs["player"].setMuted(false);
         return;
       }
     },
