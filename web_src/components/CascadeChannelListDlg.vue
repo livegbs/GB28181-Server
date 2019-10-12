@@ -43,13 +43,13 @@
                         <el-table-column prop="DeviceID" label="设备国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                         <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                         <el-table-column prop="Name" label="通道名称" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
-                        <el-table-column prop="Status" label="在线状态" min-width="100">
+                        <!-- <el-table-column prop="Status" label="在线状态" min-width="100">
                             <template slot-scope="props">
                             <span v-if="props.row.SubCount > 0">-</span>
                             <span v-else-if="props.row.Status == 'ON'" class="text-success">在线</span>
                             <span v-else>离线</span>
                             </template>
-                        </el-table-column>
+                        </el-table-column> -->
                         <el-table-column prop="SubCount" label="子节点数" min-width="100" sortable="custom"></el-table-column>
                         <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
                     </el-table>
