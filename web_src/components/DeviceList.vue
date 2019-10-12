@@ -18,6 +18,15 @@
               <option value="false">离线</option>
             </select>
           </div>
+          <span class="hidden-xs">&nbsp;&nbsp;</span>
+          <div class="form-group form-group-sm">
+            <label>准入状态</label>
+            <select class="form-control" v-model.trim="forbidden">
+              <option value="">全部</option>
+              <option value="false">准入</option>
+              <option value="true">禁入</option>
+            </select>
+          </div>
           <div class="form-group pull-right">
             <router-link :to="`/devices/tree`" class="btn btn-default btn-sm">
                 <i class="fa fa-sitemap"></i> 树视图
@@ -27,7 +36,11 @@
         <br>
         <div class="clearfix"></div>
         <el-table :data="devices" stripe :default-sort="{prop: 'ID', order: 'ascending'}" @sort-change="sortChange">
-          <el-table-column prop="ID" label="设备国标编号" min-width="200" sortable="custom"></el-table-column>
+          <el-table-column prop="ID" label="设备国标编号" min-width="200" sortable="custom">
+            <template slot-scope="props">
+              <span :class="{'text-red': props.row.Forbidden}" :title="props.row.Forbidden ? '禁止接入':''">{{props.row.ID}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" min-width="220" v-if="isMobile()">
             <template slot-scope="props">
                 <div class="btn-group btn-group-xs">
@@ -113,6 +126,7 @@ export default {
     return {
       q: "",
       online: "",
+      forbidden: "",
       total: 0,
       pageSize: 10,
       currentPage: 1,
@@ -149,6 +163,9 @@ export default {
     online: function(newVal, oldVal) {
       this.doSearch();
     },
+    forbidden: function(newVal, oldVal) {
+      this.doSearch();
+    },
     currentPage: function(newVal, oldVal) {
       this.doSearch(newVal);
     },
@@ -161,6 +178,7 @@ export default {
       var query = {};
       if (this.q) query["q"] = this.q;
       if (this.online) query["online"] = this.online;
+      if (this.forbidden) query["forbidden"] = this.forbidden;
       this.$router.replace({
         path: `/devices/${page}`,
         query: query
@@ -176,6 +194,7 @@ export default {
         start: (this.currentPage -1) * this.pageSize,
         limit: this.pageSize,
         online: this.online,
+        forbidden: this.forbidden,
         sort: this.sort,
         order: this.order
       })
@@ -224,6 +243,8 @@ export default {
         contact_ip: row.ContactIP,
         catalog_interval: row.CatalogInterval,
         subscribe_interval: row.SubscribeInterval,
+        password: row.Password,
+        forbidden: row.Forbidden,
       });
     },
     formatName(row, col, cell) {
@@ -251,6 +272,7 @@ export default {
     next(vm => {
       vm.q = to.query.q || "";
       vm.online = to.query.online || "";
+      vm.forbidden = to.query.forbidden || "";
       vm.currentPage = parseInt(to.params.page) || 1;
     });
   },
@@ -266,6 +288,7 @@ export default {
     this.$nextTick(() => {
       this.q = to.query.q || "";
       this.online = to.query.online || "";
+      this.forbidden = to.query.forbidden || "";
       this.currentPage = parseInt(to.params.page) || 1;
       this.devices = [];
       this.getDeviceList();

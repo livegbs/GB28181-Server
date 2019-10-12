@@ -226,7 +226,6 @@ export default {
       recorder: null,
       bAudioSending: false,
       bAudioSendError: false,
-      muted_bak: true,
       nice: null,
     };
   },
@@ -513,17 +512,18 @@ export default {
       }
     },
     talkStart(e) {
+      var $target = $(e.currentTarget);
       if(this.recorder) {
+        $target.addClass("active");
+        this.recorder.start();
         return;
       }
-      var $target = $(e.currentTarget);
       LiveRecorder.get((rec, err) => {
         if(err) {
           alert(err);
           return
         }
-        this.muted_bak = this.muted;
-        this.$refs["player"].setMuted(true);
+        // this.$refs["player"].setMuted(true);
         $target.addClass("active");
         this.recorder = rec;
         this.recorder.start();
@@ -559,9 +559,9 @@ export default {
     talkStop() {
       if(this.recorder) {
         this.recorder.stop();
-        this.recorder = null;
+        // this.recorder = null;
         $(this.$el).find(".fa-microphone.active, .ptz-talk.active").removeClass("active");
-        this.$refs["player"].setMuted(this.muted_bak);
+        // this.$refs["player"].setMuted(false);
         return;
       }
     },
