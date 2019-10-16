@@ -70,6 +70,8 @@
             </label>
             <div class="col-sm-7 checkbox">
                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.forbidden" name="forbidden">禁止接入</el-checkbox>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.freeticket" name="freeticket">免密注册</el-checkbox>
             </div>
         </div>
     </FormDlg>
@@ -101,6 +103,7 @@ export default {
                 subscribe_interval: 600,
                 password: '',
                 forbidden: false,
+                freeticket: false,
             }
         },
         onHide() {

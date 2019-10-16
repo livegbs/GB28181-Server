@@ -217,7 +217,6 @@ export default {
       debug: false,
       token: "",
       muted: true,
-      audio: false,
       talk: false,
       hasAudio: false,
       otherParams: "",
@@ -256,9 +255,8 @@ export default {
     this.debug = this.getQueryString("debug") == "yes";
     this.token = this.getQueryString("token", "");
     this.muted = this.getQueryString("muted", "yes") == "yes";
-    this.audio = this.getQueryString("audio", "no") == "yes";
     this.talk = this.getQueryString("talk", "no") == "yes";
-    this.otherParams = this.getOtherParams(["aspect", "autoplay", "controls", "ptz", "share", "fluent", "stretch", "type", "starttime", "endtime", "serial", "code", "channel", "protocol", "muted", "audio", "talk", "debug"])
+    this.otherParams = this.getOtherParams(["aspect", "autoplay", "controls", "ptz", "share", "fluent", "stretch", "type", "starttime", "endtime", "serial", "code", "channel", "protocol", "muted", "talk", "debug"])
     this.shareUrl = location.href;
   },
   async mounted() {
@@ -318,7 +316,6 @@ export default {
             serial: this.serial,
             code: this.code,
             token: this.token,
-            audio: this.audio,
           }).then(streamInfo => {
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
             if (this.flvSupported() && streamInfo.FLV) {
@@ -349,7 +346,7 @@ export default {
             this.title = streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
-            this.hasAudio = this.audio && streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
+            this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
             this.videoUrl = _videoUrl;
             // no need since v1.2
             // this.timer = setInterval(() => {
@@ -367,7 +364,6 @@ export default {
             starttime: this.starttime,
             endtime: this.endtime,
             token: this.token,
-            audio: this.audio,
           }).then(streamInfo => {
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
             if (this.flvSupported() && streamInfo.FLV) {
@@ -398,7 +394,7 @@ export default {
             this.title = streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
-            this.hasAudio = this.audio && streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
+            this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
             this.videoUrl = _videoUrl;
             // no need since v1.2
             // this.timer = setInterval(() => {
@@ -452,7 +448,6 @@ export default {
             serial: this.serial,
             code: this.code,
             token: this.token,
-            audio: this.audio,
           })
           break;
         case "playback":

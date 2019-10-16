@@ -245,6 +245,7 @@ export default {
         subscribe_interval: row.SubscribeInterval,
         password: row.Password,
         forbidden: row.Forbidden,
+        freeticket: row.Freeticket,
       });
     },
     formatName(row, col, cell) {
