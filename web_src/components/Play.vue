@@ -11,7 +11,8 @@
         <div class="play-area">
           <LivePlayer ref="player" :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio"
             v-loading="bLoading" :debug="debug" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="bLoading" @message="$message"
-            :fluent="fluent" :stretch="stretch" :autoplay="autoplay" :controls="controls"></LivePlayer>
+            :fluent="fluent" :stretch="stretch" :autoplay="autoplay" :controls="controls"
+            :style="aspect == 'fullscreen' ? 'width: 100% !important;height: 100% !important;position: fixed !important;':''"></LivePlayer>
           <div class="ptz-block" v-show="showPtzPanel">
             <div class="ptz-cell ptz-up" @mousedown.prevent="ptzControl('up', $event)" title="上">
               <i class="fa fa-chevron-up"></i>
