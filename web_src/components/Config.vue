@@ -52,13 +52,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="api-auth" class="col-sm-4 control-label">接口鉴权</label>
-                            <div class="col-sm-7 checkbox">
-                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" true-label="1" false-label="0" v-model.trim="APIAuth" name="APIAuth"></el-checkbox>
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label for="black-serial-list" class="col-sm-4 control-label">黑名单 ID</label>
                             <div class="col-sm-7">
                                 <input type="text" id="black-serial-list" class="form-control" name="BlackSerialList" data-vv-as="黑名单 ID" v-model.trim="BlackSerialList">
@@ -69,6 +62,13 @@
                             <label for="black-ip-list" class="col-sm-4 control-label">黑名单 IP</label>
                             <div class="col-sm-7">
                                 <input type="text" id="black-ip-list" class="form-control" name="BlackIPList" data-vv-as="黑名单 IP" v-model.trim="BlackIPList">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">其他配置</label>
+                            <div class="col-sm-7 checkbox">
+                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" true-label="1" false-label="0" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -89,10 +89,9 @@
                                 </select>
                             </div>
                         </div>
-                            <div class="form-group" v-if="smss.length <= 0">
-                            <label class="col-sm-4 control-label">提示</label>
-                            <div class="col-sm-7" style="margin-top:8px;">
-                                SMS流媒体服务尚未启动
+                        <div class="form-group" v-if="smss.length <= 0">
+                            <div class="col-sm-12">
+                                <div class="alert text-center no-margin">SMS 流媒体服务尚未启动</div>
                             </div>
                         </div>
                     </form>
@@ -147,9 +146,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">直播秒开</label>
+                            <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
-                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache"></el-checkbox>
+                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache">直播秒开</el-checkbox>
                                 <span class="help-block"></span>
                             </div>
                         </div>

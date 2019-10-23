@@ -169,11 +169,12 @@ export default {
         },
         activeMinutes() {
             var minutes = {};
+            var idx = 0;
             for (var video of this.videos) {
                 var start = moment(video.StartTime, "YYYY-MM-DDTHH:mm:ss");
                 var end = moment(video.EndTime, "YYYY-MM-DDTHH:mm:ss");
                 if(!start.isSame(end, "day")) { // 跨天
-                    if(start.hours() > 12) {
+                    if(idx == 0) {
                         start = moment(end).startOf("day");
                     } else {
                         end = moment(start).endOf("day");
@@ -193,6 +194,7 @@ export default {
                         StartTime: c.format("YYYY-MM-DDTHH:mm:ss")
                     });
                 }
+                idx++;
             }
             return minutes;
         }
