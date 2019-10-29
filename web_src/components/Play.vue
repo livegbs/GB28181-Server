@@ -9,7 +9,7 @@
     <section :class="[{'content': !fullscreen}, {'no-padding': fullscreen}]">
       <div class="player-wrapper" :style="{margin:'0 auto', width: fullscreen ? '100%' : '85%' }">
         <div class="play-area">
-          <LivePlayer ref="player" :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio"
+          <LivePlayer ref="player" :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio" :poster="poster"
             v-loading="bLoading" :debug="debug" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="bLoading" @message="$message"
             :fluent="fluent" :stretch="stretch" :autoplay="autoplay" :controls="controls"
             :style="aspect == 'fullscreen' ? 'width: 100% !important;height: 100% !important;position: fixed !important;':''"></LivePlayer>
@@ -208,6 +208,7 @@ export default {
       streamid: "",
       protocol: "",
       shareUrl: "",
+      snapUrl: "",
       ptz: true,
       share: true,
       fluent: true,
@@ -348,7 +349,10 @@ export default {
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
             this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
-            this.videoUrl = _videoUrl;
+            this.snapUrl = streamInfo.SnapURL;
+            this.$nextTick(() => {
+              this.videoUrl = _videoUrl;
+            })
             // no need since v1.2
             // this.timer = setInterval(() => {
             //   this.touchStream();
@@ -396,7 +400,9 @@ export default {
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
             this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
-            this.videoUrl = _videoUrl;
+            this.$nextTick(() => {
+              this.videoUrl = _videoUrl;
+            })
             // no need since v1.2
             // this.timer = setInterval(() => {
             //   this.touchStream();
@@ -422,6 +428,13 @@ export default {
     },
     showPtzTab() {
       return this.ptz && this.isMobile();
+    },
+    poster() {
+      var _protocol = String(this.protocol).toUpperCase();
+      if(_protocol == "RTMP") {
+        return "";
+      }
+      return this.snapUrl;
     }
   },
   methods: {

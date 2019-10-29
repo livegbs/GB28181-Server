@@ -369,7 +369,7 @@ export default {
       }).then(streamInfo => {
         this.loading = false;
         this.$nextTick(() => {
-          this.$refs["videoDlg"].play(row.Name||row.ID, row.SnapURL||"", row.DeviceID, row.ID, streamInfo);
+          this.$refs["videoDlg"].play(row.Name||row.ID, row.DeviceID, row.ID, streamInfo);
         });
       }).always(() => {
         this.$delete(row, "Locked");

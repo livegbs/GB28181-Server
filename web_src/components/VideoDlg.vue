@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="row" v-if="ptz">
                         <div class="col-sm-8 form-group">
-                            <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :snapUrl="snapUrl2" :live="live" muted :hasaudio="hasAudio"
+                            <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
                               @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
                         </div>
                         <div class="col-sm-4 form-group">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="row" v-else>
-                        <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="snapUrl" :live="live" muted :hasaudio="hasAudio"
+                        <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
                           @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
                     </div>
                     <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
@@ -118,7 +118,7 @@ export default {
   },
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
-    snapUrl2() {
+    poster() {
       if(this.protocol == "RTMP") {
         return "";
       }
@@ -172,7 +172,7 @@ export default {
   },
   components: { LivePlayer },
   methods: {
-    play(title, snap, serial, code, streamInfo) {
+    play(title, serial, code, streamInfo) {
       streamInfo = streamInfo || {};
       var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
       var protocol = this.isMobile() ? "HLS" : "RTMP";
@@ -181,16 +181,18 @@ export default {
         protocol = "FLV";
       }
       this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
-      this.videoUrl = videoUrl || "";
       this.protocol = protocol;
       this.videoTitle = title || "";
-      this.snapUrl = snap || "";
+      this.snapUrl = streamInfo.SnapURL || "";
       this.serial = serial || "";
       this.code = code || "";
       this.streamid = streamInfo.StreamID || "";
       this.bRecording = streamInfo.RecordStartAt != ""
       this.streamInfo = streamInfo;
 
+      this.$nextTick(() => {
+        this.videoUrl = videoUrl || "";
+      })
       $(this.$el).modal("show");
     },
     setProtocol(protocol) {
