@@ -348,12 +348,15 @@ export default {
         },
         smschange() {
             this.getSMSInfo()
-            for (var i=0;i<this.smss.length;i++) {
-                if (this.smss[i].Serial == this.smsserial) {
-                    this.sms = this.smss[i]
-                    break
+            $.get("api/v1/sms/list").then(ret => {
+                this.smss = ret
+                for (var i = 0; i < this.smss.length; i++) {
+                    if (this.smss[i].Serial == this.smsserial) {
+                        this.sms = this.smss[i]
+                        break
+                    }
                 }
-            }
+            })
         },
         checkCodeSMS() {
             if (this.activationCodeSMS == "") {
@@ -393,7 +396,7 @@ export default {
     overflow: hidden;
 
     .box-card {
-        &[class*="col-"]{
+        &[class*="col-"] {
             margin-bottom: -99999px;
             padding-bottom: 99999px;
         }
