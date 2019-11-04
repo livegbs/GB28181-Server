@@ -84,7 +84,7 @@
                         <div class="form-group" v-if="smss.length > 0">
                             <label class="col-sm-4 control-label">SMS 服务</label>
                             <div class="col-sm-7">
-                                <select class="form-control" :value="smsserial" @change="smschange">
+                                <select class="form-control" v-model.trim="smsserial" @change="smschange">
                                     <option v-for="(c, idx) in smss" :value="c.Serial" :key="idx">{{c.Serial}}</option>
                                 </select>
                             </div>

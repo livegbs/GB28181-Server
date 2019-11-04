@@ -89,7 +89,7 @@
                 <h3>流媒体服务</h3>
             </div>
             <div class="col-md-6 no-padding" v-if="sms.Load">
-                <select style="margin-top: 23px;width:100%" :value="smsserial" @change="smschange">
+                <select style="margin-top: 23px;width:100%" v-model.trim="smsserial" @change="smschange">
                     <option v-for="(c, idx) in smss" :value="c.Serial" :key="idx"> SMS-{{c.Serial}}</option>
                 </select>
             </div>
@@ -348,6 +348,12 @@ export default {
         },
         smschange() {
             this.getSMSInfo()
+            for (var i=0;i<this.smss.length;i++) {
+                if (this.smss[i].Serial == this.smsserial) {
+                    this.sms = this.smss[i]
+                    break
+                }
+            }
         },
         checkCodeSMS() {
             if (this.activationCodeSMS == "") {
