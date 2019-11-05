@@ -15,6 +15,7 @@
     "@liveqing/liveplayer": "1.5.8",
     "@penggy/jquery.nicescroll": "3.7.7",
     "@xkeshi/vue-qrcode": "0.3.0",
+    "@xunlei/vue-context-menu": "1.0.2",
     "admin-lte": "2.4.8",
     "axios": "0.17.1",
     "babel-core": "6.26.3",

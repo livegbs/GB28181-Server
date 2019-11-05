@@ -100,7 +100,7 @@
               </el-table-column>
               <el-table-column prop="NumOutputs" label="在线人数" min-width="100"></el-table-column>
               <el-table-column prop="SubCount" label="子节点数" min-width="100"></el-table-column>
-              <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatManufacturer" show-overflow-tooltip></el-table-column>
               <el-table-column label="操作" min-width="260" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0">
@@ -255,6 +255,9 @@ export default {
       this.getChannels();
     },
     formatName(row, col, cell) {
+      return row.CustomName || row.Name || "-";
+    },
+    formatManufacturer(row, col, cell) {
       if (cell) return cell;
       return "-";
     },

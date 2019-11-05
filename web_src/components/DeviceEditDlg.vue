@@ -5,49 +5,49 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" readonly="readonly" id="input-serial" name="serial" v-model.trim="form.serial" autocomplete="new-password" data-vv-as="设备编号" v-validate="'required'">
+                <input type="text" class="form-control" readonly="readonly" id="input-serial" name="serial" v-model.trim="form.serial" data-vv-as="设备编号" v-validate="'required'">
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('name')}">
             <label for="input-name" class="col-sm-4 control-label">设备名称
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-name" name="name" v-model.trim="form.name" autocomplete="new-password" data-vv-as="设备名称" @keydown.enter="$el.querySelector('#input-password').focus()">
+                <input type="text" class="form-control" id="input-name" name="name" v-model.trim="form.name" data-vv-as="设备名称" @keydown.enter="$el.querySelector('#input-password').focus()">
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('password')}">
             <label for="input-password" class="col-sm-4 control-label">接入密码
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-password" name="password" v-model.trim="form.password" placeholder="默认使用 livecms.ini > sip > device_password" autocomplete="new-password" data-vv-as="接入密码" @keydown.enter="$el.querySelector('#input-contact-ip').focus()">
+                <input type="text" class="form-control" id="input-password" name="password" v-model.trim="form.password" placeholder="默认使用 livecms.ini > sip > device_password" data-vv-as="接入密码" @keydown.enter="$el.querySelector('#input-contact-ip').focus()">
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('contact_ip')}">
             <label for="input-contact-ip" class="col-sm-4 control-label">信令联络 IP
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-contact-ip" name="contact_ip" v-model.trim="form.contact_ip" placeholder="默认使用 livecms.ini > sip > host" autocomplete="new-password" data-vv-as="信令联络 IP" @keydown.enter="$el.querySelector('#input-recv-stream-ip').focus()">
+                <input type="text" class="form-control" id="input-contact-ip" name="contact_ip" v-model.trim="form.contact_ip" placeholder="默认使用 livecms.ini > sip > host" data-vv-as="信令联络 IP" @keydown.enter="$el.querySelector('#input-recv-stream-ip').focus()">
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('recv_stream_ip')}">
             <label for="input-recv-stream-ip" class="col-sm-4 control-label">收流 IP
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-recv-stream-ip" name="recv_stream_ip" v-model.trim="form.recv_stream_ip" placeholder="默认使用 livesms.ini > sip > host" autocomplete="new-password" data-vv-as="收流 IP" @keydown.enter="$el.querySelector('#input-catalog-interval').focus()">
+                <input type="text" class="form-control" id="input-recv-stream-ip" name="recv_stream_ip" v-model.trim="form.recv_stream_ip" placeholder="默认使用 livesms.ini > sip > host" data-vv-as="收流 IP" @keydown.enter="$el.querySelector('#input-catalog-interval').focus()">
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('catalog_interval')}">
             <label for="input-catalog-interval" class="col-sm-4 control-label">通道更新周期(秒)
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-catalog-interval" name="catalog_interval" v-model.trim="form.catalog_interval" placeholder="3600" autocomplete="new-password" @keydown.enter="$el.querySelector('#input-subscribe-interval').focus()">
+                <input type="text" class="form-control" id="input-catalog-interval" name="catalog_interval" v-model.trim="form.catalog_interval" placeholder="3600" @keydown.enter="$el.querySelector('#input-subscribe-interval').focus()">
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('subscribe_interval')}">
             <label for="input-catalog-interval" class="col-sm-4 control-label">订阅周期(秒)
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-subscribe-interval" name="subscribe_interval" v-model.trim="form.subscribe_interval" placeholder="默认不订阅" autocomplete="new-password" @keydown.enter="onSubmit">
+                <input type="text" class="form-control" id="input-subscribe-interval" name="subscribe_interval" v-model.trim="form.subscribe_interval" placeholder="默认不订阅" @keydown.enter="onSubmit">
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('media_transport')}">

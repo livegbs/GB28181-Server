@@ -18,7 +18,7 @@
     <div class="video-show col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
       <div>
         <div class="no-margin no-padding video" v-for="(player,index) in players" :key="index" @mousemove="resetCloseTimer(player)" @touchstart="resetCloseTimer(player)" :class="{'col-sm-12': playerLength == 1,'col-sm-6': playerLength == 4,'col-sm-4': playerLength == 9,'col-sm-3': playerLength == 16}">
-          <LivePlayer :videoUrl="player.url" live muted :hasaudio="false" stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="player.bLoading" @message="$message"></LivePlayer>
+          <LivePlayer :videoUrl="player.url" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="player.bLoading" @message="$message"></LivePlayer>
           <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo(index)">关闭</div>
           <div class="video-close" v-show="!player.url && player.bCloseShow" v-on:click="selectChannel(index,player)">选择通道</div>
         </div>

@@ -19,23 +19,32 @@
         <br>
         <div class="clearfix"></div>
         <div class="content">
-          <div class="col-sm-4">
-            <el-tree ref="devTree"
-              :props="treeProps"
-              :load="treeLoad"
-              :filter-node-method="treeFilter"
-              lazy
-              @node-click="treeNodeClick"
+          <div class="col-md-4" ref="devTreeWrapper" id="dev-tree-wrapper">
+            <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree"
+              :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy draggable
+              @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick"
+              :allow-drag="treeAllowDrag" :allow-drop="treeAllowDrop" @node-drop="treeNodeDrop"
             >
-            <span class="custom-tree-node" slot-scope="{node, data}">
-              <span :class="{'text-green': data.status === 'ON' && data.subCount === 0}">
-                <i :class="['fa', {'fa-group' : data.subCount > 0, 'fa-camera': data.subCount == 0 }]"></i>
-                <span class="ellipsis">{{node.label}}</span>
+              <span class="custom-tree-node" slot-scope="{node, data}">
+                <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && !data.custom}">
+                  <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom, 'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
+                  <span class="ellipsis" :title="node.label">{{node.label}}</span>
+                </span>
               </span>
-            </span>
             </el-tree>
           </div>
-          <div class="col-sm-8">
+          <VueContextMenu class="right-menu" :target="contextMenuTarget" :show="contextMenuVisible" @update:show="(show) => contextMenuVisible = show">
+            <a href="javascript:;" @click="showNodeAddDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom">
+              <i class="fa fa-plus"></i> 新建
+            </a>
+            <a href="javascript:;" @click="showNodeEditDlg" v-show="contextMenuNodeData && contextMenuNodeData.customName != '本域'">
+              <i class="fa fa-edit"></i> 编辑
+            </a>
+            <a href="javascript:;" @click="removeCustomNode" v-show="showRemoveContextMenu()">
+              <i class="fa fa-remove"></i> 删除
+            </a>
+          </VueContextMenu>
+          <div class="col-md-8">
             <br>
               <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
                 <LivePlayer :videoUrl="player.url" live muted :hasaudio="player.hasAudio" stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
@@ -49,10 +58,10 @@
           </div>
           <br>
         </div>
-
       </div>
       <!-- <div class="box-footer">
       </div> -->
+      <DeviceTreeNodeEditDlg ref="nodeEditDlg" @submit="treeRefresh" style="z-index:2001;"></DeviceTreeNodeEditDlg>
     </div>
 </template>
 
@@ -61,6 +70,8 @@ import _ from "lodash";
 import url from "url";
 import { mapState } from "vuex"
 import LivePlayer from '@liveqing/liveplayer'
+import { component as VueContextMenu } from '@xunlei/vue-context-menu'
+import DeviceTreeNodeEditDlg from 'components/DeviceTreeNodeEditDlg.vue'
 export default {
   props: {},
   data() {
@@ -68,38 +79,45 @@ export default {
       q: "",
       loading: false,
       timer: 0,
+      showTree: true,
       player: {
         url: "",
+        protocol: "",
+        poster: "",
         hasAudio: false,
         bLoading: false,
         bCloseShow: false,
       },
+      contextMenuTarget: null,
+      contextMenuVisible: false,
+      contextMenuNodeData: null,
       treeProps: {
         label: (data, node) => {
           node.serial = data.serial;
           node.code = data.code;
-          var label = (data.name || data.id);
-          if(data.subCount > 0) {
+          var label = (data.customName || data.name || data.id);
+          if(data.subCount > 0 || !data.code || data.custom) {
             label += ` [${data.onlineSubCount}/${data.subCount}]`;
           }
           return label;
         },
         isLeaf: (data, node) => {
-          return data.subCount === 0 && data.code;
+          return data.subCount === 0 && data.code && data.serial && !data.custom;
         },
         disabled: (data, node) => {
-          return data.subCount === 0 && data.status != "ON";
+          return data.subCount === 0 && data.status != "ON" && data.custom;
         }
-      }
+      },
     };
   },
   components: {
-    LivePlayer
+    LivePlayer, VueContextMenu, DeviceTreeNodeEditDlg
   },
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
   },
   mounted() {
+    this.contextMenuTarget = document.querySelector('#dev-tree-wrapper')
   },
   beforeDestroy() {
     if (this.timer) {
@@ -113,25 +131,70 @@ export default {
     }
   },
   methods: {
-    treeLoad(node, resolve) {
-      var serial = node.serial||"";
-      var pcode = node.code||"";
+    treeLoad(data, resolve) {
+      var serial = data.serial||"";
+      var pcode = data.code||"";
       $.get("/api/v1/device/channeltree", {
         serial: serial,
         pcode: pcode
       }).then(ret => {
         resolve((ret||[]).map(v => {
           return Object.assign(v, {
+            key: serial + ":" + pcode + ":" + v.id,
           })
         }));
       })
     },
     treeFilter(value, data) {
        if (!value) return true;
-       return data.name.indexOf(value) !== -1 || data.id.indexOf(value) !== -1;
+       return data.name.indexOf(value) !== -1 || data.customName.indexOf(value) !== -1 || data.id.indexOf(value) !== -1;
+    },
+    treeAllowDrag(node) {
+      if(node && node.data && node.data.code) return true;
+      return false;
+    },
+    treeAllowDrop(dragNode, dropNode, type) {
+      if(type != 'inner' || !dragNode || !dropNode) return false;
+      var drag = dragNode.data;
+      var drop = dropNode.data;
+      if(!drag || !drop) return false;
+      if(!drop.custom) return false;
+      if(drag.custom && drag.serial != drop.serial) return false;
+      if(!drag.custom && !drop.code) return false;
+      return true;
+    },
+    treeNodeDrop(dragNode, dropNode, type, event) {
+      if(type == 'inner') {
+        var drag = dragNode.data;
+        var drop = dropNode.data;
+        if(!drag || !drop) return;
+        if(!drag.custom) {
+          $.get("/api/v1/channel/move", {
+            serial: drag.serial,
+            code: drag.code,
+            parentid: drop.id,
+          }).then(() => {
+            this.treeRefresh();
+          })
+        } else {
+          $.get("/api/v1/channel/move", {
+            serial: drag.serial,
+            code: drag.code,
+            parentid: drop.code,
+          }).then(() => {
+            this.treeRefresh();
+          })
+        }
+      }
+    },
+    treeNodeRightClick(event, data, node, c) {
+      this.contextMenuNodeData = data;
+      var new_event = new MouseEvent(event.type, event);
+      document.querySelector('#dev-tree-wrapper').dispatchEvent(new_event);
     },
     treeNodeClick(data, node, c) {
-      if(data.subCount === 0 && data.status === "ON") {
+      this.contextMenuNodeData = null;
+      if(data.subCount === 0 && data.status === "ON" && !data.custom) {
         this.closeVideo();
         this.player.bLoading = true;
         $.get("/api/v1/stream/start", {
@@ -140,15 +203,77 @@ export default {
         }).then(streamInfo => {
           streamInfo = streamInfo || {};
           var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
+          var protocol = this.isMobile() ? "HLS" : "RTMP";
           if(this.flvSupported() && streamInfo.FLV) {
             videoUrl = streamInfo.FLV;
+            protocol = "FLV";
           }
+          this.player.protocol = protocol;
+          this.player.poster = protocol == "RTMP" ? "" : streamInfo.SnapURL;
           this.player.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
-          this.player.url = videoUrl || "";
+          this.$nextTick(() => {
+            this.player.url = videoUrl || "";
+          })
         }).always(() => {
           this.player.bLoading = false;
         })
       }
+    },
+    showRemoveContextMenu() {
+      if(this.contextMenuNodeData && this.contextMenuNodeData.code) {
+        if(!this.contextMenuNodeData.custom) {
+          var pData = this.getParentData();
+          if(pData && !pData.custom) return false;
+        }
+        return true;
+      }
+      return false;
+    },
+    showNodeEditDlg() {
+      this.contextMenuVisible = false;
+      var data = Object.assign({}, this.contextMenuNodeData, { parent: this.getParentData(), add: false});
+      this.$refs['nodeEditDlg'].show(data);
+    },
+    showNodeAddDlg() {
+      this.contextMenuVisible = false;
+      var data = Object.assign({
+        serial: this.contextMenuNodeData.serial||'',
+        code: '',
+        name: '',
+        customName: '',
+      }, { parent: this.contextMenuNodeData, add: true});
+      this.$refs['nodeEditDlg'].show(data);
+    },
+    removeCustomNode() {
+      this.contextMenuVisible = false;
+      if(!this.contextMenuNodeData) return;
+      var name = this.contextMenuNodeData.customName || this.contextMenuNodeData.name || this.contextMenuNodeData.id;
+      this.$confirm(`确认删除 ${name}`, "提示").then(() => {
+        $.get("/api/v1/channel/remove", {
+          serial: this.contextMenuNodeData.serial,
+          code: this.contextMenuNodeData.code,
+        }).always(() => {
+          this.treeRefresh();
+        });
+      }).catch(() => {});
+    },
+    treeRefresh() {
+      this.showTree = false;
+      this.$nextTick(() => {
+        this.showTree = true;
+      })
+    },
+    getParentData() {
+      if(!this.contextMenuNodeData) return null;
+      if(!this.$refs["devTree"]) return null;
+      var pNode = this.$refs["devTree"].getNode(this.contextMenuNodeData);
+      if(!pNode) return null;
+      if(!pNode.parent) return null;
+      return pNode.parent.data;
+    },
+    handleClick() {
+      this.contextMenuVisible = false;
+      alert('aaa');
     },
     resetCloseTimer() {
       this.player.bCloseShow = true;
@@ -177,6 +302,45 @@ export default {
 </script>
 
 <style lang="less" scoped>
+#dev-tree-wrapper {
+  min-height: 200px;
+  max-height: 800px;
+  overflow: auto;
+}
+.right-menu {
+  position: fixed;
+  background: #fff;
+  border: solid 1px rgba(0, 0, 0, .2);
+  border-radius: 3px;
+  z-index: 999;
+  display: none;
+}
+.right-menu a {
+  width: 75px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  display: block;
+  color: #1a1a1a;
+}
+.right-menu a:hover {
+  background: #eee;
+  color: #fff;
+}
+.right-menu {
+    border: 1px solid #eee;
+    box-shadow: 0 0.5em 1em 0 rgba(0,0,0,.1);
+    border-radius: 1px;
+}
+a {
+    text-decoration: none;
+}
+.right-menu a {
+    padding: 2px;
+}
+.right-menu a:hover {
+    background: #42b983;
+}
 .video {
   position: relative;
 

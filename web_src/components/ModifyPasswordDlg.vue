@@ -76,7 +76,7 @@ export default {
                     this.$router.replace("/logout");
                 }).catch(() => {
                     this.$router.replace("/logout");
-                })                
+                })
             })
         },
         show(data) {
@@ -88,7 +88,7 @@ export default {
         },
         md5(text) {
             return crypto.createHash('md5').update(text, "utf8").digest('hex');
-        }        
+        }
     }
 }
 </script>

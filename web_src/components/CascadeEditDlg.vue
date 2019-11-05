@@ -6,7 +6,7 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="name" name="Name" v-model.trim="form.Name" data-vv-as="名称" autocomplete="new-password" v-validate="'required'" @keydown.enter="$el.querySelector('#device-id').focus()">
+                <input type="text" class="form-control" id="name" name="Name" v-model.trim="form.Name" data-vv-as="名称" v-validate="'required'" @keydown.enter="$el.querySelector('#device-id').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Serial')}">
@@ -14,7 +14,7 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="device-id" name="Serial" v-model.trim="form.Serial" data-vv-as="SIP服务国标编码" autocomplete="new-password" v-validate="'required'" @keydown.enter="$el.querySelector('#realm').focus()">
+                <input type="text" class="form-control" id="device-id" name="Serial" v-model.trim="form.Serial" data-vv-as="SIP服务国标编码" v-validate="'required'" @keydown.enter="$el.querySelector('#realm').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Realm')}">
@@ -22,7 +22,7 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="realm" name="Realm" v-model.trim="form.Realm" data-vv-as="SIP服务国标域" autocomplete="new-password" v-validate="" placeholder="选填" @keydown.enter="$el.querySelector('#host').focus()">
+                <input type="text" class="form-control" id="realm" name="Realm" v-model.trim="form.Realm" data-vv-as="SIP服务国标域" v-validate="" placeholder="选填" @keydown.enter="$el.querySelector('#host').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Host')}">
@@ -30,7 +30,7 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="host" name="Host" v-model.trim="form.Host" data-vv-as="SIP服务IP" autocomplete="new-password" v-validate="'required|url'" @keydown.enter="$el.querySelector('#port').focus()">
+                <input type="text" class="form-control" id="host" name="Host" v-model.trim="form.Host" data-vv-as="SIP服务IP" v-validate="'required|url'" @keydown.enter="$el.querySelector('#port').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Port')}">
@@ -38,7 +38,7 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="port" name="Port" v-model.trim="form.Port" data-vv-as="SIP服务端口" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#local-serial').focus()">
+                <input type="text" class="form-control" id="port" name="Port" v-model.trim="form.Port" data-vv-as="SIP服务端口" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#local-serial').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalSerial')}">
@@ -46,7 +46,7 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="local-serial" name="LocalSerial" v-model.trim="form.LocalSerial" data-vv-as="设备国标编号" autocomplete="new-password" v-validate="" placeholder="默认使用 livecms.ini > sip > serial" @keydown.enter="$el.querySelector('#local-host').focus()">
+                <input type="text" class="form-control" id="local-serial" name="LocalSerial" v-model.trim="form.LocalSerial" data-vv-as="设备国标编号" v-validate="" placeholder="默认使用 livecms.ini > sip > serial" @keydown.enter="$el.querySelector('#local-host').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalHost')}">
@@ -54,7 +54,7 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="local-host" name="LocalHost" v-model.trim="form.LocalHost" data-vv-as="本地IP" autocomplete="new-password" v-validate="" placeholder="默认使用 livecms.ini > sip > host" @keydown.enter="$el.querySelector('#local-port').focus()">
+                <input type="text" class="form-control" id="local-host" name="LocalHost" v-model.trim="form.LocalHost" data-vv-as="本地IP" v-validate="" placeholder="默认使用 livecms.ini > sip > host" @keydown.enter="$el.querySelector('#local-port').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalPort')}">
@@ -62,7 +62,7 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="local-port" name="LocalPort" v-model.trim="form.LocalPort" data-vv-as="本地端口" autocomplete="new-password" v-validate="'numeric'" placeholder="选填" @keydown.enter="$el.querySelector('#password').focus()">
+                <input type="text" class="form-control" id="local-port" name="LocalPort" v-model.trim="form.LocalPort" data-vv-as="本地端口" v-validate="'numeric'" placeholder="选填" @keydown.enter="$el.querySelector('#password').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('Password')}">
@@ -70,7 +70,7 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" autocomplete="new-password" v-validate="" @keydown.enter="$el.querySelector('#register-timeout').focus()">
+                <input type="text" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" v-validate="" @keydown.enter="$el.querySelector('#register-timeout').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterTimeout')}">
@@ -78,7 +78,7 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="register-timeout" name="RegisterTimeout" v-model.trim="form.RegisterTimeout" data-vv-as="注册有效期" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#register-interval').focus()">
+                <input type="text" class="form-control" id="register-timeout" name="RegisterTimeout" v-model.trim="form.RegisterTimeout" data-vv-as="注册有效期" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#register-interval').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterInterval')}">
@@ -86,7 +86,7 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="register-interval" name="RegisterInterval" v-model.trim="form.RegisterInterval" data-vv-as="注册周期" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#keepalive-interval').focus()">
+                <input type="text" class="form-control" id="register-interval" name="RegisterInterval" v-model.trim="form.RegisterInterval" data-vv-as="注册周期" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#keepalive-interval').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('KeepaliveInterval')}">
@@ -94,7 +94,7 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="keepalive-interval" name="KeepaliveInterval" v-model.trim="form.KeepaliveInterval" data-vv-as="心跳周期" autocomplete="new-password" v-validate="'required|numeric'" @keydown.enter="onSubmit">
+                <input type="text" class="form-control" id="keepalive-interval" name="KeepaliveInterval" v-model.trim="form.KeepaliveInterval" data-vv-as="心跳周期" v-validate="'required|numeric'" @keydown.enter="onSubmit">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('CatalogGroupSize')}">
