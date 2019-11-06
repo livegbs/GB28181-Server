@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
-                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" true-label="1" false-label="0" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
+                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -185,7 +185,7 @@ export default {
             TimeServer: "",
             AckTimeout: 0,
             KeepaliveTimeout: 0,
-            APIAuth: "0",
+            APIAuth: false,
             BlackSerialList: "",
             BlackIPList: "",
             remoteBasicData: "",
