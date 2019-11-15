@@ -44,7 +44,7 @@
           <el-table-column label="操作" min-width="220" v-if="isMobile()">
             <template slot-scope="props">
                 <div class="btn-group btn-group-xs">
-                    <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.Online && props.row.ChannelCount > 0">
+                    <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">
                         查看通道
                     </router-link>
                     <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && userInfo">
@@ -91,7 +91,7 @@
           <el-table-column label="操作" min-width="220" fixed="right" v-if="!isMobile()">
             <template slot-scope="props">
                 <div class="btn-group btn-group-xs">
-                    <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.Online && props.row.ChannelCount > 0">
+                    <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">
                        <i class="fa fa-info"></i> 查看通道
                     </router-link>
                     <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && userInfo">
