@@ -95,7 +95,7 @@
                             </div>
                         </div>
                     </form>
-                    <form v-if="smsbaseconfig.Host" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
+                    <form v-if="smsbaseconfig.Host&&smss.length > 0" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
                         <div :class="['form-group' , {'has-error': errors.has('Serial')}]">
                             <label class="col-sm-4 control-label">SIP ID</label>
                             <div class="col-sm-7">
@@ -149,6 +149,7 @@
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache">直播秒开</el-checkbox>
+                                <el-checkbox style="margin-left:-10px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.HLSOFF" name="HLSOFF">关闭HLS</el-checkbox>
                                 <span class="help-block"></span>
                             </div>
                         </div>
