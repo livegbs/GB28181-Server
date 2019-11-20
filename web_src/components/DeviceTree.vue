@@ -26,8 +26,9 @@
               :allow-drag="treeAllowDrag" :allow-drop="treeAllowDrop" @node-drop="treeNodeDrop"
             >
               <span class="custom-tree-node" slot-scope="{node, data}">
-                <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && !data.custom}">
-                  <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom, 'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
+                <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
+                  <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
+                    'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
                   <span class="ellipsis" :title="node.label">{{node.label}}</span>
                 </span>
               </span>
@@ -47,7 +48,7 @@
           <div class="col-md-8">
             <br>
               <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
-                <LivePlayer :videoUrl="player.url" live muted :hasaudio="player.hasAudio" stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
+                <LivePlayer :videoUrl="player.url" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
                 <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo()">关闭</div>
               </div>
             <br>
@@ -84,7 +85,6 @@ export default {
         url: "",
         protocol: "",
         poster: "",
-        hasAudio: false,
         bLoading: false,
         bCloseShow: false,
       },
@@ -105,7 +105,7 @@ export default {
           return data.subCount === 0 && data.code && data.serial && !data.custom;
         },
         disabled: (data, node) => {
-          return data.subCount === 0 && data.status != "ON" && data.custom;
+          return data.subCount === 0 && data.status != "ON" && !data.custom;
         }
       },
     };
@@ -194,7 +194,7 @@ export default {
     },
     treeNodeClick(data, node, c) {
       this.contextMenuNodeData = null;
-      if(data.subCount === 0 && data.status === "ON" && !data.custom) {
+      if(data.subCount === 0 && data.status === "ON" && !data.custom && data.serial && data.code) {
         this.closeVideo();
         this.player.bLoading = true;
         $.get("/api/v1/stream/start", {
@@ -210,7 +210,6 @@ export default {
           }
           this.player.protocol = protocol;
           this.player.poster = protocol == "RTMP" ? "" : streamInfo.SnapURL;
-          this.player.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
           this.$nextTick(() => {
             this.player.url = videoUrl || "";
           })
@@ -286,7 +285,6 @@ export default {
     },
     closeVideo() {
       this.player.url = "";
-      this.player.hasAudio = false;
       this.player.bLoading = false;
       this.player.bCloseShow = false;
     }

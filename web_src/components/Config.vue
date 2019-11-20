@@ -95,7 +95,7 @@
                             </div>
                         </div>
                     </form>
-                    <form v-if="smsbaseconfig.Host&&smss.length > 0" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
+                    <form v-if="smsbaseconfig.Host && smss.length > 0" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
                         <div :class="['form-group' , {'has-error': errors.has('Serial')}]">
                             <label class="col-sm-4 control-label">SIP ID</label>
                             <div class="col-sm-7">
@@ -149,7 +149,8 @@
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache">直播秒开</el-checkbox>
-                                <el-checkbox style="margin-left:-10px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.HLSOFF" name="HLSOFF">关闭HLS</el-checkbox>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <el-checkbox style="margin-left:-10px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.HLS" name="HLS">HLS</el-checkbox>
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -262,7 +263,7 @@ export default {
             };
         },
         getBaseConfig() {
-            $.get("api/v1/getbaseconfig").then(ret => {
+            $.get("/api/v1/getbaseconfig").then(ret => {
                 this.Serial = ret.Serial;
                 this.Realm = ret.Realm;
                 this.Host = ret.Host;
@@ -280,7 +281,7 @@ export default {
         },
         getSMSList() {
             if (this.smsserial == "") {
-                $.get("api/v1/sms/list").then(ret => {
+                $.get("/api/v1/sms/list").then(ret => {
                     this.smss = ret
                     if (ret.length > 0) {
                         this.sms = ret[0]
@@ -292,7 +293,7 @@ export default {
         },
         getSMSInfo() {
             if (this.smsserial != "") {
-                $.get("api/v1/sms/getbaseconfig", {
+                $.get("/api/v1/sms/getbaseconfig", {
                     serial: this.smsserial
                 }).then(ret => {
                     this.smsbaseconfig = ret;
