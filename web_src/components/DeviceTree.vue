@@ -270,10 +270,6 @@ export default {
       if(!pNode.parent) return null;
       return pNode.parent.data;
     },
-    handleClick() {
-      this.contextMenuVisible = false;
-      alert('aaa');
-    },
     resetCloseTimer() {
       this.player.bCloseShow = true;
       if (this.player.closeTimer) {
