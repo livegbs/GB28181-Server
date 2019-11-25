@@ -69,6 +69,8 @@
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="SIPLog" name="SIPLog">信令日志</el-checkbox>
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -151,6 +153,8 @@
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache">直播秒开</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <el-checkbox style="margin-left:-10px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.HLS" name="HLS">HLS</el-checkbox>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <el-checkbox style="margin-left:-10px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.SIPLog" name="SIPLog">信令日志</el-checkbox>
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -188,6 +192,7 @@ export default {
             AckTimeout: 0,
             KeepaliveTimeout: 0,
             APIAuth: false,
+            SIPLog: false,
             BlackSerialList: "",
             BlackIPList: "",
             remoteBasicData: "",
@@ -258,6 +263,7 @@ export default {
                 AckTimeout: this.AckTimeout,
                 KeepaliveTimeout: this.KeepaliveTimeout,
                 APIAuth: this.APIAuth,
+                SIPLog: this.SIPLog,
                 BlackSerialList: this.BlackSerialList,
                 BlackIPList: this.BlackIPList
             };
@@ -273,6 +279,7 @@ export default {
                 this.AckTimeout = ret.AckTimeout;
                 this.KeepaliveTimeout = ret.KeepaliveTimeout;
                 this.APIAuth = ret.APIAuth;
+                this.SIPLog = ret.SIPLog;
                 this.BlackSerialList = ret.BlackSerialList;
                 this.BlackIPList = ret.BlackIPList;
 
