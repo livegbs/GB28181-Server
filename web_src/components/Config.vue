@@ -66,6 +66,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="black-ua-list" class="col-sm-4 control-label">黑名单 UA</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="black-ua-list" class="form-control" name="BlackUAList" data-vv-as="黑名单 UA" v-model.trim="BlackUAList">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
@@ -195,6 +202,7 @@ export default {
             SIPLog: false,
             BlackSerialList: "",
             BlackIPList: "",
+            BlackUAList: "",
             remoteBasicData: "",
             remoteSMSData: "",
             smsserial: "",
@@ -265,7 +273,8 @@ export default {
                 APIAuth: this.APIAuth,
                 SIPLog: this.SIPLog,
                 BlackSerialList: this.BlackSerialList,
-                BlackIPList: this.BlackIPList
+                BlackIPList: this.BlackIPList,
+                BlackUAList: this.BlackUAList,
             };
         },
         getBaseConfig() {
@@ -282,6 +291,7 @@ export default {
                 this.SIPLog = ret.SIPLog;
                 this.BlackSerialList = ret.BlackSerialList;
                 this.BlackIPList = ret.BlackIPList;
+                this.BlackUAList = ret.BlackUAList;
 
                 this.remoteBasicData = JSON.stringify(this.getBasicCommitObject());
             });
