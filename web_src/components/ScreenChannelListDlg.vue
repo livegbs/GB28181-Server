@@ -29,7 +29,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="SubCount" label="子节点数" min-width="100" sortable="custom"></el-table-column>
-            <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatManufacturer" show-overflow-tooltip></el-table-column>
         </el-table>
         <el-pagination v-if="total > 0" layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
         <div class="clearfix"></div>
@@ -118,8 +118,11 @@ export default {
         this.doSearch();
     }, 500),
     formatName(row, col, cell) {
-        if (cell) return cell;
-        return "-";
+      return row.CustomName || row.Name || "-";
+    },
+    formatManufacturer(row, col, cell) {
+      if (cell) return cell;
+      return "-";
     },
     getChannels() {
         this.loading = true;
