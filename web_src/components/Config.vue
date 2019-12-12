@@ -32,7 +32,7 @@
                         </div>
                         <div :class="['form-group' , {'has-error': errors.has('Port')}]">
                             <label for="sip-port" class="col-sm-4 control-label">SIP 端口</label>
-                            <div class="col-sm-7 checkbox">
+                            <div class="col-sm-7">
                                 <input type="text" id="sip-port" class="form-control" name="Port" data-vv-as="SIP 端口" v-validate="'required|numeric'" v-model.trim="Port">
                                 <span class="help-block">{{errors.first('Port')}}</span>
                             </div>
