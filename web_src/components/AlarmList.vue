@@ -41,7 +41,7 @@
             <el-table :data="alarms" stripe :default-sort="{prop: 'Time', order: 'descending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
               <el-table-column prop="DeviceID" label="报警设备" min-width="200" :formatter="formatDevice" show-overflow-tooltip></el-table-column>
               <el-table-column prop="ChannelID" label="报警通道" min-width="200" :formatter="formatChannel" show-overflow-tooltip></el-table-column>
-              <el-table-column label="操作" min-width="100" v-if="isMobile()" class-name="opt-group">
+              <el-table-column label="操作" min-width="100" v-if="isMobile()">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs">
                       <button type="button" class="btn btn-danger" @click.prevent="removeAlarm(props.row)">
@@ -61,7 +61,7 @@
                 </template>
               </el-table-column> -->
               <!-- <el-table-column prop="Description" label="描述" min-width="200" show-overflow-tooltip></el-table-column> -->
-              <el-table-column label="操作" min-width="100" fixed="right" v-if="!isMobile()" class-name="opt-group">
+              <el-table-column label="操作" min-width="100" fixed="right" v-if="!isMobile()">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs">
                         <button type="button" class="btn btn-danger" @click.prevent="removeAlarm(props.row)">
@@ -76,7 +76,7 @@
             <el-pagination layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
           </div>
         </div>
-        <div class="alert text-center" v-if="alarmPublishToRedis">
+        <div class="alert text-center" v-if="alarmPublishToRedis && serverInfo.IsDemo">
             <small>
                 <strong><i class="fa fa-info-circle"></i> 提示 : </strong>
                 已开启报警消息发布到 Redis, 可向 Redis 订阅 alarm 消息以获取实时报警 > SUBSCRIBE alarm; 消息内容为报警信息 JSON 序列化字符串
@@ -255,12 +255,6 @@ export default {
   }
 };
 </script>
-
-<style lang="less">
-.opt-group .cell {
-  overflow: visible;
-}
-</style>
 
 
 

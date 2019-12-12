@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="box box-primary">
       <div class="box-header">
         <h4 class="text-primary text-center">设备列表</h4>
@@ -111,8 +112,15 @@
       <div class="box-footer" v-if="total > 0">
         <el-pagination layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
       </div>
-      <DeviceEditDlg ref="deviceEditDlg" @submit="getDeviceList"></DeviceEditDlg>
     </div>
+    <div class="alert text-center" v-if="serverInfo.IsDemo">
+      <small>
+          <strong><i class="fa fa-info-circle"></i> 提示 : </strong>
+          可向 Redis 订阅 device 消息以获取设备实时状态 > SUBSCRIBE device; 消息内容为 "设备国标编号 ON/OFF"
+      </small>
+    </div>
+    <DeviceEditDlg ref="deviceEditDlg" @submit="getDeviceList"></DeviceEditDlg>
+  </div>
 </template>
 
 <script>
@@ -141,7 +149,7 @@ export default {
     DeviceEditDlg
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo", "serverInfo"])
   },
   mounted() {
     // this.$refs["q"].focus();

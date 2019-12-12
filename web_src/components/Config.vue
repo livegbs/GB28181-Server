@@ -45,30 +45,30 @@
                             </div>
                         </div>
                         <div :class="['form-group' , {'has-error': errors.has('TimeServer')}]">
-                            <label for="sip-time-server" class="col-sm-4 control-label">校时源</label>
+                            <label for="sip-time-server" class="col-sm-4 control-label">校时源(可选)</label>
                             <div class="col-sm-7">
                                 <input type="text" id="sip-time-server" class="form-control" name="TimeServer" data-vv-as="校时源" v-validate="" v-model.trim="TimeServer" placeholder="上级国标编号/NTP">
                                 <span class="help-block">{{errors.first('TimeServer')}}</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="black-serial-list" class="col-sm-4 control-label">黑名单 ID</label>
+                            <label for="black-serial-list" class="col-sm-4 control-label">黑名单 ID(可选)</label>
                             <div class="col-sm-7">
-                                <input type="text" id="black-serial-list" class="form-control" name="BlackSerialList" data-vv-as="黑名单 ID" v-model.trim="BlackSerialList">
+                                <input type="text" id="black-serial-list" class="form-control" name="BlackSerialList" data-vv-as="黑名单 ID" v-model.trim="BlackSerialList" placeholder="选填">
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="black-ip-list" class="col-sm-4 control-label">黑名单 IP</label>
+                            <label for="black-ip-list" class="col-sm-4 control-label">黑名单 IP(可选)</label>
                             <div class="col-sm-7">
-                                <input type="text" id="black-ip-list" class="form-control" name="BlackIPList" data-vv-as="黑名单 IP" v-model.trim="BlackIPList">
+                                <input type="text" id="black-ip-list" class="form-control" name="BlackIPList" data-vv-as="黑名单 IP" v-model.trim="BlackIPList" placeholder="选填">
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="black-ua-list" class="col-sm-4 control-label">黑名单 UA</label>
+                            <label for="black-ua-list" class="col-sm-4 control-label">黑名单 UA(可选)</label>
                             <div class="col-sm-7">
-                                <input type="text" id="black-ua-list" class="form-control" name="BlackUAList" data-vv-as="黑名单 UA" v-model.trim="BlackUAList">
+                                <input type="text" id="black-ua-list" class="form-control" name="BlackUAList" data-vv-as="黑名单 UA" v-model.trim="BlackUAList" placeholder="选填">
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -134,9 +134,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">RTSP 端口</label>
+                            <label class="col-sm-4 control-label">RTSP 端口(可选)</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" name="RTSPPort" data-vv-as="RTSP 端口" v-validate="'numeric'" v-model.trim="smsbaseconfig.RTSPPort">
+                                <input type="text" class="form-control" name="RTSPPort" data-vv-as="RTSP 端口" v-validate="'numeric'" v-model.trim="smsbaseconfig.RTSPPort" placeholder="选填">
                                 <span class="help-block">{{errors.first('RTSPPort')}}</span>
                             </div>
                         </div>
@@ -147,11 +147,18 @@
                                 <span class="help-block">{{errors.first('RTMPPort')}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('RecordPath')}]">
+                        <div :class="['form-group' , {'has-error': errors.has('RecordDir')}]">
                             <label class="col-sm-4 control-label">云录像目录</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" name="RecordPath" data-vv-as="云录像目录" v-model.trim="smsbaseconfig.RecordPath">
-                                <span class="help-block">{{errors.first('RecordPath')}}</span>
+                                <input type="text" class="form-control" name="RecordDir" data-vv-as="云录像目录" v-model.trim="smsbaseconfig.RecordDir">
+                                <span class="help-block">{{errors.first('RecordDir')}}</span>
+                            </div>
+                        </div>
+                        <div :class="['form-group' , {'has-error': errors.has('WanIP')}]">
+                            <label class="col-sm-4 control-label">外网 IP(可选)</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="WanIP" data-vv-as="外网 IP" v-model.trim="smsbaseconfig.WanIP" v-validate="'url'" placeholder="选填">
+                                <!-- <span class="help-block">{{errors.first('WanIP')}}</span> -->
                             </div>
                         </div>
                         <div class="form-group">
@@ -159,10 +166,11 @@
                             <div class="col-sm-7 checkbox">
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache">直播秒开</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <el-checkbox style="margin-left:-10px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.HLS" name="HLS">HLS</el-checkbox>
+                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.HLS" name="HLS">HLS</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <el-checkbox style="margin-left:-10px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.SIPLog" name="SIPLog">信令日志</el-checkbox>
-                                <span class="help-block"></span>
+                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.SIPLog" name="SIPLog">信令日志</el-checkbox>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.UseWanIPRecvStream" name="UseWanIPRecvStream">外网 IP 收流</el-checkbox>
                             </div>
                         </div>
                         <div class="form-group">

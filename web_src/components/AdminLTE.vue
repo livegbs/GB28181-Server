@@ -125,20 +125,21 @@ export default {
       if (xhr.status == 401) {
         location.href = `/login.html?r=${encodeURIComponent(window.location.href)}`;
         return false;
+      } else {
+        let msg = xhr.responseText || "网络请求失败";
+        if (xhr.status == 404) {
+          msg = "请求服务不存在或已停止";
+        } else if (xhr.status == 504) {
+          msg = "Gateway Timeout";
+        }
+        try {
+          msg = JSON.parse(msg)
+        } catch (error) {}
+        this.$message({
+          type: 'error',
+          message: msg
+        })
       }
-      let msg = xhr.responseText || "网络请求失败";
-      if (xhr.status == 404) {
-        msg = "请求服务不存在或已停止";
-      } else if (xhr.status == 504) {
-        msg = "Gateway Timeout";
-      }
-      try {
-        msg = JSON.parse(msg)
-      } catch (error) {}
-      this.$message({
-        type: 'error',
-        message: msg
-      })
     }).on("click", ".main-header .sidebar-toggle", function () {
       setTimeout(() => {
         localStorage["sidebar-collapse"] = $("body").hasClass("sidebar-collapse") ? "sidebar-collapse" : "";
