@@ -18,49 +18,42 @@
           </div>
         </form>
         <br>
+        <div class="clearfix"></div>
         <div class="content">
-          <div class="no-padding box-cards">
-            <el-card class="box-card col-md-4" shadow="never"  ref="devTreeWrapper" id="dev-tree-wrapper">
-                  <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="'max-height:'+palyerHeight()+'px;min-height:200px;overflow:auto;'"
-                    :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy draggable
-                    @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick"
-                    :allow-drag="treeAllowDrag" :allow-drop="treeAllowDrop" @node-drop="treeNodeDrop">
-                    <span class="custom-tree-node" slot-scope="{node, data}">
-                      <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
-                        <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
-                          'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
-                        <span class="ellipsis" :title="node.label">{{node.label}}</span>
-                      </span>
-                    </span>
-                  </el-tree>
-
-                <VueContextMenu class="right-menu" :target="contextMenuTarget" :show="contextMenuVisible" @update:show="(show) => contextMenuVisible = show">
-                  <a href="javascript:;" @click="showNodeAddDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom">
-                    <i class="fa fa-plus"></i> 新建
-                  </a>
-                  <a href="javascript:;" @click="showNodeEditDlg" v-show="contextMenuNodeData && contextMenuNodeData.customName != '本域'">
-                    <i class="fa fa-edit"></i> 编辑
-                  </a>
-                  <a href="javascript:;" @click="removeCustomNode" v-show="showRemoveContextMenu()">
-                    <i class="fa fa-remove"></i> 删除
-                  </a>
-                </VueContextMenu>
-
-            </el-card>
-
-           <el-card class="box-card col-md-8" shadow="never">
-              <div class="tree-player">
-                <br>
-                <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
-                  <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
-                  <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo()">关闭</div>
-                </div>
-                <br>
-                <br>
+          <div class="col-md-4" ref="devTreeWrapper" id="dev-tree-wrapper">
+            <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="'max-height:'+playerHeight()+'px;min-height:200px;overflow:auto;'"
+              :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy draggable
+              @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick"
+              :allow-drag="treeAllowDrag" :allow-drop="treeAllowDrop" @node-drop="treeNodeDrop"
+            >
+              <span class="custom-tree-node" slot-scope="{node, data}">
+                <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
+                  <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
+                    'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
+                  <span class="ellipsis" :title="node.label">{{node.label}}</span>
+                </span>
+              </span>
+            </el-tree>
+          </div>
+          <VueContextMenu class="right-menu" :target="contextMenuTarget" :show="contextMenuVisible" @update:show="(show) => contextMenuVisible = show">
+            <a href="javascript:;" @click="showNodeAddDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom">
+              <i class="fa fa-plus"></i> 新建
+            </a>
+            <a href="javascript:;" @click="showNodeEditDlg" v-show="contextMenuNodeData && contextMenuNodeData.customName != '本域'">
+              <i class="fa fa-edit"></i> 编辑
+            </a>
+            <a href="javascript:;" @click="removeCustomNode" v-show="showRemoveContextMenu()">
+              <i class="fa fa-remove"></i> 删除
+            </a>
+          </VueContextMenu>
+          <div class="col-md-8 tree-player">
+            <br>
+              <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
+                <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
+                <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo()">关闭</div>
               </div>
-
-            </el-card>
-
+            <br>
+            <br>
           </div>
           <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
             提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
@@ -160,11 +153,9 @@ export default {
     },
     treeFilter(value, data) {
        if (!value) return true;
-
        if (this.searchBY && (data.customName.indexOf("本域") !== -1 || data.id.indexOf("216") !== -1) ) {
           return true;
        }
-
        return data.name.indexOf(value) !== -1 || data.customName.indexOf(value) !== -1 || data.id.indexOf(value) !== -1;
     },
     treeAllowDrag(node) {
@@ -302,7 +293,7 @@ export default {
       this.player.bLoading = false;
       this.player.bCloseShow = false;
     },
-    palyerHeight() {
+    playerHeight() {
       return this.isMobile() ? 200: $(".tree-player").outerHeight()
     }
   },
@@ -369,22 +360,6 @@ a {
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-}
-
-
-.no-padding.box-cards {
-    overflow: hidden;
-     width: 100% !important;
-
-    .box-card {
-        &[class*="col-"] {
-            margin-bottom: -99999px;
-            padding-bottom: 99999px;
-        }
-        padding-left: 0;
-        padding-right: 0;
-        border: 1px solid #fff;
-    }
 }
 </style>
 
