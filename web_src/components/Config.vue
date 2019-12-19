@@ -9,32 +9,32 @@
             <div class="tab-content">
                 <div class="tab-pane  active" id="base-config">
                     <form role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmit">
-                        <div :class="['form-group' , {'has-error': errors.has('Serial')}]">
+                        <div :class="['form-group' , {'has-error':  !Serial}]">
                             <label for="sip-serial" class="col-sm-4 control-label">SIP ID</label>
                             <div class="col-sm-7">
                                 <input id="sip-serial" type="text" class="form-control" name="Serial" data-vv-as="SIP ID" v-validate="'required'" v-model.trim="Serial">
-                                <span class="help-block">{{errors.first('Serial')}}</span>
+                                <span class="help-block">{{!Serial ? "SIP ID 是必须的.":""}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('Realm')}]">
+                        <div :class="['form-group' , {'has-error': !Realm}]">
                             <label for="sip-realm" class="col-sm-4 control-label">SIP 域</label>
                             <div class="col-sm-7">
                                 <input id="sip-realm" type="text" class="form-control" name="Realm" data-vv-as="SIP 域" v-validate="'required'" v-model.trim="Realm">
-                                <span class="help-block">{{errors.first('Realm')}}</span>
+                                <span class="help-block">{{!Realm ? "SIP 域 是必须的.":""}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('Host')}]">
+                        <div :class="['form-group' , {'has-error': !Host}]">
                             <label for="sip-host" class="col-sm-4 control-label">SIP Host</label>
                             <div class="col-sm-7">
                                 <input type="text" id="sip-host" class="form-control" name="Host" data-vv-as="SIP Host" v-validate="'required'" v-model.trim="Host">
-                                <span class="help-block">{{errors.first('Host')}}</span>
+                                <span class="help-block">{{!Host ? "SIP Host 是必须的.":""}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('Port')}]">
+                        <div :class="['form-group' , {'has-error': !Port}]">
                             <label for="sip-port" class="col-sm-4 control-label">SIP 端口</label>
                             <div class="col-sm-7">
                                 <input type="text" id="sip-port" class="form-control" name="Port" data-vv-as="SIP 端口" v-validate="'required|numeric'" v-model.trim="Port">
-                                <span class="help-block">{{errors.first('Port')}}</span>
+                                <span class="help-block">{{!Port ? "SIP 端口 是必须的.":""}}</span>
                             </div>
                         </div>
                         <div :class="['form-group' , {'has-error': errors.has('DevicePassword')}]">
@@ -104,33 +104,33 @@
                             </div>
                         </div>
                     </form>
-                    <form v-if="smsbaseconfig.Host && smss.length > 0" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
-                        <div :class="['form-group' , {'has-error': errors.has('Serial')}]">
+                    <form v-if="smsbaseconfig.Host != undefined && smss.length > 0" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
+                        <div :class="['form-group' , {'has-error': !smsbaseconfig.Serial}]">
                             <label class="col-sm-4 control-label">SIP ID</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="Serial" data-vv-as="SIP ID" v-validate="'required'" v-model.trim="smsbaseconfig.Serial">
-                                <span class="help-block">{{errors.first('Serial')}}</span>
+                                <span class="help-block">{{!smsbaseconfig.Serial ? "SIP ID 是必须的.":""}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('Realm')}]">
+                        <div :class="['form-group' , {'has-error': !smsbaseconfig.Realm}]">
                             <label class="col-sm-4 control-label">SIP 域</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="Realm" data-vv-as="SIP 域" v-validate="'required'" v-model.trim="smsbaseconfig.Realm">
-                                <span class="help-block">{{errors.first('Realm')}}</span>
+                                <span class="help-block">{{!smsbaseconfig.Realm ? "SIP 域 是必须的.":""}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('Host')}]">
+                        <div :class="['form-group' , {'has-error': !smsbaseconfig.Host}]">
                             <label class="col-sm-4 control-label">SIP Host</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="Host" data-vv-as="SIP Host" v-validate="'required'" v-model.trim="smsbaseconfig.Host">
-                                <span class="help-block">{{errors.first('Host')}}</span>
+                                <span class="help-block">{{!smsbaseconfig.Host ? "SIP Host 是必须的.":""}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('Port')}]">
+                        <div :class="['form-group' , {'has-error': !smsbaseconfig.Port}]">
                             <label class="col-sm-4 control-label">SIP 端口</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="Port" data-vv-as="SIP 端口" v-validate="'required|numeric'" v-model.trim="smsbaseconfig.Port">
-                                <span class="help-block">{{errors.first('Port')}}</span>
+                                <span class="help-block">{{!smsbaseconfig.Port ? "SIP 端口 是必须的.":""}}</span>
                             </div>
                         </div>
                         <div class="form-group">
