@@ -13,12 +13,12 @@
                     <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('username')}">
                         <input type="text" class="form-control" :placeholder="usernamePlaceholder" v-validate="'required'" data-vv-as="用户名" name="username" v-model.trim="username" @keydown.enter="$el.querySelector('#login-form [name=password]').focus()">
                         <span class="glyphicon glyphicon-user form-control-feedback text-gray"></span>
-                        <span class="help-block">{{errors.first('username')}}</span>
+                        <!-- <span class="help-block">{{errors.first('username')}}</span> -->
                     </div>
                     <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('password')}">
                         <input type="password" class="form-control" :placeholder="passwordPlaceholder" autocomplete="new-password" v-validate="'required'" data-vv-as="密码" name="password" v-model.trim="password" @keydown.enter="doLogin">
                         <span class="glyphicon glyphicon-lock form-control-feedback text-gray"></span>
-                        <span class="help-block">{{errors.first('password')}}</span>
+                        <!-- <span class="help-block">{{errors.first('password')}}</span> -->
                     </div>
                     <div class="row">
                         <div class="col-xs-4">
@@ -174,14 +174,12 @@ export default {
       $.get("/api/v1/login", {
         username: this.username,
         password: this.md5(this.password)
-      })
-        .then(data => {
-          var _url = url.parse(window.location.href, true);
-          window.location.href = _url.query.r || "/";
-        })
-        .always(() => {
-          this.isLoading = false;
-        });
+      }).then(data => {
+        var _url = url.parse(window.location.href, true);
+        window.location.href = _url.query.r || "/";
+      }).always(() => {
+        this.isLoading = false;
+      });
     }
   }
 };
