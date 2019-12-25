@@ -7,7 +7,7 @@
   </header>
   <div class="content-wrapper">
     <section :class="[{'content': !fullscreen}, {'no-padding': fullscreen}]">
-      <div class="player-wrapper" :style="{margin:'0 auto', width: fullscreen ? '100%' : '85%' }">
+      <div class="player-wrapper" :style="{margin:'0 auto', width: fullscreen ? '100%' : isMobile() ? '95%' : '85%' }">
         <div class="play-area">
           <LivePlayer ref="player" :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio" :poster="poster"
             v-loading="bLoading" :debug="debug" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="bLoading" @message="$message"

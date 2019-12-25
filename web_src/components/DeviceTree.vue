@@ -8,7 +8,9 @@
           <div class="form-group form-group-sm">
             <label>搜索</label>
             <input type="text" class="form-control" placeholder="关键字" v-model.trim="q" @keydown.enter.prevent ref="q">
-            <el-checkbox title="是否在搜索时始终显示本域组织树" style="margin-left:2px;margin-top:-5px;" size="small" v-model.trim="searchBY">本域树</el-checkbox>
+          </div>
+          <div class="form-group form-group-sm">
+            <el-checkbox title="是否在搜索时始终显示本域组织树" style="margin-left:2px;margin-top:-5px;margin-bottom:0;" size="small" v-if="q" v-model.trim="searchBY">显示本域</el-checkbox>
           </div>
           <span class="hidden-xs">&nbsp;&nbsp;</span>
           <div class="form-group pull-right">
