@@ -100,7 +100,7 @@
                         </div>
                         <div class="form-group" v-if="smss.length <= 0">
                             <div class="col-sm-12">
-                                <div class="alert text-center no-margin">SMS 流媒体服务尚未启动</div>
+                                <div class="alert text-center no-margin">SMS {{smstip}}</div>
                             </div>
                         </div>
                     </form>
@@ -217,6 +217,7 @@ export default {
             smss: [],
             sms: {},
             smsbaseconfig: {},
+            smstip:"流媒体服务尚未启动",
         };
     },
     mounted() {
@@ -260,9 +261,10 @@ export default {
             $.get("/api/v1/sms/setbaseconfig", this.smsbaseconfig).then(data => {
                 this.$message({
                     type: "success",
-                    message: "配置成功！"
+                    message: "配置保存中,请稍后..."
                 });
             }).always(() => {
+                this.smstip = "配置保存中,请稍后..."
                 this.smsserial = "";
                 this.getSMSList()
                 this.bCommitting = false;
@@ -313,6 +315,13 @@ export default {
                         this.smsserial = ret[0].Serial
                     }
                     this.getSMSInfo();
+                    if (this.smsserial == "") {
+                        setTimeout(() => {
+                            this.getSMSList()
+                        }, 1000);
+                    }else {
+                        this.smstip = "流媒体服务尚未启动"
+                    }
                 })
             }
         },
