@@ -177,7 +177,7 @@ export default {
                 KeepaliveInterval: 60,
                 RegisterInterval: 60,
                 StreamKeepalive: false,
-                ShareAllChannel: false,
+                ShareAllChannel: true,
                 CommandTransport: "UDP",
                 Charset: "GB2312",
                 CatalogGroupSize: 1,

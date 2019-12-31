@@ -42,9 +42,13 @@
             </div>
             <div class="box box-widget">
                 <div class="box-header">
-                    <h4> <i class="fa fa-key"></i> 授权信息 <span v-if="serverInfo.VersionType">({{serverInfo.VersionType}})</span>
-                      <small v-if="needexpand&&!expanded">&nbsp;<a href="#" @click.prevent="expand" class="fa fa-plus text-orange" title="显示激活码入口"></a></small>
-                     </h4>
+                    <h4>
+                        <i class="fa fa-key"></i> 授权信息 <span v-if="serverInfo.VersionType">({{serverInfo.VersionType}})</span>
+                        &nbsp;&nbsp;
+                        <small v-show="canExpand && !expanded">
+                            <a href="#" @click.prevent="expand" class="fa fa-plus text-orange" title="显示激活码入口"></a>
+                        </small>
+                    </h4>
                 </div>
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-striped">
@@ -58,11 +62,11 @@
                                 <td v-if="!actived">剩余期限{{serverInfo.RemainDays}}天</td>
                                 <td v-else>永久授权</td>
                             </tr>
-                            <tr v-if="(actived||expanded) && serverInfo.ChannelCount && serverInfo.ChannelCount >= 0 && serverInfo.ChannelCount < 1000">
+                            <tr v-if="actived && serverInfo.ChannelCount && serverInfo.ChannelCount >= 0 && serverInfo.ChannelCount < 1000">
                                 <td>通道数</td>
                                 <td>{{serverInfo.ChannelCount}}</td>
                             </tr>
-                            <tr v-if="!actived||expanded">
+                            <tr v-if="!actived || expanded">
                                 <td>机器码</td>
                                 <td>
                                     <span id="key-info">CMS{{(serverInfo.Server||"").indexOf("Linux") >= 0 ? "L":"W"}}{{requestkey}}</span>
@@ -70,7 +74,7 @@
                                     <span style="color:#bbb">(通过邮箱：support@liveqing.com 向商务人员咨询永久授权信息)</span>
                                 </td>
                             </tr>
-                            <tr v-if="!actived||expanded">
+                            <tr v-if="!actived || expanded">
                                 <td>提交激活码</td>
                                 <td>
                                     <el-input type="textarea" :rows="1" placeholder="输入申请到的激活码" v-model.trim="activationCode" ref="activationCode" :autosize="{minRows:1, maxRows:5}" style="margin-bottom:10px;"></el-input>
@@ -210,14 +214,14 @@ export default {
         activedsms() {
             return this.smsserverinfo.RemainDays == 9999;
         },
-        needexpand() {
+        canExpand() {
             if (this.actived && this.serverInfo.VersionType && this.serverInfo.VersionType.indexOf("旗舰版") < 0) {
-                return true
+                return true;
             }
             if (this.actived && this.serverInfo.ChannelCount && this.serverInfo.ChannelCount >= 0 && this.serverInfo.ChannelCount < 1000) {
-                return true
+                return true;
             }
-            return false
+            return false;
         },
     },
     mounted() {
@@ -400,7 +404,7 @@ export default {
             }
         },
         expand() {
-            this.expanded = true
+            this.expanded = true;
         }
     }
 }
