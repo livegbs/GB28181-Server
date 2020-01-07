@@ -92,6 +92,7 @@ export default {
         bLoading: false,
         bCloseShow: false,
       },
+      pnode: null,
       contextMenuTarget: null,
       contextMenuVisible: false,
       contextMenuNodeData: null,
@@ -161,8 +162,12 @@ export default {
        return data.name.indexOf(value) !== -1 || data.customName.indexOf(value) !== -1 || data.id.indexOf(value) !== -1;
     },
     treeAllowDrag(node) {
-      if(node && node.data && node.data.code) return true;
-      return false;
+      if(node && node.data && node.data.code) {
+        this.pnode = node.parent;
+        return true;
+      } else {
+        return false;
+      }
     },
     treeAllowDrop(dragNode, dropNode, type) {
       if(type != 'inner' || !dragNode || !dropNode) return false;
@@ -185,7 +190,8 @@ export default {
             code: drag.code,
             parentid: drop.id,
           }).then(() => {
-            this.treeRefresh();
+            this.treeNodeRefresh(this.pnode);
+            this.treeNodeRefresh(drop);
           })
         } else {
           $.get("/api/v1/channel/move", {
@@ -193,13 +199,22 @@ export default {
             code: drag.code,
             parentid: drop.code,
           }).then(() => {
-            this.treeRefresh();
+            this.treeNodeRefresh(this.pnode);
+            this.treeNodeRefresh(drop);
           })
         }
       }
     },
+    treeNodeRefresh(key) {
+      let node = this.$refs['devTree'].getNode(key);
+      if(!node) return;
+      node.loaded = false;
+      node.isLeaf = false;
+      node.expand();
+    },
     treeNodeRightClick(event, data, node, c) {
       this.contextMenuNodeData = data;
+      this.pnode = node.parent;
       var new_event = new MouseEvent(event.type, event);
       document.querySelector('#dev-tree-wrapper').dispatchEvent(new_event);
     },
@@ -263,11 +278,15 @@ export default {
           serial: this.contextMenuNodeData.serial,
           code: this.contextMenuNodeData.code,
         }).always(() => {
-          this.treeRefresh();
+          this.treeNodeRefresh(this.pnode);
         });
       }).catch(() => {});
     },
     treeRefresh() {
+      if(this.pnode) {
+        this.treeNodeRefresh(this.pnode);
+        return;
+      }
       this.showTree = false;
       this.$nextTick(() => {
         this.showTree = true;
