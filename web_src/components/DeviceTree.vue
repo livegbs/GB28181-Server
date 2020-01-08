@@ -209,7 +209,6 @@ export default {
       let node = this.$refs['devTree'].getNode(key);
       if(!node) return;
       node.loaded = false;
-      node.isLeaf = false;
       node.expand();
     },
     treeNodeRightClick(event, data, node, c) {
