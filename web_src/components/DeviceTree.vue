@@ -156,9 +156,7 @@ export default {
     },
     treeFilter(value, data) {
        if (!value) return true;
-       if (this.searchBY && (data.customName.indexOf("本域") !== -1 || data.id.indexOf("216") !== -1) ) {
-          return true;
-       }
+       if (this.searchBY && data.custom)  return true;
        return data.name.indexOf(value) !== -1 || data.customName.indexOf(value) !== -1 || data.id.indexOf(value) !== -1;
     },
     treeAllowDrag(node) {
