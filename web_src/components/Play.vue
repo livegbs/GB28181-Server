@@ -319,6 +319,9 @@ export default {
             code: this.code,
             token: this.token,
           }).then(streamInfo => {
+            if(!this.getQueryString("ptz", "") && streamInfo.ChannelPTZType == 3) { // 0 - 未知, 1 - 球机, 2 - 半球, 3 - 固定枪机, 4 - 遥控枪机
+              this.ptz = false;
+            }
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
             if (this.flvSupported() && streamInfo.FLV) {
               _videoUrl = streamInfo.FLV;
@@ -362,6 +365,9 @@ export default {
           })
           break;
         case "playback":
+          if(!this.getQueryString("ptz", "")) {
+            this.ptz = false;
+          }
           this.bLoading = true;
           $.get(`/api/v1/playback/start`, {
             serial: this.serial,
@@ -424,10 +430,10 @@ export default {
       return this.talk && this.canTalk() && this.serverInfo.VersionType == '旗舰版';
     },
     showPtzPanel() {
-      return this.ptz && !this.isMobile();
+      return (this.ptz || this.talk) && !this.isMobile();
     },
     showPtzTab() {
-      return this.ptz && this.isMobile();
+      return (this.ptz || this.talk) && this.isMobile();
     },
     poster() {
       var _protocol = String(this.protocol).toUpperCase();

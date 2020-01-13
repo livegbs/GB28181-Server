@@ -101,6 +101,23 @@
               <el-table-column prop="NumOutputs" label="在线人数" min-width="100"></el-table-column>
               <el-table-column prop="SubCount" label="子节点数" min-width="100"></el-table-column>
               <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatManufacturer" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="PTZType" label="云台类型" min-width="140">
+                <template slot-scope="props">
+                  <el-dropdown size="small" trigger="click" v-if="userInfo" @command="setPTZType">
+                    <span :class="['el-dropdown-link', {'text-orange': props.row.CustomPTZType}]">
+                      {{formatPTZType(props.row)}} <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item :command="{row: props.row, PTZType: 0}">0-未知</el-dropdown-item>
+                      <el-dropdown-item :command="{row: props.row, PTZType: 1}">1-球机</el-dropdown-item>
+                      <el-dropdown-item :command="{row: props.row, PTZType: 2}">2-半球机</el-dropdown-item>
+                      <el-dropdown-item :command="{row: props.row, PTZType: 3}">3-固定枪机</el-dropdown-item>
+                      <el-dropdown-item :command="{row: props.row, PTZType: 4}">4-遥控枪机</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                  <span :class="{'text-orange': props.row.CustumPTZType}" v-else>{{formatPTZType(props.row)}}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="操作" min-width="260" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && devOnline">
@@ -262,6 +279,33 @@ export default {
     formatManufacturer(row, col, cell) {
       if (cell) return cell;
       return "-";
+    },
+    formatPTZType(row, col, cell) {
+      var ret = "未知";
+      var val = row.CustomPTZType || row.PTZType;
+      switch(val) {
+        case 1:
+          ret = "球机"; break;
+        case 2:
+          ret = "半球"; break;
+        case 3:
+          ret = "固定枪机"; break;
+        case 4:
+          ret = "遥控枪机"; break;
+      }
+      return ret;
+    },
+    setPTZType(cmd) {
+      var ptz = cmd.PTZType;
+      if(ptz === cmd.row.PTZType) {
+        ptz = 0;
+      }
+      cmd.row.CustomPTZType = ptz;
+      $.get("/api/v1/device/setchannelptztype", {
+        serial: cmd.row.DeviceID,
+        code: cmd.row.ID,
+        ptz_type: ptz,
+      })
     },
     toggleAudio(row) {
       $.get("/api/v1/device/setchannelaudio", {
