@@ -340,6 +340,9 @@ export default {
               case "WS_FLV":
                 _videoUrl = streamInfo.WS_FLV || "";
                 break;
+              case "WS-FLV":
+                _videoUrl = streamInfo.WS_FLV || "";
+                break;
             }
             if (this.otherParams != "") {
               if (_videoUrl.indexOf("?") == -1) {
@@ -392,6 +395,9 @@ export default {
                 _videoUrl = streamInfo.FLV || "";
                 break;
               case "WS_FLV":
+                _videoUrl = streamInfo.WS_FLV || "";
+                break;
+              case "WS-FLV":
                 _videoUrl = streamInfo.WS_FLV || "";
                 break;
             }
