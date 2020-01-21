@@ -195,6 +195,7 @@ export default {
       }
       player.bCloseShow = false;
       player.bloading = false;
+      player.poster = "";
       player.url = "";
     },
     fullscreen() {

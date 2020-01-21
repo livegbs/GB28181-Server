@@ -307,9 +307,10 @@ export default {
       }, 2000);
     },
     closeVideo() {
-      this.player.url = "";
       this.player.bLoading = false;
       this.player.bCloseShow = false;
+      this.player.poster = "";
+      this.player.url = "";
     },
     playerHeight() {
       return this.isMobile() ? 200: $(".tree-player").outerHeight()
