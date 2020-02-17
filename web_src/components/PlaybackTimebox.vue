@@ -161,7 +161,13 @@ export default {
           endtime: moment(this.timerange[1]).format("YYYY-MM-DDTHH:mm:ss")
         }
       }).then(ret => {
-        this.records = this.records.concat(ret.RecordList);
+        var items = ret.RecordList || [];
+        this.records = this.records.concat(items.filter(item => {
+          if(!item || !item.StartTime || !item.EndTime) {
+            return false;
+          }
+          return true;
+        }));
       }).always(() => {
         this.$nextTick(() => {
           this.getRecords(false);

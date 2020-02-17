@@ -155,7 +155,13 @@ export default {
         }
       });
       this.xhr.then(ret => {
-        this.records = this.records.concat(ret.RecordList);
+        var items = ret.RecordList || [];
+        this.records = this.records.concat(items.filter(item => {
+          if(!item || !item.StartTime || !item.EndTime) {
+            return false;
+          }
+          return true;
+        }));
       }).always(() => {
         this.$nextTick(() => {
           this.getRecords(false);
