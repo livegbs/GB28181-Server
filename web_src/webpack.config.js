@@ -43,6 +43,11 @@ module.exports = {
                 ws: true,
                 secure: false
             },
+            "**/ws-talk/**": {
+                target: `ws://127.0.0.1:10000`,
+                ws: true,
+                secure: false
+            },
             "*": {
                 target: 'http://127.0.0.1:10000',
                 secure: false
