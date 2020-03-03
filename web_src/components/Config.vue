@@ -105,32 +105,39 @@
                         </div>
                     </form>
                     <form v-if="smsbaseconfig.Host != undefined && smss.length > 0" role="form" class="form-horizontal" autocomplete="off" @submit.prevent="onSubmitSMS">
-                        <div :class="['form-group' , {'has-error': errors.has('smsSerial')}]">
+                        <div :class="['form-group' , {'has-error': errors.has('smsSerial')}]" title="内部通信使用">
                             <label class="col-sm-4 control-label">SIP ID</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="smsSerial" data-vv-as="SIP ID" v-validate="'required'" v-model.trim="smsbaseconfig.Serial">
                                 <span class="help-block">{{errors.first('smsSerial')}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('smsRealm')}]">
+                        <div :class="['form-group' , {'has-error': errors.has('smsRealm')}]" title="内部通信使用">
                             <label class="col-sm-4 control-label">SIP 域</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="smsRealm" data-vv-as="SIP 域" v-validate="'required'" v-model.trim="smsbaseconfig.Realm">
                                 <span class="help-block">{{errors.first('smsRealm')}}</span>
                             </div>
                         </div>
-                        <div :class="['form-group' , {'has-error': errors.has('smsHost')}]">
-                            <label class="col-sm-4 control-label">SIP Host</label>
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" name="smsHost" data-vv-as="SIP Host" v-validate="'required'" v-model.trim="smsbaseconfig.Host">
-                                <span class="help-block">{{errors.first('smsHost')}}</span>
-                            </div>
-                        </div>
-                        <div :class="['form-group' , {'has-error': errors.has('smsPort')}]">
+                        <div :class="['form-group' , {'has-error': errors.has('smsPort')}]" title="内部通信使用">
                             <label class="col-sm-4 control-label">SIP 端口</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="smsPort" data-vv-as="SIP 端口" v-validate="'required|numeric'" v-model.trim="smsbaseconfig.Port">
                                 <span class="help-block">{{errors.first('smsPort')}}</span>
+                            </div>
+                        </div>
+                        <div :class="['form-group' , {'has-error': errors.has('smsHost')}]" title="内部通信收流. 启用外网IP收流后, 此处配置信令服务可访问的局域网IP如：127.0.0.1">
+                            <label class="col-sm-4 control-label">本地|内网 IP</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" placeholder="内部通信收流. 启用外网IP收流后, 此处配置信令服务可访问的局域网IP如：127.0.0.1" name="smsHost" data-vv-as="本地|内网 IP" v-validate="'required'" v-model.trim="smsbaseconfig.Host">
+                                <span class="help-block">{{errors.first('smsHost')}}</span>
+                            </div>
+                        </div>
+                        <div :class="['form-group' , {'has-error': errors.has('WanIP')}]">
+                            <label class="col-sm-4 control-label">外网 IP(可选)</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="WanIP" data-vv-as="外网 IP" v-model.trim="smsbaseconfig.WanIP" v-validate="'url'" placeholder="选填">
+                                <span class="help-block">{{errors.first('WanIP')}}</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -152,13 +159,6 @@
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" name="RecordDir" data-vv-as="云录像目录" v-model.trim="smsbaseconfig.RecordDir">
                                 <span class="help-block">{{errors.first('RecordDir')}}</span>
-                            </div>
-                        </div>
-                        <div :class="['form-group' , {'has-error': errors.has('WanIP')}]">
-                            <label class="col-sm-4 control-label">外网 IP(可选)</label>
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" name="WanIP" data-vv-as="外网 IP" v-model.trim="smsbaseconfig.WanIP" v-validate="'url'" placeholder="选填">
-                                <!-- <span class="help-block">{{errors.first('WanIP')}}</span> -->
                             </div>
                         </div>
                         <div class="form-group">
