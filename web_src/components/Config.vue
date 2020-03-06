@@ -78,6 +78,10 @@
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="SIPLog" name="SIPLog">信令日志</el-checkbox>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <router-link :to="`/white/1`">
+                                    <i class="fa fa-list-ul"  aria-hidden="true" style="margin-left:-5px;font-size: 14px;line-height: 19px;display: inline-block;color: #606266;">&nbsp;&nbsp;白名单配置</i>
+                                </router-link>
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -217,7 +221,7 @@ export default {
             smss: [],
             sms: {},
             smsbaseconfig: {},
-            smstip:"流媒体服务尚未启动",
+            smstip: "流媒体服务尚未启动",
         };
     },
     mounted() {
@@ -319,7 +323,7 @@ export default {
                         setTimeout(() => {
                             this.getSMSList()
                         }, 1000);
-                    }else {
+                    } else {
                         this.smstip = "流媒体服务尚未启动"
                     }
                 })

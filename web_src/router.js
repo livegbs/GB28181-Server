@@ -29,6 +29,8 @@ const CloudRecordTimeBox = () => import(/* webpackChunkName: 'cloudrecord' */ 'c
 const Tester = () => import(/* webpackChunkName: 'tester' */ 'components/Tester.vue')
 const TesterReport =()  => import(/* webpackChunkName: 'tester' */ 'components/TesterReport.vue')
 
+const WhiteList = ()=> import(/* webpackChunkName: 'white' */ 'components/WhiteList.vue')
+
 Vue.use(Router);
 
 const router = new Router({
@@ -143,6 +145,20 @@ const router = new Router({
           }, {
             path: ':page',
             component: CascadeList,
+            props: true
+          }
+        ]
+      }, {
+        path: 'white',
+        meta: { needLogin: true },
+        component: ContentRoot,
+        children: [
+          {
+            path: '',
+            redirect: '1'
+          }, {
+            path: ':page',
+            component: WhiteList,
             props: true
           }
         ]
