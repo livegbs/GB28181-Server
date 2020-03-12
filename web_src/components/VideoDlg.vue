@@ -134,7 +134,7 @@ export default {
       this.ws = null;
     }
     this.ctrlStop();
-    $(document).off("mouseup", this.ctrlStop);
+    $(document).off("mouseup touchend", this.ctrlStop);
   },
   mounted() {
     $(this.$el)
@@ -171,7 +171,7 @@ export default {
           //   })
           // }, 15000);
       });
-    $(document).on("mouseup", this.ctrlStop);
+    $(document).on("mouseup touchend", this.ctrlStop);
   },
   components: { LivePlayer },
   methods: {

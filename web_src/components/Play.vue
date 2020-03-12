@@ -225,8 +225,7 @@ export default {
       sourceVideoCodecName: "",
       sourceAudioCodecName: "",
       recorder: null,
-      bAudioSending: false,
-      bAudioSendError: false,
+      ws: null,
       nice: null,
     };
   },
@@ -533,6 +532,19 @@ export default {
       }
     },
     talkStart(e) {
+      if(!this.ws) {
+        var ws = new WebSocket(this.wsTalkURL());
+        ws.onopen = evt => {
+          console.log("ws talk open");
+          this.ws = ws;
+        }
+        ws.onclose = evt => {
+          console.log("ws talk close");
+        }
+        ws.onerror = evt => {
+          console.log("ws talk error", evt);
+        }
+      }
       var $target = $(e.currentTarget);
       if(this.recorder) {
         $target.addClass("active");
@@ -552,26 +564,14 @@ export default {
         sampleBits: 16,
         sampleRate: 8000,
         pcmCallback: pcm => {
-          if(this.bAudioSendError) return;
+          // binary to base64 string
           var reader = new window.FileReader();
           reader.onloadend = () => {
             var base64 = reader.result;
             var base64 = base64.split(',')[1];
-            this.bAudioSending = true;
-            $.get("/api/v1/control/talk", {
-              serial: this.serial,
-              code: this.code,
-              audio: base64,
-            }).error(() => {
-              if(!this.bAudioSendError) {
-                this.bAudioSendError = true;
-                setTimeout(() => {
-                  this.bAudioSendError = false;
-                }, 10000);
-              }
-            }).always(() => {
-              this.bAudioSending = false;
-            })
+            if(this.ws) {
+              this.ws.send(base64);
+            }
           }
           reader.readAsDataURL(pcm);
         }
@@ -583,7 +583,10 @@ export default {
         // this.recorder = null;
         $(this.$el).find(".fa-microphone.active, .ptz-talk.active").removeClass("active");
         // this.$refs["player"].setMuted(false);
-        return;
+      }
+      if(this.ws) {
+        this.ws.close();
+        this.ws = null;
       }
     },
     ctrlStop() {
@@ -592,6 +595,14 @@ export default {
     },
     handleResize() {
       this.nice && this.nice.resize();
+    },
+    wsTalkURL() {
+      var protocal = "ws:";
+      if(location.protocol.startsWith("https")) {
+        protocal = "wss:";
+      }
+      //url query param "format=pcm|g711"
+      return `${protocal}//${location.host}/api/v1/control/ws-talk/${this.serial}/${this.code}?format=pcm`;
     }
   }
 };

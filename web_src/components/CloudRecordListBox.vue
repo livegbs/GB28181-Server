@@ -166,7 +166,7 @@ export default {
             window.open(`/api/v1/cloudrecord/download/${this.serial}/${this.code}/${row._startAt}`);
         },
         removeDaily() {
-            this.$confirm(`确认删除 ${this.name} ${moment(this.period).format("YYYY-MM-DD")} 当天所有录像?`,"提示")
+            this.$confirm(`确认删除 ${this.name} ${moment(this.day).format("YYYY-MM-DD")} 当天所有录像?`,"提示")
                 .then(() => {
                     $.get("/api/v1/cloudrecord/removedaily", {
                         serial: this.serial,
