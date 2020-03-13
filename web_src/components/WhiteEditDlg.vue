@@ -16,11 +16,11 @@
             <input type="text" class="form-control" name="password" v-model.trim="form.password" placeholder="为空时免密接入" data-vv-as="接入密码">
         </div>
     </div>
-    <div :class="{'form-group':true,'has-error': errors.has('desc')}">
+    <div :class="{'form-group':true,'has-error': errors.has('description')}">
         <label class="col-sm-4 control-label">描述
         </label>
         <div class="col-sm-7">
-            <input type="text" class="form-control" name="desc" v-model.trim="form.desc" data-vv-as="描述信息">
+            <input type="text" class="form-control" name="description" v-model.trim="form.description" data-vv-as="描述信息">
         </div>
     </div>
 </FormDlg>
@@ -44,7 +44,7 @@ export default {
             return {
                 oper : 'edit',
                 serial: '',
-                desc: '',
+                description: '',
                 password: '',
             }
         },

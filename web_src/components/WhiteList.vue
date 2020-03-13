@@ -24,10 +24,10 @@
             <el-table :data="whitelist" stripe :default-sort="{prop: 'Channel', order: 'ascending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
                 <el-table-column prop="Serial" label="设备国标编号" min-width="300" show-overflow-tooltip sortable="custom"></el-table-column>
                 <el-table-column prop="Password" label="接入密码" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
-                <el-table-column prop="Desc" label="描述" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
+                <el-table-column prop="Description" label="描述" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                 <el-table-column prop="CreatedAt" label="创建时间" min-width="160" sortable="custom"></el-table-column>
                 <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" sortable="custom"></el-table-column>
-                <el-table-column label="操作" min-width="120" :fixed="isMobile() ? false:'right'" class-name="opt-group">
+                <el-table-column label="操作" min-width="150" :fixed="isMobile() ? false:'right'" class-name="opt-group">
                     <template slot-scope="props">
                         <div class="btn-group btn-group-xs">
                             <button type="button" class="btn btn-warning" @click.prevent="editWhite(props.row)" v-if="userInfo">
@@ -159,14 +159,14 @@ export default {
             this.$refs["whiteEditDlg"].show({
                 serial: row.Serial,
                 password: row.Password,
-                desc: row.Desc,
+                description: row.Description,
             });
         },
         addWhite(row) {
             this.$refs["whiteEditDlg"].show({
                 serial: "",
                 password: "",
-                desc: "",
+                description: "",
             });
         },
     },
