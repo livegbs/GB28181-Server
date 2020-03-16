@@ -80,9 +80,6 @@ export default {
             if (data) {
                 Object.assign(this.form, data);
             }
-            if (!this.form['subscribe_interval']) {
-                this.form['subscribe_interval'] = '';
-            }
             this.$nextTick(() => {
                 this.$refs['dlg'].show();
             })
