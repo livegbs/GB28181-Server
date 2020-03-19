@@ -296,7 +296,7 @@ export default {
 }
 
 .qcontent {
-    margin: -15px;
+    margin: -16px -15px;
 }
 
 .view-dashboard {
