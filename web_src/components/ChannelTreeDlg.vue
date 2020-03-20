@@ -14,13 +14,13 @@
                             <label>搜索</label>
                             <input type="text" class="form-control" placeholder="关键字" v-model.trim="q" @keydown.enter.prevent ref="q">
                         </div>
-                    </form> 
+                    </form>
                     <br>
                     <el-tree ref="channelTree" node-key="id" :props="treeProps" show-checkbox
                         lazy :load="getChannels" :filter-node-method="filterNode" @check-change="checkChange"
-                        style="max-height:500px; overflow-y:auto;"
+                        :style="`max-height:${isMobile() ? '500px' : '800px'}; overflow-y:auto;`"
                     ></el-tree>
-                    <div class="clearfix"></div>  
+                    <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -70,8 +70,8 @@
         watch: {
             q: function(newVal, oldVal) {
                 this.doDelaySearch();
-            }   
-        },         
+            }
+        },
         computed: {
         },
         mounted() {
@@ -90,14 +90,14 @@
                 this.$emit("hide");
             })
         },
-        methods: {      
+        methods: {
             doDelaySearch: _.debounce(function() {
                 this.$refs["channelTree"].filter(this.q);
-            }, 500),            
+            }, 500),
             formatName(row, col, cell) {
                 if (cell) return cell;
                 return "-";
-            },  
+            },
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
@@ -147,12 +147,12 @@
                 }).always(() => {
                     this.loading = false;
                 })
-            },     
+            },
             reset() {
                 this.id = '';
                 this.selection = [];
                 this.$refs["channelTree"].setCheckedKeys(this.selection);
-                this.q = "";           
+                this.q = "";
             },
             show(id, selection) {
                 this.reset();

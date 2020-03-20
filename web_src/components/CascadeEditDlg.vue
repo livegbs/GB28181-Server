@@ -73,14 +73,14 @@
                 <input type="text" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" v-validate="" @keydown.enter="$el.querySelector('#register-timeout').focus()">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterTimeout')}">
+        <!-- <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterTimeout')}">
             <label for="register-timeout" class="col-sm-4 control-label">注册有效期(秒)
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
                 <input type="text" class="form-control" id="register-timeout" name="RegisterTimeout" v-model.trim="form.RegisterTimeout" data-vv-as="注册有效期" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#register-interval').focus()">
             </div>
-        </div>
+        </div> -->
         <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterInterval')}">
             <label for="register-interval" class="col-sm-4 control-label">注册周期(秒)
                 <span class="text-red">*</span>
@@ -138,8 +138,10 @@
             </label>
             <div class="col-sm-7 checkbox">
                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.Enable" name="Enable">启用</el-checkbox>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.StreamKeepalive" name="StreamKeepalive">流保活</el-checkbox>
+                &nbsp;&nbsp;
+                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.AllowControl" name="AllowControl">允许云台控制</el-checkbox>
+                &nbsp;&nbsp;
+                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.StreamKeepalive" name="StreamKeepalive" v-if="form.CommandTransport == 'UDP' || form.CommandTransport == 'udp'" title="开启RTCP流保活可防止产生野流">RTCP流保活</el-checkbox>
             </div>
         </div>
     </FormDlg>
@@ -177,7 +179,8 @@ export default {
                 KeepaliveInterval: 60,
                 RegisterInterval: 60,
                 StreamKeepalive: false,
-                ShareAllChannel: true,
+                AllowControl: true,
+                ShareAllChannel: false,
                 CommandTransport: "UDP",
                 Charset: "GB2312",
                 CatalogGroupSize: 1,
