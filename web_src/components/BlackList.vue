@@ -2,7 +2,7 @@
 <div>
     <div class="box box-primary">
         <div class="box-header">
-            <h4 class="text-primary text-center">白名单</h4>
+            <h4 class="text-primary text-center">黑名单</h4>
         </div>
         <div class="box-body">
             <form class="form-inline" autocomplete="off" spellcheck="false">
@@ -17,27 +17,27 @@
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" placeholder="关键字" v-model.trim="q" @keydown.enter.prevent ref="q">
                         <div class="input-group-btn">
-                            <button type="button" v-if="!isMobile()" class="btn btn-sm btn-default" @click.prevent="download" title="导出白名单数据"><i class="fa fa-download"></i></button>
-                            <button type="button" v-if="!isMobile()" class="btn btn-sm btn-default" @click.prevent="$refs['uploadDlg'].show()" title="导入白名单数据"><i class="fa fa-upload"></i></button>
-                            <button type="button" class="btn btn-sm btn-default" @click.prevent="addWhite()"><i class="fa fa-plus"></i> 添加白名单</button>
+                            <button type="button" v-if="!isMobile()" class="btn btn-sm btn-default" @click.prevent="download" title="导出黑名单数据"><i class="fa fa-download"></i></button>
+                            <button type="button" v-if="!isMobile()" class="btn btn-sm btn-default" @click.prevent="$refs['uploadDlg'].show()" title="导入黑名单数据"><i class="fa fa-upload"></i></button>
+                            <button type="button" class="btn btn-sm btn-default" @click.prevent="addBlack()"><i class="fa fa-plus"></i> 添加黑名单</button>
                         </div>
                     </div>
                 </div>
             </form>
             <br>
-            <el-table :data="whiteList" stripe :default-sort="{prop: 'Serial', order: 'ascending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
+            <div class="clearfix"></div>
+            <el-table :data="blackList" stripe :default-sort="{prop: 'Serial', order: 'ascending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
                 <el-table-column prop="Serial" label="设备国标编号" min-width="300" show-overflow-tooltip sortable="custom"></el-table-column>
-                <el-table-column prop="Password" label="接入密码" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                 <el-table-column prop="Description" label="描述" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                 <el-table-column prop="CreatedAt" label="创建时间" min-width="160" sortable="custom"></el-table-column>
                 <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" sortable="custom"></el-table-column>
                 <el-table-column label="操作" min-width="150" :fixed="isMobile() ? false:'right'" class-name="opt-group">
                     <template slot-scope="props">
                         <div class="btn-group btn-group-xs">
-                            <button type="button" class="btn btn-warning" @click.prevent="editWhite(props.row)" v-if="userInfo">
+                            <button type="button" class="btn btn-warning" @click.prevent="editBlack(props.row)" v-if="userInfo">
                                 <i class="fa fa-edit"></i> 编辑
                             </button>
-                            <button type="button" class="btn btn-danger" @click.prevent="delWhite(props.row)" v-if="userInfo">
+                            <button type="button" class="btn btn-danger" @click.prevent="delBlack(props.row)" v-if="userInfo">
                                 <i class="fa fa-stop"></i> 删除
                             </button>
                         </div>
@@ -49,15 +49,15 @@
             <el-pagination layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
         </div>
 
-        <UploadDlg ref="uploadDlg" title="上传白名单" url="/api/v1/white/import" @uploaded="uploaded"></UploadDlg>
-        <WhiteEditDlg ref="whiteEditDlg" @submit="getWhiteList"></WhiteEditDlg>
+        <UploadDlg ref="uploadDlg" title="上传黑名单" url="/api/v1/black/import" @uploaded="uploaded"></UploadDlg>
+        <BlackEditDlg ref="blackEditDlg" @submit="getBlackList"></BlackEditDlg>
     </div>
 </div>
 </template>
 
 <script>
 import UploadDlg from "components/UploadDlg.vue";
-import WhiteEditDlg from "components/WhiteEditDlg.vue";
+import BlackEditDlg from "components/BlackEditDlg.vue";
 import _ from "lodash";
 import {
     mapState
@@ -73,12 +73,12 @@ export default {
             sort: "Serial",
             order: "asc",
             loading: false,
-            whiteList: [],
+            blackList: [],
         };
     },
     components: {
         UploadDlg,
-        WhiteEditDlg
+        BlackEditDlg
     },
     computed: {
         ...mapState(['userInfo', 'serverInfo']),
@@ -92,36 +92,36 @@ export default {
         }
     },
     mounted() {
-        // this.getWhiteList();
+        // this.getBlackList();
     },
     beforeDestroy() {
     },
     methods: {
         download() {
-            window.open(`/api/v1/white/export`);
+            window.open(`/api/v1/black/export`);
         },
         uploaded() {
             this.$message({
                 type: 'success',
                 message: "上传配置成功！"
             })
-            this.getWhiteList();
+            this.getBlackList();
             this.$refs['uploadDlg'].hide();
         },
         doSearch(page = 1) {
             var query = {};
             if (this.q) query["q"] = this.q;
             this.$router.replace({
-                path: `/white/${page}`,
+                path: `/black/${page}`,
                 query: query
             });
         },
         doDelaySearch: _.debounce(function () {
             this.doSearch();
         }, 500),
-        getWhiteList() {
+        getBlackList() {
             this.loading = true;
-            $.get("/api/v1/white/list", {
+            $.get("/api/v1/black/list", {
                 q: this.q,
                 start: (this.currentPage - 1) * this.pageSize,
                 limit: this.pageSize,
@@ -129,8 +129,8 @@ export default {
                 order: this.order
             })
             .then(ret => {
-                this.total = ret.WhiteCount;
-                this.whiteList = ret.WhiteList;
+                this.total = ret.BlackCount;
+                this.blackList = ret.BlackList;
             })
             .always(() => {
                 this.loading = false;
@@ -139,28 +139,26 @@ export default {
         sortChange(data) {
             this.sort = data.prop;
             this.order = data.order == "ascending" ? "asc" : "desc";
-            this.getWhiteList();
+            this.getBlackList();
         },
-        delWhite(row) {
+        delBlack(row) {
             this.$confirm(`确认删除 ${row.Serial} ?`, "提示").then(() => {
-                $.get("/api/v1/white/remove", {
+                $.get("/api/v1/black/remove", {
                     serial: row.Serial,
                 }).always(() => {
-                    this.getWhiteList();
+                    this.getBlackList();
                 });
             }).catch(() => {});
         },
-        editWhite(row) {
-            this.$refs["whiteEditDlg"].show({
+        editBlack(row) {
+            this.$refs["blackEditDlg"].show({
                 serial: row.Serial,
-                password: row.Password,
                 description: row.Description,
             });
         },
-        addWhite(row) {
-            this.$refs["whiteEditDlg"].show({
+        addBlack(row) {
+            this.$refs["blackEditDlg"].show({
                 serial: "",
-                password: "",
                 description: "",
             });
         },
@@ -179,8 +177,8 @@ export default {
         this.$nextTick(() => {
             this.q = to.query.q || "";
             this.currentPage = parseInt(to.params.page) || 1;
-            this.whiteList = [];
-            this.getWhiteList();
+            this.blackList = [];
+            this.getBlackList();
         });
     }
 };

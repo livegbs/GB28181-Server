@@ -20,8 +20,8 @@
                 </div>
             </div>
         </div>
-        <div class="clearfix"></div>
         <br>
+        <div class="clearfix"></div>
         <LivePlayer :videoUrl="videoUrl" muted :currentTime="currentTime" @ended="onVideoEnd" @timeupdate="onVideoTimeUpdate" style="margin:0 auto; max-width:700px;" :loading.sync="loading" v-loading="loading" element-loading-text="加载中" element-loading-background="#000"></LivePlayer>
         <div class="text-center" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
             <br>

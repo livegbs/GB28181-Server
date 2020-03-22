@@ -29,8 +29,8 @@
                 </div>
             </div>
         </div>
-        <div class="clearfix"></div>
         <br>
+        <div class="clearfix"></div>
         <el-table :row-class-name="tableRowClassName" ref="recordTable" :data="pageData" empty-text="暂无数据, 请另选日期" :default-sort="{prop: 'startAt', order: 'descending'}" @sort-change="sortChange">
             <el-table-column min-width="250" label="设备国标编号" prop="serial" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="250" label="通道国标编号" prop="code" show-overflow-tooltip></el-table-column>

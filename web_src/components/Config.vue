@@ -52,13 +52,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="black-serial-list" class="col-sm-4 control-label">黑名单 ID(可选)</label>
-                            <div class="col-sm-7">
-                                <input type="text" id="black-serial-list" class="form-control" name="BlackSerialList" data-vv-as="黑名单 ID" v-model.trim="BlackSerialList" placeholder="选填">
-                                <span class="help-block"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label for="black-ip-list" class="col-sm-4 control-label">黑名单 IP(可选)</label>
                             <div class="col-sm-7">
                                 <input type="text" id="black-ip-list" class="form-control" name="BlackIPList" data-vv-as="黑名单 IP" v-model.trim="BlackIPList" placeholder="选填">
@@ -75,12 +68,16 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
-                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
+                                <el-checkbox title="开启后接口调用会校验登录" style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="APIAuth" name="APIAuth">HTTP 接口鉴权</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="SIPLog" name="SIPLog">信令日志</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
+                                <router-link :to="`/black/1`">
+                                    <i title="设备接入黑名单维护" class="fa fa-list cfg-black-list"  aria-hidden="true">&nbsp;&nbsp;黑名单</i>
+                                </router-link>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
                                 <router-link :to="`/white/1`">
-                                    <i class="fa fa-list-ul"  aria-hidden="true" style="margin-left:-5px;font-size: 14px;line-height: 19px;display: inline-block;color: #606266;">&nbsp;&nbsp;白名单配置</i>
+                                    <i title="设备接入白名单维护" class="fa fa-server cfg-white-list"  aria-hidden="true">&nbsp;&nbsp;白名单</i>
                                 </router-link>
                                 <span class="help-block"></span>
                             </div>
@@ -168,7 +165,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
-                                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache">直播秒开</el-checkbox>
+                                <el-checkbox title="加快启播速度,相应也会增大一点延时" style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.GOPCache" name="GOPCache">直播秒开</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="smsbaseconfig.HLS" name="HLS">HLS</el-checkbox>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -212,7 +209,6 @@ export default {
             KeepaliveTimeout: 0,
             APIAuth: false,
             SIPLog: false,
-            BlackSerialList: "",
             BlackIPList: "",
             BlackUAList: "",
             remoteBasicData: "",
@@ -286,7 +282,6 @@ export default {
                 KeepaliveTimeout: this.KeepaliveTimeout,
                 APIAuth: this.APIAuth,
                 SIPLog: this.SIPLog,
-                BlackSerialList: this.BlackSerialList,
                 BlackIPList: this.BlackIPList,
                 BlackUAList: this.BlackUAList,
             };
@@ -303,7 +298,6 @@ export default {
                 this.KeepaliveTimeout = ret.KeepaliveTimeout;
                 this.APIAuth = ret.APIAuth;
                 this.SIPLog = ret.SIPLog;
-                this.BlackSerialList = ret.BlackSerialList;
                 this.BlackIPList = ret.BlackIPList;
                 this.BlackUAList = ret.BlackUAList;
 
@@ -364,3 +358,12 @@ export default {
     }
 };
 </script>
+
+<style lang="less" scoped>
+.fa.cfg-black-list, .fa.cfg-white-list {
+    font-size: 14px;
+    line-height: 19px;
+    display: inline-block;
+    color: #606266;
+}
+</style>

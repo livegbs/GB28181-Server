@@ -30,7 +30,7 @@ import $ from 'jquery'
 export default {
     props: {
         title: {
-            default: '上传导入白名单配置'
+            default: '上传'
         },
         url: {
             type: String,

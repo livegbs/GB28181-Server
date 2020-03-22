@@ -1,18 +1,11 @@
 <template>
-<FormDlg title="编辑白名单" @hide="onHide" @show="onShow" @submit="onSubmit" ref="dlg" :disabled="errors.any()">
+<FormDlg title="编辑黑名单" @hide="onHide" @show="onShow" @submit="onSubmit" ref="dlg" :disabled="errors.any()">
     <div :class="{'form-group':true,'has-error': errors.has('serial')}">
         <label class="col-sm-4 control-label">设备国标编号
             <span class="text-red">*</span>
         </label>
         <div class="col-sm-7">
             <input type="text" class="form-control" :readonly="form.oper == 'edit'" name="serial" v-model.trim="form.serial" data-vv-as="设备编号" v-validate="'required'">
-        </div>
-    </div>
-    <div :class="{'form-group':true,'has-error': errors.has('password')}">
-        <label class="col-sm-4 control-label">接入密码
-        </label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control" name="password" v-model.trim="form.password" placeholder="为空时免密接入" data-vv-as="接入密码">
         </div>
     </div>
     <div :class="{'form-group':true,'has-error': errors.has('description')}">
@@ -69,7 +62,7 @@ export default {
                 $(`[name=${e.field}]`).focus();
                 return;
             }
-            $.get('/api/v1/white/save', this.form).then(data => {
+            $.get('/api/v1/black/save', this.form).then(data => {
                 this.$refs['dlg'].hide();
                 this.$emit("submit");
             })

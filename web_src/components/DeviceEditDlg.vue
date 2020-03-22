@@ -65,7 +65,7 @@
                 </el-radio-group>
             </div>
         </div>
-        <div :class="{'form-group':true,'has-error': errors.has('forbidden')}">
+        <!-- <div :class="{'form-group':true,'has-error': errors.has('forbidden')}">
             <label for="input-forbidden" class="col-sm-4 control-label">其它设置
             </label>
             <div class="col-sm-7 checkbox">
@@ -73,7 +73,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.freeticket" name="freeticket">免密注册</el-checkbox>
             </div>
-        </div>
+        </div> -->
     </FormDlg>
 </template>
 
@@ -102,8 +102,6 @@ export default {
                 catalog_interval: 3600,
                 subscribe_interval: 600,
                 password: '',
-                forbidden: false,
-                freeticket: false,
             }
         },
         onHide() {

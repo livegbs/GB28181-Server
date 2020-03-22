@@ -52,7 +52,7 @@ export default {
     },
     computed: {
         title() {
-            return this.form.code ? "编辑节点" : "新建节点";
+            return (this.form.code || this.form.parentname == '根节点') ? "编辑节点" : "新建节点";
         },
         codePlaceholder() {
             if(!this.form.add) return "";

@@ -5,19 +5,13 @@
     </div>
     <div class="box-body">
         <div class="form-inline">
-            <div class="form-group pull-right">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="搜索" v-model.trim="q" ref="search" @keydown.enter="doSearch(1)">
-                    <div class="input-group-btn">
-                        <a role="button" class="btn btn-default" @click.prevent="doSearch(1)">
-                            <i class="fa fa-search"></i>
-                        </a>
-                    </div>
-                </div>
+            <div class="form-group form-group-sm">
+                <label>搜索</label>
+                <input type="text" class="form-control" placeholder="关键字" v-model.trim="q" @keydown.enter.prevent ref="q">
             </div>
         </div>
-        <div class="clearfix"></div>
         <br>
+        <div class="clearfix"></div>
         <el-table :data="pageData" stripe :default-sort="{prop: 'serial', order: 'ascending'}" @sort-change="sortChange">
             <!-- <el-table-column min-width="500" label="设备号" prop="id" show-overflow-tooltip></el-table-column> -->
             <el-table-column min-width="250" label="设备国标编号" prop="serial" show-overflow-tooltip></el-table-column>
@@ -63,7 +57,7 @@ export default {
         }
     },
     mounted() {
-        this.$refs['search'].focus();
+        // this.$refs['q'].focus();
         // this.load(); //load when sort change
     },
     watch: {
