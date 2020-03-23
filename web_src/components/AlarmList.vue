@@ -53,7 +53,7 @@
               <el-table-column prop="AlarmPriority" label="报警级别" min-width="100" :formatter="formatPriority" show-overflow-tooltip sortable="custom"></el-table-column>
               <el-table-column prop="AlarmMethod" label="报警方式" min-width="100" :formatter="formatMethod" show-overflow-tooltip></el-table-column>
               <el-table-column prop="AlarmType" label="报警类型" min-width="100" :formatter="formatType" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="Time" label="报警时间" min-width="150" sortable="custom"></el-table-column>
+              <el-table-column prop="Time" label="报警时间" min-width="160" sortable="custom"></el-table-column>
               <!-- <el-table-column prop="RecordLink" label="关联录像" min-width="150" show-overflow-tooltip>
                 <template slot-scope="props">
                   <a href="props.RecordLink" v-if="props.RecordLink" target="_blank">{{props.RecordLink}}</a>
@@ -201,7 +201,7 @@ export default {
       if (row.AlarmPriorityName){
         return row.AlarmPriorityName;
       }
-      if (row.AlarmPriority != undefined) {
+      if (row.AlarmPriority) {
         return row.AlarmPriority;
       }
       return "-";
@@ -210,7 +210,7 @@ export default {
       if (row.AlarmMethodName) {
         return row.AlarmMethodName;
       }
-      if (row.AlarmMethod != undefined) {
+      if (row.AlarmMethod) {
         return row.AlarmMethod;
       }
       return "-";
@@ -219,7 +219,7 @@ export default {
       if (row.AlarmTypeName) {
         return row.AlarmTypeName;
       }
-      if (row.AlarmType != undefined) {
+      if (row.AlarmType) {
         return row.AlarmType;
       }
       return "-";
