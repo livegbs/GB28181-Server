@@ -17,7 +17,7 @@
             <el-table-column min-width="250" label="设备国标编号" prop="serial" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="250" label="通道国标编号" prop="code" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="200" label="通道名称" prop="name" show-overflow-tooltip></el-table-column>
-            <el-table-column min-width="150" label="操作" :fixed="!isMobile() ? 'right' : undefined">
+            <el-table-column min-width="160" label="操作" :fixed="!isMobile() ? 'right' : undefined">
                 <template slot-scope="scope">
                     <router-link :to="`/cloudrecord/timeview/${scope.row.serial}/${scope.row.code}`" class="btn btn-primary btn-xs">
                         <i class="fa fa-file-video-o"></i> 查看录像
