@@ -23,7 +23,7 @@
         <div class="clearfix"></div>
         <div class="content">
           <div class="col-md-4" ref="devTreeWrapper" id="dev-tree-wrapper">
-            <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="'max-height:'+playerHeight()+'px;min-height:200px;overflow:auto;'"
+            <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="`${isMobile() ? 'max-height:200px' : ''};min-height:200px;overflow:auto;`"
               :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy draggable
               @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick"
               :allow-drag="treeAllowDrag" :allow-drop="treeAllowDrop" @node-drop="treeNodeDrop"
@@ -48,12 +48,22 @@
               <i class="fa fa-remove"></i> 删除
             </a>
           </VueContextMenu>
-          <div class="col-md-8 tree-player">
+          <div class="col-md-8 dev-tree-player">
             <br>
-              <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
+            <div class="view-list row">
+              <div class="video-show">
+                <div>
+                  <div class="no-margin no-padding video col-sm-6" @click="playerIdx = index;" :class="{'active': index == playerIdx}" v-for="(player,index) in players" :key="index" @mousemove="resetCloseTimer(player)" @touchstart="resetCloseTimer(player)">
+                    <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="player.bLoading" @message="$message"></LivePlayer>
+                    <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo(player)">关闭</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <!-- <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
                 <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
                 <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo()">关闭</div>
-              </div>
+              </div> -->
             <br>
             <br>
           </div>
@@ -85,13 +95,40 @@ export default {
       timer: 0,
       showTree: true,
       searchBY:true,
-      player: {
+      playerIdx: 0,
+      players: [{
+        serial: "",
+        code: "",
         url: "",
         protocol: "",
         poster: "",
         bLoading: false,
         bCloseShow: false,
-      },
+      },{
+        serial: "",
+        code: "",
+        url: "",
+        protocol: "",
+        poster: "",
+        bLoading: false,
+        bCloseShow: false,
+      },{
+        serial: "",
+        code: "",
+        url: "",
+        protocol: "",
+        poster: "",
+        bLoading: false,
+        bCloseShow: false,
+      },{
+        serial: "",
+        code: "",
+        url: "",
+        protocol: "",
+        poster: "",
+        bLoading: false,
+        bCloseShow: false,
+      }],
       pnode: null,
       contextMenuTarget: null,
       contextMenuVisible: false,
@@ -218,8 +255,12 @@ export default {
     treeNodeClick(data, node, c) {
       this.contextMenuNodeData = null;
       if(data.subCount === 0 && data.status === "ON" && !data.custom && data.serial && data.code) {
-        this.closeVideo();
-        this.player.bLoading = true;
+        // this.closeVideo();
+        var player = this.players[this.playerIdx];
+        this.closeVideo(player);
+        player.serial = data.serial;
+        player.code = data.code;
+        player.bLoading = true;
         $.get("/api/v1/stream/start", {
           serial: data.serial,
           code: data.code,
@@ -231,13 +272,21 @@ export default {
             videoUrl = streamInfo.FLV;
             protocol = "FLV";
           }
-          this.player.protocol = protocol;
-          this.player.poster = protocol == "RTMP" ? "" : streamInfo.SnapURL;
+          player.protocol = protocol;
+          player.poster = protocol == "RTMP" ? "" : streamInfo.SnapURL;
           this.$nextTick(() => {
-            this.player.url = videoUrl || "";
+            player.url = videoUrl || "";
           })
+          this.playerIdx = (this.playerIdx+1)%4;
+          // for(var i=0;i<4;i++) {
+          //   var nextIdx = (this.playerIdx+1+i)%4;
+          //   if(this.players[nextIdx].url == "") {
+          //     this.playerIdx = nextIdx;
+          //     break;
+          //   }
+          // }
         }).always(() => {
-          this.player.bLoading = false;
+          player.bLoading = false;
         })
       }
     },
@@ -297,24 +346,23 @@ export default {
       if(!pNode.parent) return null;
       return pNode.parent.data;
     },
-    resetCloseTimer() {
-      this.player.bCloseShow = true;
-      if (this.player.closeTimer) {
-        clearTimeout(this.player.closeTimer)
+    resetCloseTimer(player) {
+      if(!player) return;
+      player.bCloseShow = true;
+      if (player.closeTimer) {
+        clearTimeout(player.closeTimer)
       }
-      this.player.closeTimer = setTimeout(() => {
-        this.player.bCloseShow = false;
+      player.closeTimer = setTimeout(() => {
+        player.bCloseShow = false;
       }, 2000);
     },
-    closeVideo() {
-      this.player.bLoading = false;
-      this.player.bCloseShow = false;
-      this.player.poster = "";
-      this.player.url = "";
+    closeVideo(player) {
+      if(!player) return;
+      player.bLoading = false;
+      player.bCloseShow = false;
+      player.poster = "";
+      player.url = "";
     },
-    playerHeight() {
-      return this.isMobile() ? 200: $(".tree-player").outerHeight()
-    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.timer) {
@@ -379,6 +427,44 @@ a {
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+}
+</style>
+
+<style lang="less">
+.dev-tree-player {
+.view-list {
+  .video-show {
+    .video {
+      border: 1px solid #fff;
+    }
+
+    .col-sm-6 {
+      &:nth-child(1),
+      &:nth-child(2) {
+        border-top-color: transparent;
+      }
+
+      &:nth-child(2),
+      &:nth-child(4) {
+        border-right-color: transparent;
+      }
+
+      &:nth-child(1),
+      &:nth-child(3) {
+        border-left-color: transparent;
+      }
+
+      &:nth-child(3),
+      &:nth-child(4) {
+        border-bottom-color: transparent;
+      }
+
+      &.active .video-inner {
+        border: 2px solid red;
+      }
+    }
+  }
+}
 }
 </style>
 

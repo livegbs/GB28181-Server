@@ -18,7 +18,7 @@
                     <br>
                     <el-tree ref="channelTree" node-key="id" :props="treeProps" show-checkbox
                         lazy :load="getChannels" :filter-node-method="filterNode" @check-change="checkChange"
-                        :style="`max-height:${isMobile() ? '500px' : '800px'}; overflow-y:auto;`"
+                        style="max-height:500px; overflow-y:auto;"
                     ></el-tree>
                     <div class="clearfix"></div>
                 </div>
