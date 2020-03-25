@@ -12,7 +12,7 @@
   "author": "penggy",
   "license": "ISC",
   "devDependencies": {
-    "@liveqing/liveplayer": "^1.7.7",
+    "@liveqing/liveplayer": "1.7.7",
     "@penggy/jquery.nicescroll": "3.7.7",
     "@xkeshi/vue-qrcode": "0.3.0",
     "@xunlei/vue-context-menu": "1.0.2",
@@ -62,10 +62,10 @@
     "vue-resize": "0.4.5",
     "vue-router": "3.0.1",
     "vue-shares": "^1.1.3",
+    "vue-sticky": "3.3.4",
     "vue-template-compiler": "2.5.2",
     "vuex": "^2.3.1",
     "webpack": "3.6.0",
     "webpack-dev-server": "2.9.4"
-  },
-  "dependencies": {}
+  }
 }

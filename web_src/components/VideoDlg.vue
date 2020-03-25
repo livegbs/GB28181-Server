@@ -33,6 +33,7 @@
                                     </div>
                                     <div class="ptz-cell ptz-center" title="云台控制">
                                         <i class="fa fa-microphone" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
+                                        <i class="fa fa-microphone-slash" title="由于浏览器安全策略, 非 HTTPS 或 localhost 访问, 对讲不可用" v-if="!canTalk() && serverInfo.VersionType == '旗舰版'"></i>
                                     </div>
                                     <div class="ptz-cell ptz-right" command="right" title="右" @mousedown.prevent="ptzControl">
                                         <i class="fa fa-chevron-right"></i>
