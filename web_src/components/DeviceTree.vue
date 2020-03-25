@@ -289,7 +289,8 @@ export default {
     treeNodeClick(data, node, c) {
       this.contextMenuNodeData = null;
       if(data.subCount === 0 && data.status === "ON" && !data.custom && data.serial && data.code) {
-        var player = this.players[this.playerIdx];
+        var player = this.players[this.playerIdx]||{};
+        if(player.bLoading) return;
         this.closeVideo(player);
         player.serial = data.serial;
         player.code = data.code;
@@ -302,9 +303,9 @@ export default {
           streamInfo = streamInfo || {};
           var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
           var protocol = this.isMobile() ? "HLS" : "RTMP";
-          if(this.flvSupported() && streamInfo.FLV) {
-            videoUrl = streamInfo.FLV;
-            protocol = "FLV";
+          if(this.flvSupported() && streamInfo.WS_FLV) {
+            videoUrl = streamInfo.WS_FLV;
+            protocol = "WS_FLV";
           }
           player.protocol = protocol;
           player.poster = protocol == "RTMP" ? "" : streamInfo.SnapURL;
