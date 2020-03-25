@@ -67,31 +67,32 @@
             <br>
           </div>
           <div class="col-md-2" id="dev-tree-ptz">
-          <div class="ptz-block">
-              <div class="ptz-cell ptz-up" :class="{'readonly': !playing }" command="up" title="上" @mousedown.prevent="ptzControl">
-                  <i class="fa fa-chevron-up"></i>
-              </div>
-              <div class="ptz-cell ptz-left" :class="{'readonly': !playing }" command="left" title="左" @mousedown.prevent="ptzControl">
-                  <i class="fa fa-chevron-left"></i>
-              </div>
-              <div class="ptz-cell ptz-center" title="云台控制">
-                  <i class="fa fa-microphone" :class="{'readonly': !playing }" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
-                  <i class="fa fa-microphone-slash" :class="{'readonly': !playing }" title="由于浏览器安全策略, 非 HTTPS 或 localhost 访问, 对讲不可用" v-if="!canTalk() && serverInfo.VersionType == '旗舰版'"></i>
-              </div>
-              <div class="ptz-cell ptz-right" :class="{'readonly': !playing }" command="right" title="右" @mousedown.prevent="ptzControl">
-                  <i class="fa fa-chevron-right"></i>
-              </div>
-              <div class="ptz-cell ptz-down" :class="{'readonly': !playing }" command="down" title="下" @mousedown.prevent="ptzControl">
-                  <i class="fa fa-chevron-down"></i>
-              </div>
-              <div class="ptz-cell ptz-zoomin" :class="{'readonly': !playing }" command="zoomin" title="放大" @mousedown.prevent="ptzControl">
-                  <i class="fa fa-plus"></i>
-              </div>
-              <div class="ptz-cell ptz-zoomout" :class="{'readonly': !playing }" command="zoomout" title="缩小" @mousedown.prevent="ptzControl">
-                  <i class="fa fa-minus"></i>
-              </div>
+            <div class="ptz-block">
+                <div class="ptz-cell ptz-up" :class="{'readonly': !playing }" command="up" title="上" @mousedown.prevent="ptzControl">
+                    <i class="fa fa-chevron-up"></i>
+                </div>
+                <div class="ptz-cell ptz-left" :class="{'readonly': !playing }" command="left" title="左" @mousedown.prevent="ptzControl">
+                    <i class="fa fa-chevron-left"></i>
+                </div>
+                <div class="ptz-cell ptz-center" title="云台控制">
+                    <i class="fa fa-microphone" :class="{'readonly': !playing }" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
+                    <i class="fa fa-microphone-slash" :class="{'readonly': !playing }" title="由于浏览器安全策略, 非 HTTPS 或 localhost 访问, 对讲不可用" v-if="!canTalk() && serverInfo.VersionType == '旗舰版'"></i>
+                </div>
+                <div class="ptz-cell ptz-right" :class="{'readonly': !playing }" command="right" title="右" @mousedown.prevent="ptzControl">
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+                <div class="ptz-cell ptz-down" :class="{'readonly': !playing }" command="down" title="下" @mousedown.prevent="ptzControl">
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="ptz-cell ptz-zoomin" :class="{'readonly': !playing }" command="zoomin" title="放大" @mousedown.prevent="ptzControl">
+                    <i class="fa fa-plus"></i>
+                </div>
+                <div class="ptz-cell ptz-zoomout" :class="{'readonly': !playing }" command="zoomout" title="缩小" @mousedown.prevent="ptzControl">
+                    <i class="fa fa-minus"></i>
+                </div>
+            </div>
           </div>
-          </div>
+          <div class="clearfix"></div>
           <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
             提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
           </div>
