@@ -165,10 +165,18 @@ export default {
     this.setPlayersLength(this.playersLength);
     this.contextMenuTarget = document.querySelector('#dev-tree-wrapper');
     $(document).on("mouseup touchend", this.ctrlStop);
+    this.timer = setTimeout(this.resetTreeMaxHeight, 1000);
+    $(window).resize(() => {
+      if(this.timer) {
+        clearTimeout(this.timer);
+        this.timer = 0;
+      }
+      this.timer = setTimeout(this.resetTreeMaxHeight, 1000);
+    })
   },
   beforeDestroy() {
     if (this.timer) {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
       this.timer = 0;
     }
     this.ctrlStop();
@@ -177,7 +185,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (this.timer) {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
       this.timer = 0;
     }
     this.ctrlStop();
@@ -186,7 +194,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     if (this.timer) {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
       this.timer = 0;
     }
     this.ctrlStop();
@@ -512,6 +520,14 @@ export default {
       //url query param "format=pcm|g711"
       return `${protocal}//${location.host}/api/v1/control/ws-talk/${player.serial}/${player.code}?format=pcm`;
     },
+    resetTreeMaxHeight() {
+      var $tree = $("#dev-tree");
+      if(this.isMobile()) {
+        $tree.css("max-height", 200);
+      } else {
+        $tree.css("max-height", $("#dev-tree-player").outerHeight())
+      }
+    }
   }
 };
 </script>
