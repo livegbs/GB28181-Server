@@ -171,7 +171,7 @@ export default {
         clearTimeout(this.timer);
         this.timer = 0;
       }
-      this.timer = setTimeout(this.resetTreeMaxHeight, 1000);
+      this.timer = setTimeout(this.resetTreeMaxHeight, 500);
     })
   },
   beforeDestroy() {
