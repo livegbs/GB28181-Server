@@ -165,7 +165,7 @@ export default {
     this.setPlayersLength(this.playersLength);
     this.contextMenuTarget = document.querySelector('#dev-tree-wrapper');
     $(document).on("mouseup touchend", this.ctrlStop);
-    this.timer = setTimeout(this.resetTreeMaxHeight, 1000);
+    this.timer = setTimeout(this.resetTreeMaxHeight, 500);
     $(window).resize(() => {
       if(this.timer) {
         clearTimeout(this.timer);
