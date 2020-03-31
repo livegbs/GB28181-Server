@@ -38,9 +38,9 @@
             <br>
             <el-table :data="channels" stripe :default-sort="{prop: 'Channel', order: 'ascending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
               <el-table-column prop="Channel" label="通道号" min-width="100" show-overflow-tooltip sortable="custom"></el-table-column>
-              <el-table-column label="操作" :min-width="devOnline ? 260 : 140" v-if="isMobile()" class-name="opt-group">
+              <el-table-column label="操作" min-width="260" v-if="isMobile()" class-name="opt-group">
                 <template slot-scope="props">
-                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && devOnline">
+                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.Status == 'ON'">
                         <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
@@ -118,9 +118,9 @@
                   <span :class="{'text-orange': props.row.CustumPTZType}" v-else>{{formatPTZType(props.row)}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" :min-width="devOnline ? 260 : 140" fixed="right" v-if="!isMobile()" class-name="opt-group">
+              <el-table-column label="操作" min-width="260" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
-                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && devOnline">
+                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.Status == 'ON'">
                         <!--
                         <button type="button" class="btn btn-info" @mousedown.prevent="talkStart(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-microphone"></i> 对讲
@@ -262,7 +262,6 @@ export default {
       })
       .then(ret => {
         this.total = ret.ChannelCount;
-        this.devOnline = ret.Online;
         this.channels = ret.ChannelList;
       })
       .always(() => {
