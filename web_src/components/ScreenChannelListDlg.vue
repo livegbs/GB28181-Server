@@ -126,7 +126,7 @@ export default {
     },
     getChannels() {
         this.loading = true;
-        $.get("/api/v1/channel/list", {
+        $.get("/api/v1/device/channellist", {
             q: this.q,
             start: (this.currentPage -1) * this.pageSize,
             limit: this.pageSize,
