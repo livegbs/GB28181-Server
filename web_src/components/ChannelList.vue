@@ -40,7 +40,7 @@
               <el-table-column prop="Channel" label="通道号" min-width="100" show-overflow-tooltip sortable="custom"></el-table-column>
               <el-table-column label="操作" min-width="260" v-if="isMobile()" class-name="opt-group">
                 <template slot-scope="props">
-                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.Status == 'ON'">
+                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.DeviceOnline">
                         <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
@@ -120,7 +120,7 @@
               </el-table-column>
               <el-table-column label="操作" min-width="260" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
-                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.Status == 'ON'">
+                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.DeviceOnline">
                         <!--
                         <button type="button" class="btn btn-info" @mousedown.prevent="talkStart(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-microphone"></i> 对讲
