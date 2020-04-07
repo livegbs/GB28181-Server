@@ -311,11 +311,11 @@ export default {
           player.poster = protocol == "RTMP" ? "" : streamInfo.SnapURL;
           this.$nextTick(() => {
             player.url = videoUrl || "";
-            this.setPlayerIdx(this.playerIdx + 1);
           });
         }).always(() => {
           player.bLoading = false;
         })
+        this.setPlayerIdx(this.playerIdx + 1);
       }
     },
     showRemoveContextMenu() {
