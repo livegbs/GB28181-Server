@@ -12,7 +12,11 @@
                     <div class="row" v-if="ptz">
                         <div class="col-sm-8 form-group">
                             <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
-                              @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
+                              @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
+                              <div style="position:absolute;left:0;right:0;width:100%;bottom:3em;color:#FFF;background-color:rgba(43,51,63,.7);text-align:center;padding:10px;" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+                                提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
+                              </div>
+                            </LivePlayer>
                         </div>
                         <div class="col-sm-4 form-group">
                             <div class="form-group hide">
@@ -53,10 +57,11 @@
                     </div>
                     <div class="row" v-else>
                         <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
-                          @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
-                    </div>
-                    <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
-                      提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
+                          @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
+                              <div style="position:absolute;left:0;right:0;width:100%;bottom:3em;color:#FFF;background-color:rgba(43,51,63,.7);text-align:center;padding:10px;" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+                                提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
+                              </div>
+                        </LivePlayer>
                     </div>
                 </div>
                 <div class="modal-footer">

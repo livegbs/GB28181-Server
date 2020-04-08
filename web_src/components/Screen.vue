@@ -185,7 +185,7 @@ export default {
       });
     },
     closeVideo: function (idx) {
-      var player = this.players[idx]
+      var player = this.players[idx];
       if (!player) {
         return;
       }
@@ -196,7 +196,9 @@ export default {
       player.bCloseShow = false;
       player.bloading = false;
       player.poster = "";
-      player.url = "";
+      this.$nextTick(() => {
+        player.url = "";
+      })
     },
     fullscreen() {
       if (this.isMobile()) {
