@@ -75,6 +75,8 @@ export default {
                 }).then(ret => {
                     this.progress = Math.ceil(ret.Progress * 100)
                     this.fileUrl = ret.PlaybackFileURL;
+                }).fail(() => {
+                    this.progress = 100;
                 })
             }, 3000);
         }
