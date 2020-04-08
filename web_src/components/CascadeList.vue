@@ -68,7 +68,7 @@
               <el-table-column prop="Host" label="SIP服务IP" min-width="140"></el-table-column>
               <el-table-column prop="Port" label="SIP服务端口" min-width="120"></el-table-column>
               <el-table-column prop="LocalSerial" label="设备国标编号" min-width="200" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="RegisterTimeout" label="注册有效期(秒)" min-width="120"></el-table-column>
+              <!-- <el-table-column prop="RegisterTimeout" label="注册有效期(秒)" min-width="120"></el-table-column> -->
               <el-table-column prop="RegisterInterval" label="注册周期(秒)" min-width="120"></el-table-column>
               <el-table-column prop="KeepaliveInterval" label="心跳周期(秒)" min-width="120"></el-table-column>
               <el-table-column prop="CatalogGroupSize" label="目录分组大小" min-width="120"></el-table-column>
