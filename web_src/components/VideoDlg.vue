@@ -10,10 +10,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="row" v-if="ptz">
-                        <div class="col-sm-8 form-group">
+                        <div :class="['col-sm-8', 'form-group', 'play-area', { 'user-active': active }]" @mousemove="doActive">
                             <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
                               @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
-                              <div style="position:absolute;left:0;right:0;width:100%;bottom:3em;color:#FFF;background-color:rgba(43,51,63,.7);text-align:center;padding:10px;" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+                              <div class="player-demo-text" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
                                 提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
                               </div>
                             </LivePlayer>
@@ -55,10 +55,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" v-else>
+                    <div v-else :class="['row', 'play-area', { 'user-active': active }]" @mousemove="doActive">
                         <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
                           @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
-                              <div style="position:absolute;left:0;right:0;width:100%;bottom:3em;color:#FFF;background-color:rgba(43,51,63,.7);text-align:center;padding:10px;" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+                              <div class="player-demo-text" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
                                 提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
                               </div>
                         </LivePlayer>
@@ -67,6 +67,7 @@
                 <div class="modal-footer">
                     <el-radio-group v-model.trim="protocol" size="small" @change="setProtocol" id="protocol-switcher" class="hidden-xs pull-left">
                       <el-radio-button label="FLV"></el-radio-button>
+                      <el-radio-button label="WS_FLV"></el-radio-button>
                       <el-radio-button label="RTMP"></el-radio-button>
                       <el-radio-button label="HLS"></el-radio-button>
                     </el-radio-group>
@@ -95,6 +96,7 @@ export default {
       serial: "",
       code: "",
       timer: 0,
+      active: false,
       osd: "",
       streamid: "",
       protocol: "",
@@ -132,7 +134,7 @@ export default {
   },
   beforeDestroy() {
     if (this.timer) {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
       this.timer = 0;
     }
     if (this.ws) {
@@ -160,22 +162,12 @@ export default {
         this.protocol = "";
         this.videoUrl = "";
         if(this.timer) {
-            clearInterval(this.timer);
+            clearTimeout(this.timer);
             this.timer = 0;
         }
       })
       .on("show.bs.modal", () => {
         this.bShow = true;
-          // no need since v1.2
-          // this.timer = setInterval(() => {
-          //   $.get("/api/v1/stream/touch", {
-          //     serial: this.serial,
-          //     code: this.code,
-          //     audio: this.hasAudio,
-          //   }).then(streamInfo => {
-          //     this.bRecording = streamInfo.RecordStartAt != ""
-          //   })
-          // }, 15000);
       });
     $(document).on("mouseup touchend", this.ctrlStop);
   },
@@ -186,8 +178,13 @@ export default {
       var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
       var protocol = this.isMobile() ? "HLS" : "RTMP";
       if(this.flvSupported() && streamInfo.FLV) {
-        videoUrl = streamInfo.FLV;
-        protocol = "FLV";
+        if(streamInfo.WS_FLV) {
+          videoUrl = streamInfo.WS_FLV;
+          protocol = "WS_FLV";
+        } else if(streamInfo.FLV) {
+          videoUrl = streamInfo.FLV;
+          protocol = "FLV";
+        }
       }
       this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
       this.protocol = protocol;
@@ -201,6 +198,7 @@ export default {
 
       this.$nextTick(() => {
         this.videoUrl = videoUrl || "";
+        this.doActive();
       })
       $(this.$el).modal("show");
     },
@@ -210,6 +208,9 @@ export default {
         case "FLV":
           this.videoUrl = this.streamInfo.FLV;
           break;
+        case "WS_FLV":
+          this.videoUrl = this.streamInfo.WS_FLV;
+          break;
         case "RTMP":
           this.videoUrl = this.streamInfo.RTMP;
           break;
@@ -217,6 +218,7 @@ export default {
           this.videoUrl = this.streamInfo.HLS;
           break;
       }
+      this.doActive();
     },
     ptzControl(e) {
       var $target = $(e.currentTarget);
@@ -324,10 +326,45 @@ export default {
       }
       //url query param "format=pcm|g711"
       return `${protocal}//${location.host}/api/v1/control/ws-talk/${this.serial}/${this.code}?format=pcm`;
-    }
+    },
+    doActive() {
+        this.active = true;
+        if(this.timer) {
+            clearTimeout(this.timer);
+            this.timer = 0;
+        }
+        this.timer = setTimeout(() => {
+            this.active = false;
+        }, 2000);
+    },
   }
 };
 </script>
+
+<style lang="less">
+.play-area {
+    .player-demo-text {
+        position:absolute;
+        left:0;
+        right:0;
+        width:100%;
+        bottom:3em;
+        color:#FFF;
+        background-color:rgba(43,51,63,.7);
+        text-align:center;padding:10px;
+        visibility: visible;
+        opacity: 0;
+        transition: visibility 1s,opacity 1s;
+    }
+    &.user-active {
+        .player-demo-text {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility .1s,opacity .1s;
+        }
+    }
+}
+</style>
 
 <style lang="less" scoped>
 .modal-title {

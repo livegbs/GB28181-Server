@@ -13,31 +13,31 @@
             v-loading="bLoading" :debug="debug" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="bLoading" @message="$message"
             :fluent="fluent" :stretch="stretch" :autoplay="autoplay" :controls="controls"
             :style="aspect == 'fullscreen' ? 'width: 100% !important;height: 100% !important;position: fixed !important;':''"></LivePlayer>
-          <div class="ptz-block" v-show="showPtzPanel">
-            <div class="ptz-cell ptz-up" @mousedown.prevent="ptzControl('up', $event)" title="上">
-              <i class="fa fa-chevron-up"></i>
-            </div>
-            <div class="ptz-cell ptz-left" @mousedown.prevent="ptzControl('left', $event)" title="左">
-              <i class="fa fa-chevron-left"></i>
-            </div>
-            <div class="ptz-center" title="云台控制">
-              <i class="fa fa-arrows"></i>
-            </div>
-            <div class="ptz-cell ptz-right" @mousedown.prevent="ptzControl('right', $event)" title="右">
-              <i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="ptz-cell ptz-down" @mousedown.prevent="ptzControl('down', $event)" title="下">
-              <i class="fa fa-chevron-down"></i>
-            </div>
-            <div class="ptz-cell ptz-plus" @mousedown.prevent="ptzControl('zoomin', $event)" title="缩">
-              <i class="fa fa-plus-circle"></i>
-            </div>
-            <div class="ptz-cell ptz-talk" @mousedown.prevent="talkStart" v-if="showTalk">
-              <i class="fa fa-microphone"></i>
-            </div>
-            <div class="ptz-cell ptz-minus" @mousedown.prevent="ptzControl('zoomout', $event)" title="放">
-              <i class="fa fa-minus-circle"></i>
-            </div>
+        </div>
+        <div class="ptz-block" v-show="showPtzPanel">
+          <div class="ptz-cell ptz-up" @mousedown.prevent="ptzControl('up', $event)" title="上">
+            <i class="fa fa-chevron-up"></i>
+          </div>
+          <div class="ptz-cell ptz-left" @mousedown.prevent="ptzControl('left', $event)" title="左">
+            <i class="fa fa-chevron-left"></i>
+          </div>
+          <div class="ptz-center" title="云台控制">
+            <i class="fa fa-arrows"></i>
+          </div>
+          <div class="ptz-cell ptz-right" @mousedown.prevent="ptzControl('right', $event)" title="右">
+            <i class="fa fa-chevron-right"></i>
+          </div>
+          <div class="ptz-cell ptz-down" @mousedown.prevent="ptzControl('down', $event)" title="下">
+            <i class="fa fa-chevron-down"></i>
+          </div>
+          <div class="ptz-cell ptz-plus" @mousedown.prevent="ptzControl('zoomin', $event)" title="缩">
+            <i class="fa fa-plus-circle"></i>
+          </div>
+          <div class="ptz-cell ptz-talk" @mousedown.prevent="talkStart" v-if="showTalk">
+            <i class="fa fa-microphone"></i>
+          </div>
+          <div class="ptz-cell ptz-minus" @mousedown.prevent="ptzControl('zoomout', $event)" title="放">
+            <i class="fa fa-minus-circle"></i>
           </div>
         </div>
         <div class="text-center" v-if="!fullscreen && serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
@@ -323,7 +323,11 @@ export default {
             }
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
             if (this.flvSupported() && streamInfo.FLV) {
-              _videoUrl = streamInfo.FLV;
+              if (streamInfo.WS_FLV) {
+                _videoUrl = streamInfo.WS_FLV;
+              } else if(streamInfo.FLV) {
+                _videoUrl = streamInfo.FLV;
+              }
             }
             var _protocol = String(this.protocol).toUpperCase();
             switch (_protocol) {
@@ -358,10 +362,6 @@ export default {
             this.$nextTick(() => {
               this.videoUrl = _videoUrl;
             })
-            // no need since v1.2
-            // this.timer = setInterval(() => {
-            //   this.touchStream();
-            // }, 15 * 1000);
           }).fail(() => {
             this.bLoading = false;
           })
@@ -379,8 +379,12 @@ export default {
             token: this.token,
           }).then(streamInfo => {
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
-            if (this.flvSupported() && streamInfo.FLV) {
-              _videoUrl = streamInfo.FLV;
+            if (this.flvSupported()) {
+              if(streamInfo.WS_FLV) {
+                _videoUrl = streamInfo.WS_FLV;
+              } else if (streamInfo.FLV) {
+                _videoUrl = streamInfo.FLV;
+              }
             }
             var _protocol = String(this.protocol).toUpperCase();
             switch (_protocol) {
@@ -414,10 +418,6 @@ export default {
             this.$nextTick(() => {
               this.videoUrl = _videoUrl;
             })
-            // no need since v1.2
-            // this.timer = setInterval(() => {
-            //   this.touchStream();
-            // }, 15 * 1000);
             this.streamid = streamInfo.StreamID || "";
           }).fail(() => {
             this.bLoading = false;
