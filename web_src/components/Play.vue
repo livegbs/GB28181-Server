@@ -354,7 +354,7 @@ export default {
                 _videoUrl += "&" + this.otherParams;
               }
             }
-            this.title = streamInfo.ChannelName;
+            this.title = streamInfo.ChannelCustomName || streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
             this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
@@ -411,7 +411,7 @@ export default {
                 _videoUrl += "&" + this.otherParams;
               }
             }
-            this.title = streamInfo.ChannelName;
+            this.title = streamInfo.ChannelCustomName || streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
             this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
