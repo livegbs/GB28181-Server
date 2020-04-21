@@ -27,7 +27,7 @@
             </form>
             <br>
             <div class="clearfix"></div>
-            <LivePlayer live muted :hasaudio="hasAudio" :videoUrl="videoUrl" :currentTime="currentTime" @ended="onVideoEnd" @timeupdate="onVideoTimeUpdate"
+            <LivePlayer live muted :videoUrl="videoUrl" :currentTime="currentTime" @ended="onVideoEnd" @timeupdate="onVideoTimeUpdate"
               v-loading="videoLoading" element-loading-text="加载中" element-loading-background="#000"
               style="margin:0 auto; max-width:700px;">
             </LivePlayer>
@@ -85,7 +85,6 @@ export default {
       videos: [],
       video: null,
       videoUrl: "",
-      hasAudio: false,
       streamID: "",
       touchTimer: 0
     };
@@ -208,11 +207,14 @@ export default {
         endtime: this.video.EndTime
       }).then(streamInfo => {
         var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
-        if(this.flvSupported() && streamInfo.FLV) {
-          videoUrl = streamInfo.FLV;
+        if(this.flvSupported()) {
+          if(streamInfo.WS_FLV) {
+            videoUrl = streamInfo.WS_FLV;
+          } else if(streamInfo.FLV) {
+            videoUrl = streamInfo.FLV;
+          }
         }
         this.streamID = streamInfo.StreamID;
-        this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
         this.videoUrl = videoUrl;
         // no need since v1.2
         // this.touchTimer = setInterval(() => {

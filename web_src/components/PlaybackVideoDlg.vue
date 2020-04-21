@@ -9,7 +9,7 @@
                     <h4 class="modal-title text-primary text-center"><span>{{videoTitle}}</span></h4>
                 </div>
                 <div class="modal-body">
-                    <LivePlayer v-if="bShow" :videoUrl="videoUrl" :snapUrl="snapUrl" :live="live" muted :hasaudio="hasAudio"
+                    <LivePlayer v-if="bShow" :videoUrl="videoUrl" :snapUrl="snapUrl" :live="live" muted
                       @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中"></LivePlayer>
                     <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
                       <br>
@@ -42,7 +42,6 @@ export default {
       code: "",
       streamID: "",
       timer: 0,
-      hasAudio: false,
       bShow: false,
       bLoading: false
     };
@@ -105,14 +104,13 @@ export default {
   },
   components: { LivePlayer },
   methods: {
-    play(src, title, snap, serial, code, streamID, hasAudio) {
+    play(src, title, snap, serial, code, streamID) {
       this.videoUrl = src || "";
       this.videoTitle = title || "";
       this.snapUrl = snap || "";
       this.serial = serial || "";
       this.code = code || "";
       this.streamID = streamID || "";
-      this.hasAudio = hasAudio || false;
 
       $(this.$el).modal("show");
     },

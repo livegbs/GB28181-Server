@@ -9,7 +9,7 @@
     <section :class="[{'content': !fullscreen}, {'no-padding': fullscreen}]">
       <div class="player-wrapper" :style="{margin:'0 auto', width: fullscreen ? '100%' : isMobile() ? '95%' : '85%' }">
         <div class="play-area">
-          <LivePlayer ref="player" :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :hasaudio="hasAudio" :poster="poster"
+          <LivePlayer ref="player" :muted="muted" :videoUrl="videoUrl" :aspect="aspect" live :poster="poster"
             v-loading="bLoading" :debug="debug" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="bLoading" @message="$message"
             :fluent="fluent" :stretch="stretch" :autoplay="autoplay" :controls="controls"
             :style="aspect == 'fullscreen' ? 'width: 100% !important;height: 100% !important;position: fixed !important;':''"></LivePlayer>
@@ -220,7 +220,6 @@ export default {
       token: "",
       muted: true,
       talk: false,
-      hasAudio: false,
       otherParams: "",
       sourceVideoCodecName: "",
       sourceAudioCodecName: "",
@@ -322,7 +321,7 @@ export default {
               this.ptz = false;
             }
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
-            if (this.flvSupported() && streamInfo.FLV) {
+            if (this.flvSupported()) {
               if (streamInfo.WS_FLV) {
                 _videoUrl = streamInfo.WS_FLV;
               } else if(streamInfo.FLV) {
@@ -357,7 +356,6 @@ export default {
             this.title = streamInfo.ChannelCustomName || streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
-            this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
             this.snapUrl = streamInfo.SnapURL;
             this.$nextTick(() => {
               this.videoUrl = _videoUrl;
@@ -414,7 +412,6 @@ export default {
             this.title = streamInfo.ChannelCustomName || streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
-            this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
             this.$nextTick(() => {
               this.videoUrl = _videoUrl;
             })

@@ -207,8 +207,7 @@ export default {
           row.Snap || "",
           this.devid,
           this.channel,
-          ret.StreamID,
-          ret.AudioEnable && ret.SourceAudioCodecName != ""
+          ret.StreamID
         );
       }).always(() => {
         this.loading = false;

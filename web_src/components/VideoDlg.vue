@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="row" v-if="ptz">
                         <div :class="['col-sm-8', 'form-group', 'play-area', { 'user-active': active }]" @mousemove="doActive">
-                            <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
+                            <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted
                               @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
                               <div class="player-demo-text" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
                                 提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div v-else :class="['row', 'play-area', { 'user-active': active }]" @mousemove="doActive">
-                        <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted :hasaudio="hasAudio"
+                        <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted
                           @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
                               <div class="player-demo-text" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
                                 提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
@@ -102,7 +102,6 @@ export default {
       protocol: "",
       streamInfo: null,
       bRecording: false,
-      hasAudio: false,
       bShow: false,
       bLoading: false,
       recorder: null,
@@ -177,7 +176,7 @@ export default {
       streamInfo = streamInfo || {};
       var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
       var protocol = this.isMobile() ? "HLS" : "RTMP";
-      if(this.flvSupported() && streamInfo.FLV) {
+      if(this.flvSupported()) {
         if(streamInfo.WS_FLV) {
           videoUrl = streamInfo.WS_FLV;
           protocol = "WS_FLV";
@@ -186,7 +185,6 @@ export default {
           protocol = "FLV";
         }
       }
-      this.hasAudio = streamInfo.AudioEnable && streamInfo.SourceAudioCodecName != "";
       this.protocol = protocol;
       this.videoTitle = title || "";
       this.snapUrl = streamInfo.SnapURL || "";
