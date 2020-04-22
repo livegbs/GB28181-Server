@@ -79,6 +79,8 @@ export default {
     $(this.$el)
       .on("hide.bs.modal", () => {
         this.bShow = false;
+        this.snapUrl = "";
+        this.videoUrl = "";
         if(this.timer) {
             clearInterval(this.timer);
             this.timer = 0;
@@ -105,13 +107,15 @@ export default {
   components: { LivePlayer },
   methods: {
     play(src, title, snap, serial, code, streamID) {
-      this.videoUrl = src || "";
       this.videoTitle = title || "";
       this.snapUrl = snap || "";
       this.serial = serial || "";
       this.code = code || "";
       this.streamID = streamID || "";
 
+      this.$nextTick(() => {
+        this.videoUrl = src || "";
+      })
       $(this.$el).modal("show");
     },
     scale(speed = 1) {

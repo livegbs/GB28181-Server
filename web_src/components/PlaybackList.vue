@@ -144,7 +144,7 @@ export default {
         this.loading = false;
         return
       }
-      this.xhr = $.ajax("/api/v1/playback/info", {
+      this.xhr = $.ajax("/api/v1/playback/recordlist", {
         global: false,
         data: {
           timeout: 3,
@@ -198,13 +198,21 @@ export default {
         endtime: row.EndTime
       }).then(ret => {
         var videoUrl = this.isMobile() ? ret.HLS : ret.RTMP;
-        if(this.flvSupported() && ret.FLV) {
-          videoUrl = ret.FLV;
+        var protocol = this.isMobile() ? "HLS" : "RTMP";
+        if(this.flvSupported()) {
+          if(ret.WS_FLV) {
+            protocol = "WS_FLV";
+            videoUrl = ret.WS_FLV;
+          } else if(ret.FLV) {
+            protocol = "FLV";
+            videoUrl = ret.FLV;
+          }
         }
+        var snap = protocol == "RTMP" ? "" : (row.Snap || "");
         this.$refs["playbackVideoDlg"].play(
           videoUrl,
           row.Name || row.DeviceID,
-          row.Snap || "",
+          snap,
           this.devid,
           this.channel,
           ret.StreamID

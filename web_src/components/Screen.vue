@@ -196,9 +196,7 @@ export default {
       player.bCloseShow = false;
       player.bloading = false;
       player.poster = "";
-      this.$nextTick(() => {
-        player.url = "";
-      })
+      player.url = "";
     },
     fullscreen() {
       if (this.isMobile()) {

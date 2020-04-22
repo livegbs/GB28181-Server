@@ -96,7 +96,7 @@ export default {
       serial: "",
       code: "",
       timer: 0,
-      active: false,
+      active: false, // show demo tips
       osd: "",
       streamid: "",
       protocol: "",
@@ -159,6 +159,7 @@ export default {
         this.bShow = false;
         this.streamInfo = null;
         this.protocol = "";
+        this.snapUrl = "";
         this.videoUrl = "";
         if(this.timer) {
             clearTimeout(this.timer);
@@ -187,7 +188,7 @@ export default {
       }
       this.protocol = protocol;
       this.videoTitle = title || "";
-      this.snapUrl = streamInfo.SnapURL || "";
+      this.snapUrl = protocol == "RTMP" ? "" : (streamInfo.SnapURL || "");
       this.serial = serial || "";
       this.code = code || "";
       this.streamid = streamInfo.StreamID || "";
@@ -210,6 +211,7 @@ export default {
           this.videoUrl = this.streamInfo.WS_FLV;
           break;
         case "RTMP":
+          this.snapUrl = "";
           this.videoUrl = this.streamInfo.RTMP;
           break;
         case "HLS":

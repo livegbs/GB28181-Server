@@ -389,9 +389,7 @@ export default {
       player.bLoading = false;
       player.bCloseShow = false;
       player.poster = "";
-      this.$nextTick(() => {
-        player.url = "";
-      })
+      player.url = "";
     },
     clearVideos() {
       for(var idx in this.players) {
