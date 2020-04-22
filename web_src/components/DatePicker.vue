@@ -8,8 +8,6 @@ import 'assets/bootstrap-datepicker-1.7.1/css/bootstrap-datepicker3.css'
 import 'assets/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.js'
 import 'assets/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.zh-CN.min.js'
 
-let defaultFlags = "0000000000000000000000000000000";
-
 export default {
     data() {
         return {

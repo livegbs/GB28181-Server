@@ -85,7 +85,6 @@ export default {
   },
   data() {
     return {
-      xhr: null,
       timerange: [
         moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
         moment(this.day, "YYYYMMDD").startOf('hour').toDate()
@@ -144,7 +143,8 @@ export default {
         this.loading = false;
         return
       }
-      this.xhr = $.ajax("/api/v1/playback/recordlist", {
+      $.ajax("/api/v1/playback/recordlist", {
+        type: 'get',
         global: false,
         data: {
           timeout: 3,
@@ -153,8 +153,7 @@ export default {
           starttime: moment(this.timerange[0]).format("YYYY-MM-DDTHH:mm:ss"),
           endtime: moment(this.timerange[1]).format("YYYY-MM-DDTHH:mm:ss")
         }
-      });
-      this.xhr.then(ret => {
+      }).then(ret => {
         var items = ret.RecordList || [];
         this.records = this.records.concat(items.filter(item => {
           if(!item || !item.StartTime || !item.EndTime) {
@@ -227,9 +226,6 @@ export default {
     this.getRecords(true);
   },
   beforeRouteUpdate(to, from, next) {
-    if(this.xhr) {
-      this.xhr.abort();
-    }
     next();
     this.$nextTick(() => {
       this.getRecords(true);

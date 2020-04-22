@@ -151,6 +151,7 @@ export default {
         return
       }
       $.ajax("/api/v1/playback/recordlist", {
+        type: 'get',
         global: false,
         data: {
           timeout: 3,

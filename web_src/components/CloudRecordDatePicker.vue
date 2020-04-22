@@ -8,8 +8,6 @@ import 'assets/bootstrap-datepicker-1.7.1/css/bootstrap-datepicker3.css'
 import 'assets/bootstrap-datepicker-1.7.1/js/bootstrap-datepicker.js'
 import 'assets/bootstrap-datepicker-1.7.1/locales/bootstrap-datepicker.zh-CN.min.js'
 
-let defaultFlags = "0000000000000000000000000000000";
-
 export default {
     data() {
         return {
@@ -69,21 +67,15 @@ export default {
 	methods: {
 		update() {
 			this.getFlagMap();
-			$(this.$el).datepicker('update');
 		},
 		getFlagMap() {
-			if(!this.serial || !this.code) {
-				return {};
-			}
-			$.ajax('/api/v1/cloudrecord/queryflags',{
-				type: 'get',
-				async: false,
-				data: {
-					serial: this.serial,
-					code: this.code,
-				}
+			if(!this.serial || !this.code) return;
+			$.get('/api/v1/cloudrecord/queryflags',{
+				serial: this.serial,
+				code: this.code,
 			}).then(data => {
 				this.flags = data;
+				$(this.$el).datepicker('update');
 			})
 		},
 		getFlagsByMonth(period) {
@@ -92,3 +84,9 @@ export default {
 	}
 }
 </script>
+
+<style lang="less">
+.datepicker {
+    z-index: 9999 !important;
+}
+</style>
