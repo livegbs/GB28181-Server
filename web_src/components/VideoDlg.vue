@@ -66,8 +66,8 @@
                 </div>
                 <div class="modal-footer">
                     <el-radio-group v-model.trim="protocol" size="small" @change="setProtocol" id="protocol-switcher" class="hidden-xs pull-left">
-                      <el-radio-button label="FLV"></el-radio-button>
-                      <el-radio-button label="WS_FLV" v-show="!this.isIE()"></el-radio-button>
+                      <el-radio-button label="FLV" v-if="flvSupported()"></el-radio-button>
+                      <el-radio-button label="WS_FLV" v-if="flvSupported() && !isIE()"></el-radio-button>
                       <el-radio-button label="RTMP"></el-radio-button>
                       <el-radio-button label="HLS"></el-radio-button>
                     </el-radio-group>
