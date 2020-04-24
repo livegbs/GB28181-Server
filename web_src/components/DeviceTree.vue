@@ -303,9 +303,14 @@ export default {
           streamInfo = streamInfo || {};
           var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
           var protocol = this.isMobile() ? "HLS" : "RTMP";
-          if(this.flvSupported() && streamInfo.WS_FLV) {
-            videoUrl = streamInfo.WS_FLV;
-            protocol = "WS_FLV";
+          if(this.flvSupported()) {
+            if(streamInfo.WS_FLV && !this.isIE()) {
+              videoUrl = streamInfo.WS_FLV;
+              protocol = "WS_FLV";
+            } else if(streamInfo.FLV) {
+              videoUrl = streamInfo.FLV;
+              protocol = "FLV";
+            }
           }
           player.protocol = protocol;
           player.poster = protocol == "RTMP" ? "" : streamInfo.SnapURL;

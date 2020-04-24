@@ -67,7 +67,7 @@
                 <div class="modal-footer">
                     <el-radio-group v-model.trim="protocol" size="small" @change="setProtocol" id="protocol-switcher" class="hidden-xs pull-left">
                       <el-radio-button label="FLV"></el-radio-button>
-                      <el-radio-button label="WS_FLV"></el-radio-button>
+                      <el-radio-button label="WS_FLV" v-show="!this.isIE()"></el-radio-button>
                       <el-radio-button label="RTMP"></el-radio-button>
                       <el-radio-button label="HLS"></el-radio-button>
                     </el-radio-group>
@@ -178,7 +178,7 @@ export default {
       var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
       var protocol = this.isMobile() ? "HLS" : "RTMP";
       if(this.flvSupported()) {
-        if(streamInfo.WS_FLV) {
+        if(streamInfo.WS_FLV && !this.isIE()) {
           videoUrl = streamInfo.WS_FLV;
           protocol = "WS_FLV";
         } else if(streamInfo.FLV) {
@@ -363,6 +363,13 @@ export default {
             transition: visibility .1s,opacity .1s;
         }
     }
+}
+</style>
+
+<style lang="css">
+/* IE9, IE10, IE11 */
+@media screen and (min-width:0\0) {
+  .play-area .player-demo-text { bottom: 30px !important; }
 }
 </style>
 

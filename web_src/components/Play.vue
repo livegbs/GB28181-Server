@@ -321,12 +321,14 @@ export default {
               this.ptz = false;
             }
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
+            var _snapUrl = this.isMobile() ? streamInfo.SnapURL : "";
             if (this.flvSupported()) {
-              if (streamInfo.WS_FLV) {
+              if (streamInfo.WS_FLV && !this.isIE()) {
                 _videoUrl = streamInfo.WS_FLV;
               } else if(streamInfo.FLV) {
                 _videoUrl = streamInfo.FLV;
               }
+              _snapUrl = streamInfo.SnapURL;
             }
             var _protocol = String(this.protocol).toUpperCase();
             switch (_protocol) {
@@ -356,7 +358,7 @@ export default {
             this.title = streamInfo.ChannelCustomName || streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
-            this.snapUrl = streamInfo.SnapURL;
+            this.snapUrl = _snapUrl||"";
             this.$nextTick(() => {
               this.videoUrl = _videoUrl;
             })
@@ -377,12 +379,14 @@ export default {
             token: this.token,
           }).then(streamInfo => {
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
+            var _snapUrl = this.isMobile() ? streamInfo.SnapURL : "";
             if (this.flvSupported()) {
-              if(streamInfo.WS_FLV) {
+              if(streamInfo.WS_FLV && !this.isIE()) {
                 _videoUrl = streamInfo.WS_FLV;
               } else if (streamInfo.FLV) {
                 _videoUrl = streamInfo.FLV;
               }
+              _snapUrl = streamInfo.SnapURL;
             }
             var _protocol = String(this.protocol).toUpperCase();
             switch (_protocol) {
@@ -412,6 +416,7 @@ export default {
             this.title = streamInfo.ChannelCustomName || streamInfo.ChannelName;
             this.sourceVideoCodecName = streamInfo.SourceVideoCodecName;
             this.sourceAudioCodecName = streamInfo.SourceAudioCodecName;
+            this.snapUrl = _snapUrl||"";
             this.$nextTick(() => {
               this.videoUrl = _videoUrl;
             })

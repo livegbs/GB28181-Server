@@ -139,7 +139,7 @@ export default {
         var videoUrl = this.isMobile() ? stream.HLS : stream.RTMP;
         var protocol = this.isMobile() ? "HLS" : "RTMP";
         if(this.flvSupported()) {
-          if(stream.WS_FLV) {
+          if(stream.WS_FLV && !this.isIE()) {
             videoUrl = stream.WS_FLV;
             protocol = "WS_FLV";
           } else if(stream.FLV) {
