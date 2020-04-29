@@ -118,9 +118,7 @@
     </section>
   </div>
   <footer class="main-footer" v-if="!fullscreen">
-    <div class="pull-right hidden-xs">
-    </div>
-    Copyright &copy; {{ thisYear() }} <a href="http://www.liveqing.com" target="_blank">www.liveqing.com</a>. All rights reserved.
+      <span v-html="serverInfo.CopyrightText"></span>
   </footer>
   <resize-observer @notify="handleResize"/>
 </div>
