@@ -84,7 +84,7 @@ export default {
                 code: this.code,
                 period: this.day
             }).then(data => {
-                this.name = data.name;
+                this.name = data.name || `${this.serial}:${this.code}`;
                 this.videos = data.list;
             }).always(() => {
                 this.loadingRecords = false;

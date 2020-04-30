@@ -46,7 +46,7 @@
                         <i class="fa fa-key"></i> 授权信息 <span v-if="serverInfo.VersionType">({{serverInfo.VersionType}})</span>
                         &nbsp;&nbsp;
                         <small v-show="canExpand && !expanded">
-                            <a href="#" @click.prevent="expand" class="fa fa-plus text-orange" title="显示激活码入口"></a>
+                            <a href="#" @click.prevent="expand" class="fa fa-plus" style="color:#afa9a9;" title="显示激活码入口"></a>
                         </small>
                     </h4>
                 </div>
