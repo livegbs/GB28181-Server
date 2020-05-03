@@ -147,14 +147,17 @@
                     $.get("/api/v1/cascade/savechannels", {
                         id: this.id,
                         channels: [`${row.DeviceID}:${row.ID}`]
+                    }).always(() => {
+                        this.getChannels();
                     })
                 } else {
                     $.get("/api/v1/cascade/removechannels", {
                         id: this.id,
                         channels: [`${row.DeviceID}:${row.ID}`]
+                    }).always(() => {
+                        this.getChannels();
                     })
                 }
-                this.getChannels();
             },
             selectAll(selection) {
                 if(this.shareAllChannel) return;
@@ -169,6 +172,8 @@
                     $.get("/api/v1/cascade/savechannels", {
                         id: this.id,
                         channels: keys,
+                    }).always(() => {
+                        this.getChannels();
                     })
                 } else {
                     for(var row of this.selection) {
@@ -177,9 +182,10 @@
                     $.get("/api/v1/cascade/removechannels", {
                         id: this.id,
                         channels: keys,
+                    }).always(() => {
+                        this.getChannels();
                     })
                 }
-                this.getChannels();
             },
             doSearch(page = 1) {
                 this.currentPage = page;
