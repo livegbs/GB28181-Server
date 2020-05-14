@@ -1,7 +1,7 @@
 <template>
     <FormDlg title="编辑上级平台级联" @hide="onHide" @show="onShow" @submit="onSubmit" ref="dlg" :disabled="errors.any()">
         <input type="hidden" name="ID" v-model.trim="form.ID">
-        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Name')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('Name')}">
             <label for="name" class="col-sm-4 control-label">名称
                 <span class="text-red">*</span>
             </label>
@@ -9,7 +9,7 @@
                 <input type="text" class="form-control" id="name" name="Name" v-model.trim="form.Name" data-vv-as="名称" v-validate="'required'" @keydown.enter="$el.querySelector('#device-id').focus()">
             </div>
         </div>
-        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Serial')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('Serial')}">
             <label for="device-id" class="col-sm-4 control-label">SIP服务国标编码
                 <span class="text-red">*</span>
             </label>
@@ -17,7 +17,7 @@
                 <input type="text" class="form-control" id="device-id" name="Serial" v-model.trim="form.Serial" data-vv-as="SIP服务国标编码" v-validate="'required'" @keydown.enter="$el.querySelector('#realm').focus()">
             </div>
         </div>
-        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Realm')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('Realm')}">
             <label for="realm" class="col-sm-4 control-label">SIP服务国标域
                 <!-- <span class="text-red">*</span> -->
             </label>
@@ -25,7 +25,7 @@
                 <input type="text" class="form-control" id="realm" name="Realm" v-model.trim="form.Realm" data-vv-as="SIP服务国标域" v-validate="" placeholder="选填" @keydown.enter="$el.querySelector('#host').focus()">
             </div>
         </div>
-        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Host')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('Host')}">
             <label for="host" class="col-sm-4 control-label">SIP服务IP
                 <span class="text-red">*</span>
             </label>
@@ -33,7 +33,7 @@
                 <input type="text" class="form-control" id="host" name="Host" v-model.trim="form.Host" data-vv-as="SIP服务IP" v-validate="'required|url'" @keydown.enter="$el.querySelector('#port').focus()">
             </div>
         </div>
-        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('Port')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('Port')}">
             <label for="port" class="col-sm-4 control-label">SIP服务端口
                 <span class="text-red">*</span>
             </label>
@@ -41,7 +41,7 @@
                 <input type="text" class="form-control" id="port" name="Port" v-model.trim="form.Port" data-vv-as="SIP服务端口" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#local-serial').focus()">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalSerial')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('LocalSerial')}">
             <label for="local-serial" class="col-sm-4 control-label">设备国标编号
                 <!-- <span class="text-red">*</span> -->
             </label>
@@ -49,7 +49,7 @@
                 <input type="text" class="form-control" id="local-serial" name="LocalSerial" v-model.trim="form.LocalSerial" data-vv-as="设备国标编号" v-validate="" placeholder="默认使用 livecms.ini > sip > serial" @keydown.enter="$el.querySelector('#local-host').focus()">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalHost')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('LocalHost')}">
             <label for="local-host" class="col-sm-4 control-label">本地IP
                 <!-- <span class="text-red">*</span> -->
             </label>
@@ -57,7 +57,7 @@
                 <input type="text" class="form-control" id="local-host" name="LocalHost" v-model.trim="form.LocalHost" data-vv-as="本地IP" v-validate="" placeholder="默认使用 livecms.ini > sip > host" @keydown.enter="$el.querySelector('#local-port').focus()">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('LocalPort')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('LocalPort')}">
             <label for="local-port" class="col-sm-4 control-label">本地端口
                 <!-- <span class="text-red">*</span> -->
             </label>
@@ -65,7 +65,7 @@
                 <input type="text" class="form-control" id="local-port" name="LocalPort" v-model.trim="form.LocalPort" data-vv-as="本地端口" v-validate="'numeric'" placeholder="选填" @keydown.enter="$el.querySelector('#password').focus()">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('Password')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('Password')}">
             <label for="password" class="col-sm-4 control-label">SIP认证密码
                 <!-- <span class="text-red">*</span> -->
             </label>
@@ -73,7 +73,7 @@
                 <input type="text" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" v-validate="" @keydown.enter="$el.querySelector('#register-timeout').focus()">
             </div>
         </div>
-        <!-- <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterTimeout')}">
+        <!-- <div :class="{'form-group': true, 'has-error': errors.has('RegisterTimeout')}">
             <label for="register-timeout" class="col-sm-4 control-label">注册有效期(秒)
                 <span class="text-red">*</span>
             </label>
@@ -81,7 +81,7 @@
                 <input type="text" class="form-control" id="register-timeout" name="RegisterTimeout" v-model.trim="form.RegisterTimeout" data-vv-as="注册有效期" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#register-interval').focus()">
             </div>
         </div> -->
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('RegisterInterval')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('RegisterInterval')}">
             <label for="register-interval" class="col-sm-4 control-label">注册周期(秒)
                 <span class="text-red">*</span>
             </label>
@@ -89,7 +89,7 @@
                 <input type="text" class="form-control" id="register-interval" name="RegisterInterval" v-model.trim="form.RegisterInterval" data-vv-as="注册周期" v-validate="'required|numeric'" @keydown.enter="$el.querySelector('#keepalive-interval').focus()">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('KeepaliveInterval')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('KeepaliveInterval')}">
             <label for="keepalive-interval" class="col-sm-4 control-label">心跳周期(秒)
                 <span class="text-red">*</span>
             </label>
@@ -97,7 +97,7 @@
                 <input type="text" class="form-control" id="keepalive-interval" name="KeepaliveInterval" v-model.trim="form.KeepaliveInterval" data-vv-as="心跳周期" v-validate="'required|numeric'" @keydown.enter="onSubmit">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('CatalogGroupSize')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('CatalogGroupSize')}">
             <label for="catalog-group-size" class="col-sm-4 control-label">目录分组大小
                 <span class="text-red">*</span>
             </label>
@@ -110,7 +110,7 @@
                 </select>
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('CommandTransport')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('CommandTransport')}">
             <label for="command-transport" class="col-sm-4 control-label">信令传输
                 <span class="text-red">*</span>
             </label>
@@ -121,7 +121,7 @@
                 </select>
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-feedback': true, 'has-error': errors.has('Charset')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('Charset')}">
             <label for="charset" class="col-sm-4 control-label">字符集
                 <span class="text-red">*</span>
             </label>
@@ -132,7 +132,7 @@
                 </select>
             </div>
         </div>
-        <div :class="{'form-group':true, 'has-feedback':true,'has-error': errors.has('StreamKeepalive')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('StreamKeepalive')}">
             <label class="col-sm-4 control-label">其它选项
                 <!-- <span class="text-red">*</span> -->
             </label>

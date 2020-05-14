@@ -36,18 +36,29 @@
                 <input type="text" class="form-control" id="input-recv-stream-ip" name="recv_stream_ip" v-model.trim="form.recv_stream_ip" placeholder="默认使用 livesms.ini > sip > host" data-vv-as="收流 IP" @keydown.enter="$el.querySelector('#input-catalog-interval').focus()">
             </div>
         </div>
-        <div :class="{'form-group':true,'has-error': errors.has('catalog_interval')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('catalog_interval')}">
             <label for="input-catalog-interval" class="col-sm-4 control-label">通道更新周期(秒)
             </label>
             <div class="col-sm-7">
                 <input type="text" class="form-control" id="input-catalog-interval" name="catalog_interval" v-model.trim="form.catalog_interval" placeholder="3600" @keydown.enter="$el.querySelector('#input-subscribe-interval').focus()">
             </div>
         </div>
-        <div :class="{'form-group':true,'has-error': errors.has('subscribe_interval')}">
+        <div :class="{'form-group':true, 'has-error': errors.has('subscribe_interval')}">
             <label for="input-catalog-interval" class="col-sm-4 control-label">订阅周期(秒)
             </label>
             <div class="col-sm-7">
                 <input type="text" class="form-control" id="input-subscribe-interval" name="subscribe_interval" v-model.trim="form.subscribe_interval" placeholder="默认不订阅" @keydown.enter="onSubmit">
+            </div>
+        </div>
+        <div :class="{'form-group': true, 'has-error': errors.has('Charset')}">
+            <label for="input-charset" class="col-sm-4 control-label">字符集
+            </label>
+            <div class="col-sm-7">
+                <select class="form-control" id="input-charset" name="Charset" v-model.trim="form.charset" data-vv-as="字符集" v-validate="">
+                    <option value="">自动识别</option>
+                    <option value="GB2312">GB2312</option>
+                    <option value="UTF-8">UTF-8</option>
+                </select>
             </div>
         </div>
         <div :class="{'form-group':true,'has-error': errors.has('media_transport')}">
@@ -99,6 +110,7 @@ export default {
                 media_transport_mode: 'passive',
                 recv_stream_ip: '',
                 contact_ip: '',
+                charset: '',
                 catalog_interval: 3600,
                 subscribe_interval: 600,
                 password: '',
