@@ -338,7 +338,7 @@ export default {
         },
         getSMSList() {
             if (this.smsserial == "") {
-                $.get("api/v1/sms/list").then(ret => {
+                $.get("/api/v1/sms/list").then(ret => {
                     this.smss = ret
                     if (ret.length > 0) {
                         this.sms = ret[0]
@@ -350,12 +350,12 @@ export default {
         },
         getSMSInfo() {
             if (this.smsserial != "") {
-                $.get("api/v1/sms/getrequestkey", {
+                $.get("/api/v1/sms/getrequestkey", {
                     serial: this.smsserial
                 }).then(ret => {
                     this.smsrequestkey = ret;
                 })
-                $.get("api/v1/sms/getserverinfo", {
+                $.get("/api/v1/sms/getserverinfo", {
                     serial: this.smsserial
                 }).then(ret => {
                     this.smsserverinfo = ret;
@@ -364,7 +364,7 @@ export default {
         },
         smschange() {
             this.getSMSInfo()
-            $.get("api/v1/sms/list").then(ret => {
+            $.get("/api/v1/sms/list").then(ret => {
                 this.smss = ret
                 for (var i = 0; i < this.smss.length; i++) {
                     if (this.smss[i].Serial == this.smsserial) {

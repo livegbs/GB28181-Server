@@ -29,6 +29,16 @@
                 <input type="text" class="form-control" id="input-contact-ip" name="contact_ip" v-model.trim="form.contact_ip" placeholder="默认使用 livecms.ini > sip > host" data-vv-as="信令联络 IP" @keydown.enter="$el.querySelector('#input-recv-stream-ip').focus()">
             </div>
         </div>
+        <div :class="{'form-group':true,'has-error': errors.has('sms_id')}">
+            <label for="input-sms-id" class="col-sm-4 control-label">SMS
+            </label>
+            <div class="col-sm-7">
+                <select class="form-control" id="input-sms-id" name="sms_id" v-model.trim="form.sms_id" data-vv-as="SMS" v-validate="">
+                    <option value="">自动选择负载最小</option>
+                    <option v-for="(sms, idx) in smsList" :value="sms.id" :key="idx">{{sms.name}}</option>
+                </select>
+            </div>
+        </div>
         <div :class="{'form-group':true,'has-error': errors.has('recv_stream_ip')}">
             <label for="input-recv-stream-ip" class="col-sm-4 control-label">收流 IP
             </label>
@@ -50,11 +60,11 @@
                 <input type="text" class="form-control" id="input-subscribe-interval" name="subscribe_interval" v-model.trim="form.subscribe_interval" placeholder="默认不订阅" @keydown.enter="onSubmit">
             </div>
         </div>
-        <div :class="{'form-group': true, 'has-error': errors.has('Charset')}">
+        <div :class="{'form-group': true, 'has-error': errors.has('charset')}">
             <label for="input-charset" class="col-sm-4 control-label">字符集
             </label>
             <div class="col-sm-7">
-                <select class="form-control" id="input-charset" name="Charset" v-model.trim="form.charset" data-vv-as="字符集" v-validate="">
+                <select class="form-control" id="input-charset" name="charset" v-model.trim="form.charset" data-vv-as="字符集" v-validate="">
                     <option value="">自动识别</option>
                     <option value="GB2312">GB2312</option>
                     <option value="UTF-8">UTF-8</option>
@@ -95,7 +105,8 @@ import $ from 'jquery'
 export default {
     data() {
         return {
-            form: this.defForm()
+            form: this.defForm(),
+            smsList: [],
         }
     },
     components: {
@@ -108,6 +119,7 @@ export default {
                 name: '',
                 media_transport: 'UDP',
                 media_transport_mode: 'passive',
+                sms_id: '',
                 recv_stream_ip: '',
                 contact_ip: '',
                 charset: '',
@@ -123,6 +135,18 @@ export default {
         onShow() {
             this.errors.clear();
             this.$emit("show");
+        },
+        fetchSMSList() {
+            return new Promise((resolve, reject) => {
+                $.get("/api/v1/sms/list").then(ret => {
+                    resolve(ret.map(sms => ({
+                        id: sms.Serial||"",
+                        name: sms.Serial||"",
+                    })));
+                }).fail(() => {
+                    resolve([]);
+                })
+            })
         },
         async onSubmit() {
             var ok = await this.$validator.validateAll();
@@ -140,11 +164,20 @@ export default {
                 this.$emit("submit");
             })
         },
-        show(data) {
+        async show(data) {
             this.errors.clear();
             if(data) {
                 Object.assign(this.form, data);
             }
+            var smsList = await this.fetchSMSList();
+            var smsid = this.form['sms_id'];
+            if(smsid && !smsList.some(sms => (sms.id == smsid))) {
+                smsList.push({
+                    id: smsid,
+                    name: `${smsid}(not found)`,
+                });
+            }
+            this.smsList = smsList;
             if(!this.form['subscribe_interval']) {
                 this.form['subscribe_interval'] = '';
             }
