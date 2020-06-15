@@ -139,7 +139,7 @@ export default {
           return label;
         },
         isLeaf: (data, node) => {
-          return data.subCount === 0 && data.code && data.serial && !data.custom;
+          return data.subCount === 0 && data.code && data.serial && !data.custom && !data.parental;
         },
         disabled: (data, node) => {
           return data.subCount === 0 && data.status != "ON" && !data.custom;
