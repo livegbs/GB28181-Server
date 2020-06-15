@@ -6,15 +6,15 @@
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="name" name="Name" v-model.trim="form.Name" data-vv-as="名称" v-validate="'required'" @keydown.enter="$el.querySelector('#device-id').focus()">
+                <input type="text" class="form-control" id="name" name="Name" v-model.trim="form.Name" data-vv-as="名称" v-validate="'required'" @keydown.enter="$el.querySelector('#serial').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-error': errors.has('Serial')}">
-            <label for="device-id" class="col-sm-4 control-label">SIP服务国标编码
+            <label for="serial" class="col-sm-4 control-label">SIP服务国标编码
                 <span class="text-red">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="device-id" name="Serial" v-model.trim="form.Serial" data-vv-as="SIP服务国标编码" v-validate="'required'" @keydown.enter="$el.querySelector('#realm').focus()">
+                <input type="text" class="form-control" id="serial" name="Serial" v-model.trim="form.Serial" data-vv-as="SIP服务国标编码" v-validate="'required'" @keydown.enter="$el.querySelector('#realm').focus()">
             </div>
         </div>
         <div :class="{'form-group':true, 'has-error': errors.has('Realm')}">
@@ -62,7 +62,15 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="local-port" name="LocalPort" v-model.trim="form.LocalPort" data-vv-as="本地端口" v-validate="'numeric'" placeholder="选填" @keydown.enter="$el.querySelector('#password').focus()">
+                <input type="text" class="form-control" id="local-port" name="LocalPort" v-model.trim="form.LocalPort" data-vv-as="本地端口" v-validate="'numeric'" placeholder="选填" @keydown.enter="$el.querySelector('#username').focus()">
+            </div>
+        </div>
+        <div :class="{'form-group': true, 'has-error': errors.has('Username')}">
+            <label for="username" class="col-sm-4 control-label">SIP认证用户名
+                <!-- <span class="text-red">*</span> -->
+            </label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="username" name="Username" v-model.trim="form.Username" data-vv-as="SIP认证用户名" v-validate="" placeholder="默认使用 设备国标编号" @keydown.enter="$el.querySelector('#password').focus()">
             </div>
         </div>
         <div :class="{'form-group': true, 'has-error': errors.has('Password')}">
@@ -70,7 +78,7 @@
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" v-validate="" @keydown.enter="$el.querySelector('#register-timeout').focus()">
+                <input type="text" class="form-control" id="password" name="Password" v-model.trim="form.Password" data-vv-as="SIP认证密码" v-validate="" @keydown.enter="$el.querySelector('#register-interval').focus()">
             </div>
         </div>
         <!-- <div :class="{'form-group': true, 'has-error': errors.has('RegisterTimeout')}">
