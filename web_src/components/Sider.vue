@@ -36,6 +36,9 @@ export default {
       if(item.versionType && item.versionType != this.serverInfo.VersionType) {
         return false;
       }
+      if(item.path == "/about" && this.serverInfo.ShowAbout === false) {
+        return false;
+      }
       if(item.hideInIE && videojs.browser.IE_VERSION) {
         return false;
       }
