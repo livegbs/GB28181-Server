@@ -133,7 +133,7 @@ export default {
           node.serial = data.serial;
           node.code = data.code;
           var label = (data.customName || data.name || data.id);
-          if(data.subCount > 0 || !data.code || data.custom) {
+          if(data.subCount > 0 || !data.code || data.custom || data.parental) {
             label += ` [${data.onlineSubCount}/${data.subCount}]`;
           }
           return label;
