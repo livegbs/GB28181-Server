@@ -282,10 +282,14 @@ export default {
       try {
         msg = JSON.parse(msg)
       } catch (error) {}
-      this.$message({
-        type: 'error',
-        message: msg
-      })
+      if (this.fullscreen) {
+        console.log(msg);
+      } else {
+        this.$message({
+          type: 'error',
+          message: msg
+        })
+      }
     }).on("mouseup touchend", this.ctrlStop).ready(() => {
       this.$nextTick(() => {
         $("body").layout("fix");
