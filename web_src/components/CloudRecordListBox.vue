@@ -10,7 +10,7 @@
                     <button type="button" class="btn btn-primary btn-sm" @click.prevent="$router.go(-1)">
                         <i class="fa fa-chevron-left"></i> 返回
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" @click.prevent="removeDaily" v-if="videos.length > 0 && userInfo">
+                    <button type="button" class="btn btn-danger btn-sm" @click.prevent="removeDaily" v-if="videos.length > 0 && hasAnyRole(serverInfo, userInfo, '管理员')">
                         <i class="fa fa-remove"></i> 删除当天
                     </button>
                 </div>
@@ -44,14 +44,14 @@
                         <a role="button" class="btn btn-info btn-xs" @click.prevent="download(scope.row)">
                             <i class='fa fa-download'></i> 下载
                         </a>
-                        <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="userInfo">
+                        <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                             <i class="fa fa-remove"></i> 删除
                         </a>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column min-width="200" label="开始时间" prop="startAt" sortable="custom"></el-table-column>
-            <el-table-column prop="important" label="紧急标记" min-width="100" v-if="userInfo">
+            <el-table-column prop="important" label="紧急标记" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                 <template slot-scope="scope">
                     <el-switch v-model="scope.row.important" @change="turnImportant(scope.row)"></el-switch>
                 </template>
@@ -74,7 +74,7 @@
                         <a role="button" class="btn btn-info btn-xs" @click.prevent="download(scope.row)">
                             <i class='fa fa-download'></i> 下载
                         </a>
-                        <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="userInfo">
+                        <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                             <i class="fa fa-remove"></i> 删除
                         </a>
                     </div>
@@ -224,7 +224,7 @@ export default {
         // this.updateVideos();
     },
     computed: {
-        ...mapState(["userInfo"]),
+        ...mapState(["serverInfo", "userInfo"]),
         total() {
             return this.videos.length;
         },

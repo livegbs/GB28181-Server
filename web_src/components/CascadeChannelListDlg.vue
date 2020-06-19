@@ -131,7 +131,7 @@
                 this.$emit("show");
             }).on("hidden.bs.modal", () => {
                 this.errors.clear();
-                // this.reset();
+                this.reset();
                 this.$emit("hide");
             })
         },

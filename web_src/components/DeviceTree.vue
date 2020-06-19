@@ -22,7 +22,7 @@
         <br>
         <div class="clearfix"></div>
         <div class="content">
-          <div class="col-md-3" ref="devTreeWrapper" id="dev-tree-wrapper">
+          <div :class="{'col-md-3': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-4': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}" ref="devTreeWrapper" id="dev-tree-wrapper">
             <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="`${isMobile() ? 'max-height:200px' : 'max-height:800px'};min-height:200px;overflow:auto;`"
               :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy draggable
               @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick"
@@ -48,7 +48,7 @@
               <i class="fa fa-remove"></i> 删除
             </a>
           </VueContextMenu>
-          <div class="col-md-7" id="dev-tree-player">
+          <div :class="{'col-md-7': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}" id="dev-tree-player">
             <div class="view-list row">
               <div class="video-show">
                 <div>
@@ -66,7 +66,7 @@
             <br>
             <br>
           </div>
-          <div class="col-md-2" id="dev-tree-ptz">
+          <div class="col-md-2" id="dev-tree-ptz" v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
             <div class="ptz-block">
                 <div class="ptz-cell ptz-up" :class="{'readonly': !playing }" command="up" title="上" @mousedown.prevent="ptzControl">
                     <i class="fa fa-chevron-up"></i>
@@ -93,7 +93,7 @@
             </div>
           </div>
           <div class="clearfix"></div>
-          <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+          <div class="text-center text-gray" v-if="isDemoUser(serverInfo, userInfo)">
             提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
           </div>
           <br>
@@ -281,6 +281,7 @@ export default {
       node.expand();
     },
     treeNodeRightClick(event, data, node, c) {
+      if(!this.hasAnyRole(this.serverInfo, this.userInfo, '管理员')) return;
       this.contextMenuNodeData = data;
       this.pnode = node.parent;
       var new_event = new MouseEvent(event.type, event);
@@ -531,7 +532,12 @@ export default {
       if(this.isMobile()) {
         $tree.css("max-height", 200);
       } else {
-        $tree.css("max-height", $("#dev-tree-player").outerHeight())
+        var wh = $(".wrapper > .content-wrapper").outerHeight();
+        var ch = $(".wrapper > .content-wrapper > .content").outerHeight();
+        var ph = $("#dev-tree-player").outerHeight();
+        var freeh = wh - ch;
+        if(freeh < 0) freeh = 0;
+        $tree.css("max-height", ph + freeh);
       }
     }
   }

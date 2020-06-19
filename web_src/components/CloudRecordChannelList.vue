@@ -18,12 +18,14 @@
             <!-- <el-table-column min-width="200" label="通道名称" prop="name" show-overflow-tooltip></el-table-column> -->
             <el-table-column min-width="160" label="操作" :fixed="!isMobile() ? 'right' : undefined">
                 <template slot-scope="scope">
-                    <router-link :to="`/cloudrecord/timeview/${scope.row.serial}/${scope.row.code}`" class="btn btn-primary btn-xs">
+                    <div class="btn-group btn-group-xs">
+                    <router-link :to="`/cloudrecord/timeview/${scope.row.serial}/${scope.row.code}`" class="btn btn-info">
                         <i class="fa fa-file-video-o"></i> 查看录像
                     </router-link>
-                    <a role="button" class="btn btn-danger btn-xs" @click.prevent="remove(scope.row)" v-if="userInfo">
+                    <a role="button" class="btn btn-danger" @click.prevent="remove(scope.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                         <i class="fa fa-remove"></i> 删除
                     </a>
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -68,7 +70,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['userInfo'])
+        ...mapState(['serverInfo', 'userInfo'])
     },
     methods: {
         load() {

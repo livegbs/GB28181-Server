@@ -40,7 +40,7 @@
             <i class="fa fa-minus-circle"></i>
           </div>
         </div>
-        <div class="text-center" v-if="!fullscreen && serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+        <div class="text-center" v-if="!fullscreen && isDemoUser(serverInfo, userInfo)">
           <br>
           提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
         </div>
@@ -179,6 +179,27 @@ Vue.prototype.flvSupported = () => {
 Vue.prototype.canTalk = () => {
   return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 }
+Vue.prototype.hasAnyRole = (serverInfo, userInfo, ...roles) => {
+    if (serverInfo && serverInfo.APIAuth === false) {
+        return true;
+    }
+    var userRoles = [];
+    if (userInfo) {
+        userRoles = userInfo.Roles || [];
+    }
+    var checked = false;
+    for(var role of (roles||[])) {
+        if (!role || userRoles.some(ur => (ur == role || ur == '超级管理员'))) {
+            checked = true;
+            break;
+        }
+    }
+    return checked;
+}
+Vue.prototype.isDemoUser = (serverInfo, userInfo) => {
+  if (serverInfo && userInfo && serverInfo.IsDemo && userInfo.Name == serverInfo.DemoUser) return true;
+  return false;
+}
 
 import Qrcode from "@xkeshi/vue-qrcode"
 import LivePlayer from "@liveqing/liveplayer"
@@ -266,10 +287,14 @@ export default {
         if (this.serverInfo.IsDemo) {
           location.href = `/login.html?r=${encodeURIComponent(location.href)}`;
         } else {
-          this.$message({
-            type: 'error',
-            message: "登录认证过期"
-          })
+          if (this.fullscreen) {
+             console.log("登录认证过期");
+          } else {
+            this.$message({
+              type: 'error',
+              message: "登录认证过期"
+            })
+          }
         }
         return false;
       }

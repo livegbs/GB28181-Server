@@ -39,13 +39,13 @@
                     <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">
                         查看通道
                     </router-link>
-                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && userInfo">
+                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
                       <i class="fa fa-refresh"></i> 更新通道
                     </button>
-                    <button type="button" class="btn btn-warning" @click.prevent="editDevice(props.row)" v-if="userInfo">
+                    <button type="button" class="btn btn-warning" @click.prevent="editDevice(props.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                       <i class="fa fa-edit"></i> 编辑
                     </button>
-                    <button type="button" class="btn btn-danger" @click.prevent="removeDevice(props.row)" v-if="!props.row.Online && userInfo">
+                    <button type="button" class="btn btn-danger" @click.prevent="removeDevice(props.row)" v-if="!props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员')">
                       <i class="fa fa-remove"></i> 删除
                     </button>
                 </div>
@@ -55,7 +55,7 @@
           <el-table-column prop="CommandTransport" label="信令传输" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
           <el-table-column prop="MediaTransport" label="流传输模式" min-width="140">
             <template slot-scope="props">
-              <el-dropdown size="small" trigger="click" v-if="userInfo" @command="setMediaTransport">
+              <el-dropdown size="small" trigger="click" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" @command="setMediaTransport">
                 <span class="el-dropdown-link">
                   {{formatTransport(props.row)}} <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
@@ -88,13 +88,13 @@
                     <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">
                        <i class="fa fa-info"></i> 查看通道
                     </router-link>
-                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && userInfo">
+                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
                       <i class="fa fa-refresh"></i> 更新通道
                     </button>
-                    <button type="button" class="btn btn-warning" @click.prevent="editDevice(props.row)" v-if="userInfo">
+                    <button type="button" class="btn btn-warning" @click.prevent="editDevice(props.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                       <i class="fa fa-edit"></i> 编辑
                     </button>
-                    <button type="button" class="btn btn-danger" @click.prevent="removeDevice(props.row)" v-if="!props.row.Online && userInfo">
+                    <button type="button" class="btn btn-danger" @click.prevent="removeDevice(props.row)" v-if="!props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员')">
                       <i class="fa fa-remove"></i> 删除
                     </button>
                 </div>

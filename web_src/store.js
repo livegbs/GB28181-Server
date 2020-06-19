@@ -10,41 +10,52 @@ const store = new Vuex.Store({
         userInfo: null,
         menus: [
             {
-                id: "menu_homepage",
                 path: '/',
                 title: "概览",
-                icon: 'dashboard'
+                icon: 'dashboard',
+                roles: ['管理员'],
             }, {
                 path: "/devices",
                 icon: "video-camera",
-                title: "国标设备"
+                title: "国标设备",
+                roles: ['管理员','操作员','观众'],
             }, {
-                id:"menu_screen",
                 path: '/screen',
+                icon: 'th-large',
                 title: "分屏展示",
-                icon: 'th-large'
+                // roles: ['管理员','操作员','观众'],
             }, {
                 path: "/cloudrecord",
                 icon: "cloud",
                 title: "云端录像",
-                versionType: "旗舰版"
+                versionType: "旗舰版",
+                roles: ['管理员','操作员','观众'],
             }, {
                 path: "/alarms",
                 icon: "bell",
-                title: "报警查询"
+                title: "报警查询",
+                roles: ['管理员','操作员'],
             }, {
                 path: "/cascade",
                 icon: "cloud-upload",
                 title: "国标级联",
-                versionType: "旗舰版"
+                versionType: "旗舰版",
+                roles: ['管理员'],
+            }, {
+                path: "/user",
+                icon: "users",
+                title: "用户管理",
+                roles: ['超级管理员'],
             }, {
                 path: "/config",
                 icon: "cogs",
-                title: "基础配置"
+                title: "基础配置",
+                roles: ['管理员'],
             }, {
                 path: "/about",
                 icon: "support",
-                title: "版本信息"
+                title: "版本信息",
+                roles: ['管理员'],
             }
         ]
     },
@@ -92,7 +103,9 @@ const store = new Vuex.Store({
                     } catch (error) {
                         console.log(error)
                     }
-                    resolve({})
+                    resolve({});
+                }).fail(() => {
+                    resolve({});
                 })
             })
         }

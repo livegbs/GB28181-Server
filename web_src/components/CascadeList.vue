@@ -99,7 +99,7 @@
           </div>
         </div>
         <CascadeEditDlg ref="cascadeEditDlg" @submit="getCascades()"></CascadeEditDlg>
-        <CascadeChannelListDlg ref="cascadeChannelListDlg" size="modal-lg" title="选择通道"></CascadeChannelListDlg>
+        <CascadeChannelListDlg ref="cascadeChannelListDlg" size="modal-lg" :title="cascadeChannelListDlgTitle"></CascadeChannelListDlg>
     </div>
 </template>
 
@@ -122,7 +122,8 @@ export default {
       order: "asc",
       loading: false,
       timer: 0,
-      cascades: []
+      cascades: [],
+      cascadeChannelListDlgTitle: "选择通道",
     };
   },
   computed: {
@@ -195,6 +196,7 @@ export default {
       this.$refs['cascadeEditDlg'].show(row);
     },
     editChannel(row) {
+      this.cascadeChannelListDlgTitle = `选择通道(${row.Name || row.ID})`;
       this.$refs['cascadeChannelListDlg'].show(row.ID);
     },
     pushChannel(row) {

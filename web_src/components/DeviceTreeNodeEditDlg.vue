@@ -97,6 +97,7 @@ export default {
                 code: this.form.code,
                 name: this.form.customName,
                 parentid: this.form.parentid,
+                add: this.form.add,
             }).then(data => {
                 this.$refs['dlg'].hide();
                 this.$emit("submit");

@@ -225,7 +225,7 @@ export default {
         },
     },
     mounted() {
-        this.getServerInfo();
+        // this.getServerInfo();
         this.timer = setInterval(() => {
             if (this.serverInfo && this.serverInfo.StartUpTime) {
                 var start = moment(this.serverInfo.StartUpTime, "YYYY-MM-DD HH:mm:ss");

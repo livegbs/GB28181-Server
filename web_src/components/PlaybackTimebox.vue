@@ -31,7 +31,7 @@
               v-loading="videoLoading" element-loading-text="加载中" element-loading-background="#000"
               style="margin:0 auto; max-width:700px;">
             </LivePlayer>
-            <div class="text-center text-gray" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+            <div class="text-center text-gray" v-if="isDemoUser(serverInfo, userInfo)">
               <br>
               提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
             </div>

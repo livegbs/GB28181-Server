@@ -18,6 +18,7 @@ const PlaybackList = () => import(/* webpackChunkName: 'device' */ 'components/P
 const PlaybackTimebox = () => import(/* webpackChunkName: 'device' */ 'components/PlaybackTimebox.vue')
 const AlarmList = () => import(/* webpackChunkName: 'alarm' */ 'components/AlarmList.vue')
 const CascadeList = () => import(/* webpackChunckName: 'cascade' */ 'components/CascadeList.vue')
+const UserList = () => import(/* webpackChunckName: 'user' */ 'components/UserList.vue')
 const Config = () => import(/* webpackChunkName: 'config' */ 'components/Config.vue')
 const About = () => import(/* webpackChunkName: 'about' */ 'components/About.vue')
 
@@ -150,6 +151,20 @@ const router = new Router({
           }
         ]
       }, {
+        path: 'user',
+        meta: { needLogin: true },
+        component: ContentRoot,
+        children: [
+          {
+            path: '',
+            redirect: '1'
+          }, {
+            path: ':page',
+            component: UserList,
+            props: true
+          }
+        ]
+      }, {
         path: 'white',
         meta: { needLogin: true },
         component: ContentRoot,
@@ -201,11 +216,23 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  var serverInfo = await store.dispatch("getServerInfo");
   var userInfo = await store.dispatch("getUserInfo");
+  if (serverInfo && serverInfo.APIAuth === false) {
+    next();
+    return;
+  }
+  var menuMap = store.state.menus.reduce((pval, cval) => {
+    pval[cval.path] = cval;
+    return pval;
+  }, {})
+  var pageRoles = []; // 前往页面要求角色列表
+  var menu = menuMap[to.path];
+  if (menu) {
+    pageRoles.push(...(menu.roles || []));
+  }
   if (!userInfo) {
-    if (to.matched.some((record => {
-      return record.meta.needLogin || record.meta.role;
-    }))) {
+    if (pageRoles.length > 0 || to.matched.some(record => (record.meta.needLogin || record.meta.roles))) {
       if (to.fullPath == '/') {
         window.location.href = `/login.html`;
       } else {
@@ -215,22 +242,27 @@ router.beforeEach(async (to, from, next) => {
       }
       return;
     }
-  } else {
-    var roles = userInfo.roles || [];//当前用户角色列表
-    var menus = store.state.menus.reduce((pval, cval) => {
-      pval[cval.path] = cval;
-      return pval;
-    }, {})
-    var _roles = [];//前往页面要求角色列表
-    var menu = menus[to.path];
-    if (menu) {
-      _roles.push(...(menu.roles || []));
+    next();
+    return;
+  }
+  if (pageRoles.length == 0) {
+    next();
+    return;
+  }
+  if (!pageRoles.some(pr => (userInfo.Roles.some(ur => (ur == pr || ur == '超级管理员'))))) { // 两个角色列表没有交集
+    console.log("page", to.path, "require roles", pageRoles.join(','));
+    console.log("user", userInfo.Name, "has roles", userInfo.Roles.join(','));
+    for(var menu of store.state.menus) { // 取首个有交集的菜单
+      if(menu.path) {
+        if(!menu.roles || menu.roles.some(pr => (userInfo.Roles.some(ur => (ur == pr))))) {
+          next(menu.path);
+          return;
+        }
+      }
     }
-    if (_roles.length > 0 && !_roles.some(val => {
-      return roles.indexOf(val) >= 0;
-    })) {//两个角色列表没有交集
-      return;
-    }
+    // next('/devices')
+    // window.location.href = `/#/devices/1`;
+    return;
   }
   next();
 })

@@ -44,7 +44,7 @@
                         <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
-                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && userInfo">
+                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && hasAnyRole(serverInfo, userInfo, '管理员')">
                           <i class="fa fa-stop"></i> 停止
                         </button>
                         <a :href="`/play.html?serial=${props.row.DeviceID}&code=${props.row.ID}`" class="btn btn-warning" target="_blank" v-if="props.row.Status == 'ON' && (!!props.row.Shared || !serverInfo.APIAuth)">
@@ -78,22 +78,22 @@
                       </el-popover>
                   </template>
               </el-table-column>
-              <el-table-column prop="AudioEnable" label="开启音频" min-width="100" v-if="userInfo">
+              <el-table-column prop="AudioEnable" label="开启音频" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                   <template slot-scope="props">
                       <el-switch :value="props.row.AudioEnable" @change="toggleAudio(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
                   </template>
               </el-table-column>
-              <el-table-column prop="Ondemand" label="按需直播" min-width="100" v-if="userInfo">
+              <el-table-column prop="Ondemand" label="按需直播" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                   <template slot-scope="props">
                       <el-switch :value="props.row.Ondemand" @change="toggleOndemand(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
                   </template>
               </el-table-column>
-               <el-table-column prop="CloudRecord" label="云端录像" min-width="100" v-if="userInfo && serverInfo.VersionType == '旗舰版'">
+               <el-table-column prop="CloudRecord" label="云端录像" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员') && serverInfo.VersionType == '旗舰版'">
                   <template slot-scope="props">
                       <el-switch :value="props.row.CloudRecord" @change="toggleCloudRecord(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
                   </template>
               </el-table-column>
-              <el-table-column prop="Shared" label="开启分享" min-width="100" v-if="userInfo">
+              <el-table-column prop="Shared" label="开启分享" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                   <template slot-scope="props">
                       <el-switch :value="props.row.Shared" @change="toggleShared(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
                   </template>
@@ -103,7 +103,7 @@
               <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatManufacturer" show-overflow-tooltip></el-table-column>
               <el-table-column prop="PTZType" label="云台类型" min-width="140">
                 <template slot-scope="props">
-                  <el-dropdown size="small" trigger="click" v-if="userInfo" @command="setPTZType">
+                  <el-dropdown size="small" trigger="click" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" @command="setPTZType">
                     <span :class="['el-dropdown-link', {'text-orange': props.row.CustomPTZType}]">
                       {{formatPTZType(props.row)}} <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
@@ -129,7 +129,7 @@
                         <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
-                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && userInfo">
+                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && hasAnyRole(serverInfo, userInfo, '管理员')">
                           <i class="fa fa-stop"></i> 停止
                         </button>
                         <a :href="`/play.html?serial=${props.row.DeviceID}&code=${props.row.ID}`" class="btn btn-warning" target="_blank" v-if="props.row.Status == 'ON' && (!!props.row.Shared || !serverInfo.APIAuth)">

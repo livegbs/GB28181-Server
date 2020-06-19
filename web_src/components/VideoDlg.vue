@@ -10,15 +10,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="row" v-if="ptz">
-                        <div :class="['col-sm-8', 'form-group', 'play-area', { 'user-active': active }]" @mousemove="doActive">
+                        <div :class="['form-group', 'play-area', { 'user-active': active, 'col-sm-8': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-sm-12': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}]" @mousemove="doActive">
                             <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted
                               @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
-                              <div class="player-demo-text" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+                              <div class="player-demo-text" v-if="isDemoUser(serverInfo, userInfo)">
                                 提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
                               </div>
                             </LivePlayer>
                         </div>
-                        <div class="col-sm-4 form-group">
+                        <div :class="['col-sm-4', 'form-group']" v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
                             <div class="form-group hide">
                                 <div class="input-group">
                                     <input type="text" v-model.trim="osd" class="form-control">
@@ -58,7 +58,7 @@
                     <div v-else :class="['row', 'play-area', { 'user-active': active }]" @mousemove="doActive">
                         <LivePlayer ref="player" v-if="bShow" :videoUrl="videoUrl" :poster="poster" :live="live" muted
                           @message="$message" :loading.sync="bLoading" v-loading="bLoading" element-loading-text="加载中">
-                              <div class="player-demo-text" v-if="serverInfo.IsDemo && (!userInfo || (userInfo && userInfo.Name == 'test'))">
+                              <div class="player-demo-text" v-if="isDemoUser(serverInfo, userInfo)">
                                 提示: 演示系统限制匿名登录播放时间, 若需测试长时间播放, 请<a target="_blank" href="//www.liveqing.com/docs/download/LiveGBS.html">下载使用</a>
                               </div>
                         </LivePlayer>
@@ -71,7 +71,7 @@
                       <el-radio-button label="RTMP"></el-radio-button>
                       <el-radio-button label="HLS"></el-radio-button>
                     </el-radio-group>
-                    <button v-if="(userInfo || !serverInfo.APIAuth) && serverInfo.VersionType == '旗舰版'" type="button" :class="['btn', {'btn-primary': !bRecording, 'btn-danger': bRecording}]" @click.prevent="toggleRecord()">
+                    <button v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员') && serverInfo.VersionType == '旗舰版'" type="button" :class="['btn', {'btn-primary': !bRecording, 'btn-danger': bRecording}]" @click.prevent="toggleRecord()">
                       <i :class="['fa', {'fa-save': !bRecording, 'fa-stop': bRecording}]"></i>
                       {{bRecording? '停止录像' : '实时录像'}}
                     </button>

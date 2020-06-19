@@ -103,6 +103,27 @@ Vue.prototype.flvSupported = () => {
 Vue.prototype.canTalk = () => {
   return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 }
+Vue.prototype.hasAnyRole = (serverInfo, userInfo, ...roles) => {
+    if (serverInfo && serverInfo.APIAuth === false) {
+        return true;
+    }
+    var userRoles = [];
+    if (userInfo) {
+        userRoles = userInfo.Roles || [];
+    }
+    var checked = false;
+    for(var role of (roles||[])) {
+        if (!role || userRoles.some(ur => (ur == role || ur == '超级管理员'))) {
+            checked = true;
+            break;
+        }
+    }
+    return checked;
+}
+Vue.prototype.isDemoUser = (serverInfo, userInfo) => {
+  if (serverInfo && userInfo && serverInfo.IsDemo && userInfo.Name == serverInfo.DemoUser) return true;
+  return false;
+}
 
 import $ from "jquery"
 import "@penggy/jquery.nicescroll"
@@ -145,18 +166,18 @@ export default {
         localStorage["sidebar-collapse"] = $("body").hasClass("sidebar-collapse") ? "sidebar-collapse" : "";
       }, 500)
     }).ready(() => {
-        this.getServerInfo().then(() => {
-          $("body").layout("fix");
-          this.fixHover();
-          if(!this.isIE() && !this.isMobile()) {
-            this.nice = $("body").niceScroll({
-                zindex: 999999,
-                cursorwidth: "10px",
-                cursoropacitymax: 0.5,
-                enablekeyboard: false,
-            });
-          }
-        })
+      this.$nextTick(() => {
+        $("body").layout("fix");
+        this.fixHover();
+        if(!this.isIE() && !this.isMobile()) {
+          this.nice = $("body").niceScroll({
+              zindex: 999999,
+              cursorwidth: "10px",
+              cursoropacitymax: 0.5,
+              enablekeyboard: false,
+          });
+        }
+      });
     });
     $("body").addClass(localStorage["sidebar-collapse"]);
   },

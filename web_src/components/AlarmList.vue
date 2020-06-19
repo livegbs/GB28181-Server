@@ -44,7 +44,7 @@
               <el-table-column label="操作" min-width="100" v-if="isMobile()">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs">
-                      <button type="button" class="btn btn-danger" @click.prevent="removeAlarm(props.row)">
+                      <button type="button" class="btn btn-danger" @click.prevent="removeAlarm(props.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                         <i class="fa fa-remove"></i> 删除
                       </button>
                     </div>
@@ -64,7 +64,7 @@
               <el-table-column label="操作" min-width="100" fixed="right" v-if="!isMobile()">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs">
-                        <button type="button" class="btn btn-danger" @click.prevent="removeAlarm(props.row)">
+                        <button type="button" class="btn btn-danger" @click.prevent="removeAlarm(props.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                           <i class="fa fa-remove"></i> 删除
                         </button>
                     </div>
