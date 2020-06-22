@@ -30,9 +30,9 @@
                             </div>
                         </div>
                         <span class="hidden-xs">&nbsp;&nbsp;</span>
-                        <div class="form-group form-group-sm" v-if="!userInfo || userInfo.HasAllChannel">
+                        <div class="form-group form-group-sm">
                             <div class="checkbox">
-                                <el-checkbox style="margin-top:-5px;padding-left:0;" size="small" v-model="shareAllChannel" @change="toggleShareAllChannel" name="ShareAllChannel">全部共享</el-checkbox>
+                                <el-checkbox style="margin-top:-5px;padding-left:0;" size="small" v-model="hasAllChannel" @change="toggleHasAllChannel" name="HasAllChannel">全部关联</el-checkbox>
                             </div>
                         </div>
                     </form>
@@ -68,7 +68,6 @@
     import 'jquery-ui/ui/widgets/draggable'
     import $ from 'jquery'
     import _ from "lodash";
-    import { mapState } from "vuex"
 
     export default {
         props: {
@@ -95,7 +94,7 @@
                 sort: "",
                 order: "",
                 related: false,
-                shareAllChannel: false,
+                hasAllChannel: false,
                 loading: false,
                 channels: [],
                 selection: [],
@@ -118,9 +117,6 @@
             pageSize: function(newVal, oldVal) {
                 this.doSearch();
             }
-        },
-        computed: {
-            ...mapState(['userInfo', 'serverInfo']),
         },
         mounted() {
             $(this.$el).find('.modal-content').draggable({
@@ -148,14 +144,14 @@
             select(selection, row) {
                 var idx = selection.indexOf(row);
                 if(idx >= 0) {
-                    $.get("/api/v1/cascade/savechannels", {
+                    $.get("/api/v1/user/savechannels", {
                         id: this.id,
                         channels: [`${row.DeviceID}:${row.ID}`]
                     }).always(() => {
                         this.getChannels();
                     })
                 } else {
-                    $.get("/api/v1/cascade/removechannels", {
+                    $.get("/api/v1/user/removechannels", {
                         id: this.id,
                         channels: [`${row.DeviceID}:${row.ID}`]
                     }).always(() => {
@@ -164,7 +160,7 @@
                 }
             },
             selectAll(selection) {
-                if(this.shareAllChannel) return;
+                if(this.hasAllChannel) return;
                 var keys = [];
                 if(selection.length) {
                     for(var row of selection) {
@@ -173,7 +169,7 @@
                             keys.push(`${row.DeviceID}:${row.ID}`)
                         }
                     }
-                    $.get("/api/v1/cascade/savechannels", {
+                    $.get("/api/v1/user/savechannels", {
                         id: this.id,
                         channels: keys,
                     }).always(() => {
@@ -183,7 +179,7 @@
                     for(var row of this.selection) {
                         keys.push(`${row.DeviceID}:${row.ID}`)
                     }
-                    $.get("/api/v1/cascade/removechannels", {
+                    $.get("/api/v1/user/removechannels", {
                         id: this.id,
                         channels: keys,
                     }).always(() => {
@@ -206,7 +202,7 @@
                 return "-";
             },
             selectable(row, index) {
-                if(!this.shareAllChannel) {
+                if(!this.hasAllChannel) {
                     return true;
                 }
                 return false;
@@ -214,7 +210,7 @@
             getChannels() {
                 if(!this.id) return;
                 this.loading = true;
-                $.get("/api/v1/cascade/channellist", {
+                $.get("/api/v1/user/channellist", {
                     id: this.id,
                     q: this.q,
                     start: (this.currentPage -1) * this.pageSize,
@@ -227,12 +223,12 @@
                     this.$refs["channelTable"].clearSelection();
                     this.total = ret.ChannelCount;
                     this.relateCnt = ret.ChannelRelateCount;
-                    this.shareAllChannel = !!ret.ShareAllChannel;
+                    this.hasAllChannel = !!ret.HasAllChannel;
                     this.channels = ret.ChannelList || [];
                     this.selection = [];
                     this.$nextTick(() => {
                         this.channels.forEach(row => {
-                            var sel = row.CascadeID != "";
+                            var sel = row.UserID !== 0;
                             this.$refs["channelTable"].toggleRowSelection(row, sel);
                             if(sel) {
                                 this.selection.push(row);
@@ -251,15 +247,15 @@
                 this.q = "";
                 this.channel_type = "";
                 this.related = false;
-                this.shareAllChannel = false;
+                this.hasAllChannel = false;
                 this.currentPage = 1;
                 this.pageSize = 10;
             },
-            toggleShareAllChannel(val) {
-                $.get("/api/v1/cascade/setshareallchannel", {
+            toggleHasAllChannel(val) {
+                $.get("/api/v1/user/sethasallchannel", {
                     id: this.id,
-                    shareallchannel: val,
-                }).always(() => {
+                    hasallchannel: val,
+                }).then(() => {
                     this.doSearch();
                 })
             },

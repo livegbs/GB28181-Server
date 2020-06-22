@@ -104,7 +104,7 @@ Vue.prototype.canTalk = () => {
   return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 }
 Vue.prototype.hasAnyRole = (serverInfo, userInfo, ...roles) => {
-    if (serverInfo && serverInfo.APIAuth === false) {
+    if (serverInfo && serverInfo.APIAuth === false && !userInfo) {
         return true;
     }
     var userRoles = [];

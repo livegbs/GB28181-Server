@@ -38,6 +38,9 @@
                         <button type="button" class="btn btn-warning" @click.prevent="editUser(props.row)">
                           <i class="fa fa-edit"></i> 编辑
                         </button>
+                        <button type="button" class="btn btn-primary" @click.prevent="editChannel(props.row)">
+                          <i class="fa fa-check"></i> 关联通道
+                        </button>
                         <button type="button" class="btn btn-info" @click.prevent="resetPassword(props.row)">
                           <i class="fa fa-key"></i> 重置密码
                         </button>
@@ -57,11 +60,14 @@
               <el-table-column prop="LastLoginAt" label="最近登录" min-width="160" sortable="custom"></el-table-column>
               <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" sortable="custom"></el-table-column>
               <el-table-column prop="CreatedAt" label="创建时间" min-width="160" sortable="custom"></el-table-column>
-              <el-table-column label="操作" min-width="240" fixed="right" v-if="!isMobile()" class-name="opt-group">
+              <el-table-column label="操作" min-width="300" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs" v-if="props.row.Role != '超级管理员'">
                         <button type="button" class="btn btn-warning" @click.prevent="editUser(props.row)">
                           <i class="fa fa-edit"></i> 编辑
+                        </button>
+                        <button type="button" class="btn btn-primary" @click.prevent="editChannel(props.row)">
+                          <i class="fa fa-check"></i> 关联通道
                         </button>
                         <button type="button" class="btn btn-info" @click.prevent="resetPassword(props.row)">
                           <i class="fa fa-key"></i> 重置密码
@@ -79,12 +85,14 @@
           </div>
         </div>
         <UserEditDlg ref="userEditDlg" @submit="getUsers()"></UserEditDlg>
+        <UserChannelListDlg ref="userChannelListDlg" size="modal-lg" :title="userChannelListDlgTitle"></UserChannelListDlg>
     </div>
 </template>
 
 <script>
 import _ from "lodash";
 import UserEditDlg from "components/UserEditDlg";
+import UserChannelListDlg from "components/UserChannelListDlg"
 import { mapState } from "vuex";
 export default {
   props: {
@@ -99,7 +107,8 @@ export default {
       sort: "ID",
       order: "asc",
       loading: false,
-      users: []
+      users: [],
+      userChannelListDlgTitle: "关联通道",
     };
   },
   computed: {
@@ -117,7 +126,7 @@ export default {
     }
   },
   components: {
-    UserEditDlg
+    UserEditDlg, UserChannelListDlg
   },
   mounted() {
     // this.timer = setInterval(() => {
@@ -168,6 +177,10 @@ export default {
     },
     editUser(row) {
       this.$refs['userEditDlg'].show(row);
+    },
+    editChannel(row) {
+      this.userChannelListDlgTitle = `关联通道(${row.Username || row.ID})`;
+      this.$refs['userChannelListDlg'].show(row.ID);
     },
     resetPassword(row) {
       this.$prompt(`请输入 ${row.Username || row.ID} 的新密码:`, "重置密码", {

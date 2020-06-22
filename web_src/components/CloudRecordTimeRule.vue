@@ -162,13 +162,7 @@ export default {
                 let start = moment(video.startAt, "YYYYMMDDHHmmss");
                 let m = moment(video.startAt, "YYYYMMDDHHmmss");
                 let s = parseInt(video.duration);
-                if (s > 8640000) {
-                    this.$message({
-                        type: 'error',
-                        message: "录像" + video.start_time + "时间戳错误"
-                    })
-                    continue
-                }
+                if (s <= 0 || s > 36000) continue;
                 let secs = m.unix();
                 secs = secs - (secs % (this.minutesPerUnit * 60));
                 let _m = moment.unix(secs);

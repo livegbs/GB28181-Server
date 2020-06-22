@@ -9,9 +9,6 @@
             <label>搜索</label>
             <input type="text" class="form-control" placeholder="关键字" v-model.trim="q" @keydown.enter.prevent ref="q">
           </div>
-          <div class="form-group form-group-sm">
-            <el-checkbox title="是否在搜索时始终显示本域组织树" style="margin-left:2px;margin-top:-5px;margin-bottom:0;" size="small" v-if="q" v-model.trim="searchBY">显示本域</el-checkbox>
-          </div>
           <span class="hidden-xs">&nbsp;&nbsp;</span>
           <div class="form-group pull-right">
             <router-link :to="`/devices/1`" class="btn btn-default btn-sm">
@@ -22,30 +19,55 @@
         <br>
         <div class="clearfix"></div>
         <div class="content">
-          <div :class="{'col-md-3': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-4': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}" ref="devTreeWrapper" id="dev-tree-wrapper">
-            <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="`${isMobile() ? 'max-height:200px' : 'max-height:800px'};min-height:200px;overflow:auto;`"
-              :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy draggable
-              @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick"
-              :allow-drag="treeAllowDrag" :allow-drop="treeAllowDrop" @node-drop="treeNodeDrop"
-            >
-              <span class="custom-tree-node" slot-scope="{node, data}">
-                <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
-                  <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
-                    'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
-                  <span class="ellipsis" :title="node.label">{{node.label}}</span>
-                </span>
-              </span>
-            </el-tree>
+          <div :class="[{'col-md-3': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-4': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}]">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dev-tree-wrapper" data-toggle="tab">设备树</a></li>
+              <li><a href="#group-tree-wrapper" data-toggle="tab">分 组</a></li>
+            </ul>
+            <div class="tab-content" style="margin: 10px 0;" id="tab-tree-wrapper">
+              <div class="tab-pane active" ref="devTreeWrapper" id="dev-tree-wrapper">
+                <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="`${isMobile() ? 'max-height:200px' : 'max-height:800px'};min-height:200px;overflow:auto;`"
+                  :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy
+                  @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
+                  <span class="custom-tree-node" slot-scope="{node, data}">
+                    <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
+                      <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
+                        'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
+                      <span class="ellipsis" :title="node.label">{{node.label}}</span>
+                    </span>
+                  </span>
+                </el-tree>
+              </div>
+              <div class="tab-pane" ref="groupTreeWrapper" id="group-tree-wrapper">
+                <el-tree ref="groupTree" id="group-tree" node-key="key" v-if="showGroupTree" :style="`${isMobile() ? 'max-height:200px' : 'max-height:800px'};min-height:200px;overflow:auto;`"
+                  :props="treeProps" :load="groupTreeLoad" :filter-node-method="treeFilter" lazy
+                  @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
+                  <span class="custom-tree-node" slot-scope="{node, data}">
+                    <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
+                      <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
+                        'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
+                      <span class="ellipsis" :title="node.label">{{node.label}}</span>
+                    </span>
+                  </span>
+                </el-tree>
+              </div>
+            </div>
           </div>
           <VueContextMenu class="right-menu" :target="contextMenuTarget" :show="contextMenuVisible" @update:show="(show) => contextMenuVisible = show">
+            <a href="javascript:;" @click="treeRefresh" v-show="contextMenuNodeData">
+              <i class="fa fa-refresh"></i> 刷新节点
+            </a>
             <a href="javascript:;" @click="showNodeAddDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom">
-              <i class="fa fa-plus"></i> 新建
+              <i class="fa fa-plus"></i> 新建节点
             </a>
-            <a href="javascript:;" @click="showNodeEditDlg" v-show="contextMenuNodeData && contextMenuNodeData.customName != '本域'">
-              <i class="fa fa-edit"></i> 编辑
+            <a href="javascript:;" @click="showCustomListDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom && contextMenuNodeData.code">
+              <i class="fa fa-check"></i> 选择通道
             </a>
-            <a href="javascript:;" @click="removeCustomNode" v-show="showRemoveContextMenu()">
-              <i class="fa fa-remove"></i> 删除
+            <a href="javascript:;" @click="showNodeEditDlg" v-show="contextMenuNodeData && !(contextMenuNodeData.custom && !contextMenuNodeData.code)">
+              <i class="fa fa-edit"></i> 编辑节点
+            </a>
+            <a href="javascript:;" @click="removeCustomNode" v-show="contextMenuNodeData && contextMenuNodeData.custom && contextMenuNodeData.code">
+              <i class="fa fa-remove"></i> 删除节点
             </a>
           </VueContextMenu>
           <div :class="{'col-md-7': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}" id="dev-tree-player">
@@ -102,6 +124,7 @@
       <!-- <div class="box-footer">
       </div> -->
       <DeviceTreeNodeEditDlg ref="nodeEditDlg" @submit="treeRefresh" style="z-index:2001;"></DeviceTreeNodeEditDlg>
+      <ChannelCustomListDlg ref="customListDlg" @hide="treeRefresh" style="z-index:2001;"  size="modal-lg" :title="customListDlgTitle"></ChannelCustomListDlg>
     </div>
 </template>
 
@@ -112,6 +135,7 @@ import { mapState } from "vuex"
 import LivePlayer from '@liveqing/liveplayer'
 import { component as VueContextMenu } from '@xunlei/vue-context-menu'
 import DeviceTreeNodeEditDlg from 'components/DeviceTreeNodeEditDlg.vue'
+import ChannelCustomListDlg from 'components/ChannelCustomListDlg.vue'
 export default {
   props: {},
   data() {
@@ -120,7 +144,7 @@ export default {
       loading: false,
       timer: 0,
       showTree: true,
-      searchBY:true,
+      showGroupTree: true,
       playerIdx: 0,
       playersLength: 4,
       players: [],
@@ -142,13 +166,14 @@ export default {
           return data.subCount === 0 && data.code && data.serial && !data.custom && !data.parental;
         },
         disabled: (data, node) => {
-          return data.subCount === 0 && data.status != "ON" && !data.custom;
+          return data.subCount === 0 && data.code && data.serial && !data.custom && !data.parental && data.status != "ON";
         }
       },
+      customListDlgTitle: "选择通道",
     };
   },
   components: {
-    LivePlayer, VueContextMenu, DeviceTreeNodeEditDlg
+    LivePlayer, VueContextMenu, DeviceTreeNodeEditDlg, ChannelCustomListDlg
   },
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
@@ -163,7 +188,7 @@ export default {
   },
   mounted() {
     this.setPlayersLength(this.playersLength);
-    this.contextMenuTarget = document.querySelector('#dev-tree-wrapper');
+    this.contextMenuTarget = document.querySelector('#tab-tree-wrapper');
     $(document).on("mouseup touchend", this.ctrlStop);
     this.timer = setTimeout(this.resetTreeMaxHeight, 500);
     $(window).resize(() => {
@@ -204,10 +229,8 @@ export default {
   watch: {
     q: function(newVal, oldVal) {
       this.$refs['devTree'].filter(newVal);
+      this.$refs['groupTree'].filter(newVal);
     },
-    searchBY: function(newVal,oldVal) {
-      this.$refs['devTree'].filter(this.q);
-    }
   },
   methods: {
     treeLoad(data, resolve) {
@@ -219,60 +242,30 @@ export default {
       }).then(ret => {
         resolve((ret||[]).map(v => {
           return Object.assign(v, {
-            key: serial + ":" + pcode + ":" + v.id,
+            key: v.id,
           })
         }));
         this.$refs['devTree'].filter(this.q);
       })
     },
+    groupTreeLoad(data, resolve) {
+      var serial = data.serial||"";
+      var pcode = data.code||"";
+      $.get("/api/v1/device/grouptree", {
+        serial: serial,
+        pcode: pcode
+      }).then(ret => {
+        resolve((ret||[]).map(v => {
+          return Object.assign(v, {
+            key: v.id,
+          })
+        }));
+        this.$refs['groupTree'].filter(this.q);
+      })
+    },
     treeFilter(value, data) {
        if (!value) return true;
-       if (this.searchBY && data.custom)  return true;
        return data.name.indexOf(value) !== -1 || data.customName.indexOf(value) !== -1 || data.id.indexOf(value) !== -1;
-    },
-    treeAllowDrag(node) {
-      if(node && node.data && node.data.code) {
-        this.pnode = node.parent;
-        return true;
-      } else {
-        return false;
-      }
-    },
-    treeAllowDrop(dragNode, dropNode, type) {
-      if(type != 'inner' || !dragNode || !dropNode) return false;
-      var drag = dragNode.data;
-      var drop = dropNode.data;
-      if(!drag || !drop) return false;
-      if(!drop.custom) return false;
-      if(drag.custom && drag.serial != drop.serial) return false;
-      if(!drag.custom && !drop.code) return false;
-      return true;
-    },
-    treeNodeDrop(dragNode, dropNode, type, event) {
-      if(type == 'inner') {
-        var drag = dragNode.data;
-        var drop = dropNode.data;
-        if(!drag || !drop) return;
-        if(!drag.custom) {
-          $.get("/api/v1/channel/move", {
-            serial: drag.serial,
-            code: drag.code,
-            parentid: drop.id,
-          }).then(() => {
-            this.treeNodeRefresh(this.pnode);
-            this.treeNodeRefresh(drop);
-          })
-        } else {
-          $.get("/api/v1/channel/move", {
-            serial: drag.serial,
-            code: drag.code,
-            parentid: drop.code,
-          }).then(() => {
-            this.treeNodeRefresh(this.pnode);
-            this.treeNodeRefresh(drop);
-          })
-        }
-      }
     },
     treeNodeRefresh(key) {
       let node = this.$refs['devTree'].getNode(key);
@@ -285,11 +278,11 @@ export default {
       this.contextMenuNodeData = data;
       this.pnode = node.parent;
       var new_event = new MouseEvent(event.type, event);
-      document.querySelector('#dev-tree-wrapper').dispatchEvent(new_event);
+      this.contextMenuTarget.dispatchEvent(new_event);
     },
     treeNodeClick(data, node, c) {
       this.contextMenuNodeData = null;
-      if(data.subCount === 0 && data.status === "ON" && !data.custom && data.serial && data.code) {
+      if(data.subCount === 0 && data.status === "ON" && !data.custom && data.serial && data.code && !data.parental) {
         var player = this.players[this.playerIdx]||{};
         if(player.bLoading) return;
         this.closeVideo(player);
@@ -324,16 +317,6 @@ export default {
         this.setPlayerIdx(this.playerIdx + 1);
       }
     },
-    showRemoveContextMenu() {
-      if(this.contextMenuNodeData && this.contextMenuNodeData.code) {
-        if(!this.contextMenuNodeData.custom) {
-          var pData = this.getParentData();
-          if(pData && !pData.custom) return false;
-        }
-        return true;
-      }
-      return false;
-    },
     showNodeEditDlg() {
       this.contextMenuVisible = false;
       var data = Object.assign({}, this.contextMenuNodeData, { parent: this.getParentData(), add: false});
@@ -349,6 +332,10 @@ export default {
       }, { parent: this.contextMenuNodeData, add: true});
       this.$refs['nodeEditDlg'].show(data);
     },
+    showCustomListDlg() {
+      this.contextMenuVisible = false;
+      this.$refs['customListDlg'].show(this.contextMenuNodeData.code);
+    },
     removeCustomNode() {
       this.contextMenuVisible = false;
       if(!this.contextMenuNodeData) return;
@@ -363,6 +350,7 @@ export default {
       }).catch(() => {});
     },
     treeRefresh() {
+      this.contextMenuVisible = false;
       if(this.pnode) {
         this.treeNodeRefresh(this.pnode);
         return;
@@ -554,7 +542,7 @@ export default {
   display: none;
 }
 .right-menu a {
-  width: 75px;
+  width: 100px;
   height: 28px;
   line-height: 28px;
   text-align: center;
