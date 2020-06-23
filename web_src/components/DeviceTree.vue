@@ -126,6 +126,7 @@
       </div> -->
       <DeviceTreeNodeEditDlg ref="nodeEditDlg" @submit="treeRefresh" style="z-index:2001;"></DeviceTreeNodeEditDlg>
       <ChannelCustomListDlg ref="customListDlg" @hide="treeRefresh" style="z-index:2001;"  size="modal-lg" :title="customListDlgTitle"></ChannelCustomListDlg>
+      <resize-observer @notify="resetTreeMaxHeight"/>
     </div>
 </template>
 
@@ -143,7 +144,6 @@ export default {
     return {
       q: "",
       loading: false,
-      timer: 0,
       showTree: true,
       showGroupTree: true,
       playerIdx: 0,
@@ -191,38 +191,18 @@ export default {
     this.setPlayersLength(this.playersLength);
     this.contextMenuTarget = document.querySelector('#tab-tree-wrapper');
     $(document).on("mouseup touchend", this.ctrlStop);
-    this.timer = setTimeout(this.resetTreeMaxHeight, 500);
-    $(window).resize(() => {
-      if(this.timer) {
-        clearTimeout(this.timer);
-        this.timer = 0;
-      }
-      this.timer = setTimeout(this.resetTreeMaxHeight, 500);
-    })
   },
   beforeDestroy() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = 0;
-    }
     this.ctrlStop();
     $(document).off("mouseup touchend", this.ctrlStop);
     this.clearVideos();
   },
   beforeRouteLeave(to, from, next) {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = 0;
-    }
     this.ctrlStop();
     this.clearVideos();
     next();
   },
   beforeRouteUpdate(to, from, next) {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = 0;
-    }
     this.ctrlStop();
     this.clearVideos();
     next();
@@ -521,12 +501,12 @@ export default {
       if(this.isMobile()) {
         $tree.css("max-height", 200);
       } else {
-        var wh = $(".wrapper > .content-wrapper").outerHeight();
-        var ch = $(".wrapper > .content-wrapper > .content").outerHeight();
-        var ph = $("#dev-tree-player").outerHeight();
-        var freeh = wh - ch;
-        if(freeh < 0) freeh = 0;
-        $tree.css("max-height", ph + freeh);
+        this.$nextTick(() => {
+          var ph = $("#dev-tree-player").height() - 90;
+          var wh = $(window).height() - 450;
+          var th = wh > ph ? wh : ph;
+          $tree.css("max-height", th);
+        })
       }
     }
   }
