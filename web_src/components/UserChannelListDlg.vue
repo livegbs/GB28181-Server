@@ -259,7 +259,7 @@
                 $.get("/api/v1/user/sethasallchannel", {
                     id: this.id,
                     hasallchannel: val,
-                }).then(() => {
+                }).always(() => {
                     this.doSearch();
                 })
             },
