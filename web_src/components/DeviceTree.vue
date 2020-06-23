@@ -315,6 +315,7 @@ export default {
     },
     showCustomListDlg() {
       this.contextMenuVisible = false;
+      this.customListDlgTitle = `选择通道(${this.contextMenuNodeData.customName || this.contextMenuNodeData.name || this.contextMenuNodeData.code})`;
       this.$refs['customListDlg'].show(this.contextMenuNodeData.code);
     },
     removeCustomNode() {
