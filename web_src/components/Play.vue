@@ -180,7 +180,7 @@ Vue.prototype.canTalk = () => {
   return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 }
 Vue.prototype.hasAnyRole = (serverInfo, userInfo, ...roles) => {
-    if (serverInfo && serverInfo.APIAuth === false && !userInfo) {
+    if (!userInfo) {
         return true;
     }
     var userRoles = [];
@@ -464,10 +464,10 @@ export default {
       return this.talk && this.canTalk() && this.serverInfo.VersionType == '旗舰版';
     },
     showPtzPanel() {
-      return (this.ptz || this.talk) && !this.isMobile();
+      return (this.ptz || this.talk) && !this.isMobile() && this.hasAnyRole(this.serverInfo, this.userInfo, '管理员', '操作员');
     },
     showPtzTab() {
-      return (this.ptz || this.talk) && this.isMobile();
+      return (this.ptz || this.talk) && this.isMobile() && this.hasAnyRole(this.serverInfo, this.userInfo, '管理员', '操作员');
     },
     poster() {
       var _protocol = String(this.protocol).toUpperCase();
