@@ -31,7 +31,7 @@
             <br>
             <div class="clearfix"></div>
             <el-table :data="users" stripe :default-sort="{prop: 'LastLoginAt', order: 'descending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
-              <el-table-column prop="Username" label="用户名" min-width="120" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="Username" label="用户名" min-width="120" show-overflow-tooltip sortable="custom"></el-table-column>
               <el-table-column label="操作" min-width="300" v-if="isMobile()" class-name="opt-group">
                 <template slot-scope="props">
                     <div class="btn-group btn-group-xs" v-if="props.row.Role != '超级管理员'">
@@ -50,7 +50,7 @@
                     </div>
                 </template>
               </el-table-column>
-              <el-table-column prop="Role" label="角色" min-width="200" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="Role" label="角色" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
               <el-table-column prop="Enable" label="是否启用" min-width="100">
                 <template slot-scope="props">
                   <span v-if="props.row.Enable" class="text-success">启用</span>
