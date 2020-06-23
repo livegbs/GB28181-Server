@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <span class="hidden-xs">&nbsp;&nbsp;</span>
-                        <div class="form-group form-group-sm">
+                        <div class="form-group form-group-sm" v-if="!userInfo || userInfo.HasAllChannel">
                             <div class="checkbox">
                                 <el-checkbox style="margin-top:-5px;padding-left:0;" size="small" v-model="hasAllChannel" @change="toggleHasAllChannel" name="HasAllChannel">全部关联</el-checkbox>
                             </div>
@@ -68,6 +68,7 @@
     import 'jquery-ui/ui/widgets/draggable'
     import $ from 'jquery'
     import _ from "lodash";
+    import { mapState } from "vuex"
 
     export default {
         props: {
@@ -117,6 +118,9 @@
             pageSize: function(newVal, oldVal) {
                 this.doSearch();
             }
+        },
+        computed: {
+            ...mapState(['userInfo', 'serverInfo']),
         },
         mounted() {
             $(this.$el).find('.modal-content').draggable({

@@ -45,7 +45,7 @@ const store = new Vuex.Store({
                 path: "/user",
                 icon: "users",
                 title: "用户管理",
-                roles: ['超级管理员'],
+                roles: ['管理员'],
             }, {
                 path: "/config",
                 icon: "cogs",
