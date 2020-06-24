@@ -40,22 +40,20 @@
               <el-table-column prop="Channel" label="通道号" min-width="100" show-overflow-tooltip sortable="custom"></el-table-column>
               <el-table-column label="操作" min-width="260" v-if="isMobile()" class-name="opt-group">
                 <template slot-scope="props">
-                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.DeviceOnline">
-                        <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="canPlay(props.row)">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
-                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && hasAnyRole(serverInfo, userInfo, '管理员')">
+                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.StreamID && hasAnyRole(serverInfo, userInfo, '管理员')">
                           <i class="fa fa-stop"></i> 停止
                         </button>
-                        <a :href="`/play.html?serial=${props.row.DeviceID}&code=${props.row.ID}`" class="btn btn-warning" target="_blank" v-if="props.row.Status == 'ON' && (!!props.row.Shared || !serverInfo.APIAuth)">
+                        <a :href="`/play.html?serial=${props.row.DeviceID}&code=${props.row.ID}`" class="btn btn-warning" target="_blank" v-if="canPlay(props.row) && (!!props.row.Shared || !serverInfo.APIAuth)">
                           <i class="fa fa-share"></i> 分享页
                         </a>
-                        <router-link class="btn btn-info" :to="`/devices/playback/timebox/${devid}/${props.row.ID}`">
+                        <router-link class="btn btn-info" :to="`/devices/playback/timebox/${devid}/${props.row.ID}`" v-if="canPlayback(props.row)">
                           <i class="fa fa-info"></i> 设备录像
                         </router-link>
-                    </div>
-                    <div class="btn-group btn-group-xs" v-else-if="props.row.SubCount > 0">
-                        <router-link class="btn btn-info" :to="`/devices/channels/${devid}/1?dir_serial=${props.row.ID}`">
+                        <router-link class="btn btn-info" :to="`/devices/channels/${devid}/1?dir_serial=${props.row.ID}`" v-if="props.row.SubCount > 0">
                           <i class="fa fa-info"></i> 查看子目录
                         </router-link>
                     </div>
@@ -120,27 +118,20 @@
               </el-table-column>
               <el-table-column label="操作" min-width="260" fixed="right" v-if="!isMobile()" class-name="opt-group">
                 <template slot-scope="props">
-                    <div class="btn-group btn-group-xs" v-if="props.row.SubCount == 0 && props.row.DeviceOnline">
-                        <!--
-                        <button type="button" class="btn btn-info" @mousedown.prevent="talkStart(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
-                          <i class="fa fa-microphone"></i> 对讲
-                        </button>
-                        -->
-                        <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="props.row.Status == 'ON'">
+                    <div class="btn-group btn-group-xs">
+                        <button type="button" class="btn btn-primary" @click.prevent="playStream(props.row)" :disabled="props.row.Locked" v-if="canPlay(props.row)">
                           <i class="fa fa-play-circle"></i> 播放
                         </button>
-                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.Status == 'ON' && props.row.StreamID && hasAnyRole(serverInfo, userInfo, '管理员')">
+                        <button type="button" class="btn btn-danger" @click.prevent="stopStream(props.row)" v-if="props.row.StreamID && hasAnyRole(serverInfo, userInfo, '管理员')">
                           <i class="fa fa-stop"></i> 停止
                         </button>
-                        <a :href="`/play.html?serial=${props.row.DeviceID}&code=${props.row.ID}`" class="btn btn-warning" target="_blank" v-if="props.row.Status == 'ON' && (!!props.row.Shared || !serverInfo.APIAuth)">
+                        <a :href="`/play.html?serial=${props.row.DeviceID}&code=${props.row.ID}`" class="btn btn-warning" target="_blank" v-if="canPlay(props.row) && (!!props.row.Shared || !serverInfo.APIAuth)">
                           <i class="fa fa-share"></i> 分享页
                         </a>
-                        <router-link class="btn btn-info" :to="`/devices/playback/timebox/${devid}/${props.row.ID}`">
+                        <router-link class="btn btn-info" :to="`/devices/playback/timebox/${devid}/${props.row.ID}`" v-if="canPlayback(props.row)">
                           <i class="fa fa-info"></i> 设备录像
                         </router-link>
-                    </div>
-                    <div class="btn-group btn-group-xs" v-else-if="props.row.SubCount > 0">
-                        <router-link class="btn btn-info" :to="`/devices/channels/${devid}/1?dir_serial=${props.row.ID}`">
+                        <router-link class="btn btn-info" :to="`/devices/channels/${devid}/1?dir_serial=${props.row.ID}`" v-if="props.row.SubCount > 0">
                           <i class="fa fa-info"></i> 查看子目录
                         </router-link>
                     </div>
@@ -271,6 +262,12 @@ export default {
       this.sort = data.prop;
       this.order = data.order == "ascending" ? "asc" : "desc";
       this.getChannels();
+    },
+    canPlay(row) {
+      return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.Parental == 0 && row.SubCount == 0;
+    },
+    canPlayback(row) {
+      return row && row.DeviceOnline && !row.Custom && row.Parental == 0 && row.SubCount == 0;
     },
     formatName(row, col, cell) {
       return row.CustomName || row.Name || "-";
