@@ -414,7 +414,7 @@ export default {
     ptzStop() {
       var player = this.players[this.playerIdx];
       if(!player || !player.serial || !player.code) return;
-      if ($(this.$el).find(".ptz-cell.active").size() > 0) {
+      if ($(this.$el).find(".ptz-cell.active").length > 0) {
         $.get("/api/v1/control/ptz", {
           serial: player.serial,
           code: player.code,

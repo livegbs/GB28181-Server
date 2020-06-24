@@ -551,7 +551,7 @@ export default {
       $(event.target).closest('.ptz-cell').addClass("active");
     },
     ptzStop() {
-      if ($(this.$el).find(".ptz-cell.active").size() > 0) {
+      if ($(this.$el).find(".ptz-cell.active").length > 0) {
         $.get("/api/v1/control/ptz", {
           serial: this.serial,
           code: this.code,
