@@ -57,7 +57,7 @@
                 </template>
             </el-table-column>
             <el-table-column min-width="120" label="录像时长" prop="duration" sortable="custom"></el-table-column>
-            <el-table-column min-width="400" label="视频地址">
+            <el-table-column min-width="450" label="视频地址">
                 <template slot-scope="scope">
                     <span class="ellipsis">
                         <i title="点击拷贝" role="button" v-clipboard="scope.row.hls" @success="$message({type:'success', message:'成功拷贝到粘贴板'})" class="fa fa-copy"></i>
