@@ -78,22 +78,22 @@
               </el-table-column>
               <el-table-column prop="AudioEnable" label="开启音频" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                   <template slot-scope="props">
-                      <el-switch :value="props.row.AudioEnable" @change="toggleAudio(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
+                      <el-switch :value="props.row.AudioEnable" @change="toggleAudio(props.row)" :disabled="isDir(props.row)"></el-switch>
                   </template>
               </el-table-column>
               <el-table-column prop="Ondemand" label="按需直播" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                   <template slot-scope="props">
-                      <el-switch :value="props.row.Ondemand" @change="toggleOndemand(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
+                      <el-switch :value="props.row.Ondemand" @change="toggleOndemand(props.row)" :disabled="isDir(props.row)"></el-switch>
                   </template>
               </el-table-column>
                <el-table-column prop="CloudRecord" label="云端录像" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员') && serverInfo.VersionType == '旗舰版'">
                   <template slot-scope="props">
-                      <el-switch :value="props.row.CloudRecord" @change="toggleCloudRecord(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
+                      <el-switch :value="props.row.CloudRecord" @change="toggleCloudRecord(props.row)" :disabled="isDir(props.row)"></el-switch>
                   </template>
               </el-table-column>
               <el-table-column prop="Shared" label="开启分享" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                   <template slot-scope="props">
-                      <el-switch :value="props.row.Shared" @change="toggleShared(props.row)" :disabled="props.row.SubCount > 0"></el-switch>
+                      <el-switch :value="props.row.Shared" @change="toggleShared(props.row)" :disabled="isDir(props.row)"></el-switch>
                   </template>
               </el-table-column>
               <el-table-column prop="NumOutputs" label="在线人数" min-width="100"></el-table-column>
@@ -268,6 +268,9 @@ export default {
     },
     canPlayback(row) {
       return row && row.DeviceOnline && !row.Custom && row.Parental == 0 && row.SubCount == 0;
+    },
+    isDir(row) {
+      return row && (row.SubCount > 0 || row.Parental);
     },
     formatName(row, col, cell) {
       return row.CustomName || row.Name || "-";
