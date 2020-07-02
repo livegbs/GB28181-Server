@@ -498,7 +498,7 @@ export default {
       return `${protocal}//${location.host}/api/v1/control/ws-talk/${player.serial}/${player.code}?format=pcm`;
     },
     resetTreeMaxHeight() {
-      var $tree = $("#dev-tree");
+      var $tree = $("#dev-tree, #group-tree");
       if(this.isMobile()) {
         $tree.css("max-height", 200);
       } else {
