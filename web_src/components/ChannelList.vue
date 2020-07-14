@@ -264,13 +264,16 @@ export default {
       this.getChannels();
     },
     canPlay(row) {
-      return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.Parental == 0 && row.SubCount == 0;
+      // return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.Parental == 0 && row.SubCount == 0;
+      return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0;
     },
     canPlayback(row) {
-      return row && row.DeviceOnline && !row.Custom && row.Parental == 0 && row.SubCount == 0;
+      // return row && row.DeviceOnline && !row.Custom && row.Parental == 0 && row.SubCount == 0;
+      return row && row.DeviceOnline && !row.Custom && row.SubCount == 0;
     },
     isDir(row) {
-      return row && (row.SubCount > 0 || row.Parental);
+      // return row && (row.SubCount > 0 || row.Parental == 1);
+      return row && (row.SubCount > 0);
     },
     formatName(row, col, cell) {
       return row.CustomName || row.Name || "-";

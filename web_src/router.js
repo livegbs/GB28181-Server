@@ -218,10 +218,10 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
   var serverInfo = await store.dispatch("getServerInfo");
   var userInfo = await store.dispatch("getUserInfo");
-  if (serverInfo && serverInfo.APIAuth === false && !userInfo) {
-    next();
-    return;
-  }
+  // if (serverInfo && serverInfo.APIAuth === false && !userInfo) {
+  //   next();
+  //   return;
+  // }
   var menuMap = store.state.menus.reduce((pval, cval) => {
     pval[cval.path] = cval;
     return pval;
@@ -232,7 +232,7 @@ router.beforeEach(async (to, from, next) => {
     pageRoles.push(...(menu.roles || []));
   }
   if (!userInfo) {
-    if (pageRoles.length > 0 || to.matched.some(record => (record.meta.needLogin || record.meta.roles))) {
+    if ((serverInfo && serverInfo.APIAuth === true) || to.matched.some(record => (record.meta.needLogin || record.meta.roles))) {
       if (to.fullPath == '/') {
         window.location.href = `/login.html`;
       } else {
