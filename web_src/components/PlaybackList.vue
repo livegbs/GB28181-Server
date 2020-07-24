@@ -147,7 +147,7 @@ export default {
         type: 'get',
         global: false,
         data: {
-          timeout: 3,
+          timeout: 5,
           serial: this.devid,
           code: this.channel,
           starttime: moment(this.timerange[0]).format("YYYY-MM-DDTHH:mm:ss"),
