@@ -30,7 +30,7 @@
                   :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy
                   @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
                   <span class="custom-tree-node" slot-scope="{node, data}">
-                    <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom && !data.parental}">
+                    <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
                       <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
                         'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
                       <span class="ellipsis" :title="node.label">{{node.label}}</span>
@@ -43,7 +43,7 @@
                   :props="treeProps" :load="groupTreeLoad" :filter-node-method="treeFilter" lazy
                   @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
                   <span class="custom-tree-node" slot-scope="{node, data}">
-                    <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom && !data.parental}">
+                    <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
                       <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
                         'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
                       <span class="ellipsis" :title="node.label">{{node.label}}</span>
@@ -158,16 +158,16 @@ export default {
           node.serial = data.serial;
           node.code = data.code;
           var label = (data.customName || data.name || data.id);
-          if(data.subCount > 0 || !data.code || data.custom || data.parental) {
+          if(data.subCount > 0 || !data.code || data.custom) {
             label += ` [${data.onlineSubCount}/${data.subCount}]`;
           }
           return label;
         },
         isLeaf: (data, node) => {
-          return data.subCount === 0 && data.code && data.serial && !data.custom && !data.parental;
+          return data.subCount === 0 && data.code && data.serial && !data.custom;
         },
         disabled: (data, node) => {
-          return data.subCount === 0 && data.code && data.serial && !data.custom && !data.parental && data.status != "ON";
+          return data.subCount === 0 && data.code && data.serial && !data.custom && data.status != "ON";
         }
       },
       customListDlgTitle: "选择通道",
@@ -263,7 +263,7 @@ export default {
     },
     treeNodeClick(data, node, c) {
       this.contextMenuNodeData = null;
-      if(data.subCount === 0 && data.status === "ON" && !data.custom && data.serial && data.code && !data.parental) {
+      if(data.subCount === 0 && data.status === "ON" && !data.custom && data.serial && data.code) {
         var player = this.players[this.playerIdx]||{};
         if(player.bLoading) return;
         this.closeVideo(player);
