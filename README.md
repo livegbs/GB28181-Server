@@ -44,9 +44,9 @@
 
 - LiveSMS端口使用
 
-	TCP 端口 : 5070(SIP), 10001(HTTP), 11935(RTMP Live), 30000-40000(RTP over TCP)
+	TCP 端口 : 5070(SIP), 10001(HTTP), 11935(RTMP Live), 30000-30500(RTP over TCP)
 
-	UDP 端口 : 5070(SIP), 50000-60000(RTP/RTCP over UDP)
+	UDP 端口 : 5070(SIP), 30000-30500(RTP/RTCP over UDP)
 
 
 	*端口区间说明*
@@ -200,17 +200,17 @@ cd LiveSMS
 
 ### 海康GB28181接入示例
 
-![海康GB28181接入示例](https://www.liveqing.com/images/gbs/%E6%B5%B7%E5%BA%B7%E6%8E%A5%E5%85%A5.jpg)
+![海康GB28181接入示例](https://www.liveqing.com/images/gbs/海康接入.jpg)
 
 ### 大华GB28181接入示例
 
-![大华GB28181接入示例](https://www.liveqing.com/images/gbs/%E5%A4%A7%E5%8D%8E%E6%8E%A5%E5%85%A5.jpg)
+![大华GB28181接入示例](https://www.liveqing.com/images/gbs/大华接入.jpg)
 
 ### 宇视4G GB28181接入示例
 
-![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/%E5%AE%87%E8%A7%86%E6%8E%A5%E5%85%A501.jpg)
+![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/宇视接入01.jpg)
 
-![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/%E5%AE%87%E8%A7%86%E6%8E%A5%E5%85%A502.jpg)
+![宇视4G GB28181接入示例](https://www.liveqing.com/images/gbs/宇视接入02.jpg)
 
 
 ## 平台使用
@@ -262,11 +262,11 @@ https://www.npmjs.com/package/@liveqing/liveplayer
 
 关于设备ID, 通道ID, 以下是国标协议文档中关于 **统一编码规则** 的截取
 
-![统一编码规则1](https://upload-images.jianshu.io/upload_images/15249405-5646d18156a76d62.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![统一编码规则1](https://www.liveqing.com/images/统一编码01.jpg)
 
-![统一编码规则2](https://upload-images.jianshu.io/upload_images/15249405-f093244bc2ca159d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![统一编码规则2](https://www.liveqing.com/images/统一编码02.jpg)
 
-![统一编码规则3](https://upload-images.jianshu.io/upload_images/15249405-653798fdc7c79b19.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![统一编码规则3](https://www.liveqing.com/images/统一编码03.jpg)
 
 ## 常见问题
 
