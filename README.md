@@ -7,10 +7,6 @@
 
   [试用安装包下载](https://www.liveqing.com/docs/download/LiveGBS.html) | [在线演示](http://gbs.liveqing.com) | [在线API](http://gbs.liveqing.com/apidoc) | QQ交流群：[947137753](https://jq.qq.com/?_wv=1027&k=51AHErq)
 
-## 服务架构
-
-![LiveGBS架构图](http://www.liveqing.com/images/gbs/架构图.jpg)
-
 ## 服务说明
 
 ### 安装包
