@@ -68,7 +68,7 @@
               <span v-else>{{formatTransport(props.row)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="ChannelCount" label="通道数" min-width="100"></el-table-column>
+          <el-table-column prop="ChannelCount" label="通道数" min-width="100" sortable="custom"></el-table-column>
           <el-table-column prop="Online" label="在线状态" min-width="100">
             <template slot-scope="props">
               <span class="text-success" v-if="props.row.Online">在线</span>
