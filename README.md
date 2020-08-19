@@ -28,9 +28,9 @@
 
 - LiveCMS端口使用
 
-	TCP 端口 : 5060(SIP), 10000(HTTP), 26379(Redis)
+	TCP 端口 : 15060(SIP), 10000(HTTP), 26379(Redis)
 
-	UDP 端口 : 5060(SIP)
+	UDP 端口 : 15060(SIP)
 
 ### 流媒体服务
 
@@ -40,9 +40,9 @@
 
 - LiveSMS端口使用
 
-	TCP 端口 : 5070(SIP), 10001(HTTP), 11935(RTMP Live), 30000-30500(RTP over TCP)
+	TCP 端口 : 15070(SIP), 10001(HTTP), 11935(RTMP Live), 30000-30500(RTP over TCP)
 
-	UDP 端口 : 5070(SIP), 30000-30500(RTP/RTCP over UDP)
+	UDP 端口 : 15070(SIP), 30000-30500(RTP/RTCP over UDP)
 
 
 	*端口区间说明*
