@@ -26,7 +26,9 @@
                         <span class="hidden-xs">&nbsp;&nbsp;</span>
                         <div class="form-group form-group-sm">
                             <div class="checkbox">
-                                <el-checkbox style="margin-top:-5px;padding-left:0;" size="small" v-model.trim="related" name="Related">只看已选</el-checkbox>
+                                <el-checkbox style="margin-top:-5px;padding-left:0;" size="small" v-model.trim="related" name="Related">
+                                    只看已选({{relateCnt}})
+                                </el-checkbox>
                             </div>
                         </div>
                         <span class="hidden-xs">&nbsp;&nbsp;</span>
@@ -57,7 +59,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭({{relateCnt}})</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>

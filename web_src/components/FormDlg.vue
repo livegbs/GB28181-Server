@@ -85,6 +85,19 @@
     .modal-content {
         overflow: hidden;
     }
+
+    @media screen and(min-width: 992px){
+        .modal-dialog.modal-lgg {
+            width: 90%;
+        }
+    }
+
+    @media screen and(min-width: 1200px){
+        .modal-dialog.modal-lgg {
+            width: 1200px;
+        }
+    }
+
 </style>
 
 
