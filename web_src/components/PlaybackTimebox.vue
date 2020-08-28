@@ -111,6 +111,11 @@ export default {
     DatePicker, LivePlayer, TimeRule
   },
   methods: {
+    keyDown(e) {
+      if(e.keyCode == 27) {
+        this.$el.querySelector('.fa-chevron-left').click();
+      }
+    },
     isMobile() {
       return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
     },
@@ -248,9 +253,11 @@ export default {
     if(n < 0) n = 0;
     this.$refs.timeRule.clickMinute(n);
     this.getRecords(true);
+    // $(document).on("keydown", this.keyDown);
   },
   beforeDestroy() {
     this.stopPlayback();
+    // $(document).off('keydown', this.keyDown);
   },
   beforeRouteLeave(to, from, next) {
     this.stopPlayback();

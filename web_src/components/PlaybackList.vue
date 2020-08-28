@@ -105,6 +105,11 @@ export default {
     PlaybackVideoDlg, PlaybackDownloadDlg, DatePicker
   },
   methods: {
+    keyDown(e) {
+      if(e.keyCode == 27) {
+        this.$el.querySelector('.fa-chevron-left').click();
+      }
+    },
     isMobile() {
       return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
     },
@@ -224,6 +229,10 @@ export default {
   },
   mounted() {
     this.getRecords(true);
+    // $(document).on("keydown", this.keyDown);
+  },
+  beforeDestroy() {
+    // $(document).off('keydown', this.keyDown);
   },
   beforeRouteUpdate(to, from, next) {
     next();

@@ -211,7 +211,7 @@ export default {
     this.timer = setInterval(() => {
         this.getChannels();
     }, 3000);
-    $(document).on("mouseup", this.talkStop);
+    $(document).on("mouseup", this.talkStop); //.on("keydown", this.keyDown);
   },
   beforeDestroy() {
     if (this.timer) {
@@ -219,9 +219,14 @@ export default {
       this.timer = 0;
     }
     this.talkStop();
-    $(document).off("mouseup", this.talkStop);
+    $(document).off("mouseup", this.talkStop); //.off('keydown', this.keyDown);
   },
   methods: {
+    keyDown(e) {
+      if(e.keyCode == 27) {
+        this.$el.querySelector('.fa-chevron-left').click();
+      }
+    },
     isMobile() {
       return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
     },
