@@ -89,7 +89,7 @@ Vue.prototype.$updateQueryString = (uri, key, value) => {
 }
 Vue.prototype.$iframe = (link, w, h) => {
     var _link = Vue.prototype.$updateQueryString(link, "aspect", `${w}x${h}`)
-    return `<iframe src="${_link}" width="${w}" height="${h}" allowfullscreen allow="autoplay"></iframe>`
+    return `<iframe src="${_link}" width="${w}" height="${h}" allowfullscreen allow="autoplay; fullscreen"></iframe>`
 }
 Vue.prototype.isMobile = () => {
   return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
