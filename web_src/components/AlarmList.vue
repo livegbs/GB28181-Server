@@ -35,6 +35,14 @@
                   <option value="7">其他报警</option>
                 </select>
               </div>
+              <!-- <span class="hidden-xs">&nbsp;&nbsp;</span> -->
+              <div class="form-group form-group-sm pull-right" v-if="hasAnyRole(serverInfo, userInfo, '管理员') && hasAllChannel(serverInfo, userInfo)">
+                <div class="input-group input-group-sm">
+                  <button type="button" class="btn btn-sm btn-danger" @click.prevent="clearAlarm">
+                    <i class="fa fa-remove"></i> 全部删除
+                  </button>
+                </div>
+              </div>
             </form>
             <br>
             <div class="clearfix"></div>
@@ -231,6 +239,13 @@ export default {
         }).always(() => {
           this.getAlarms();
         });
+      }).catch(() => {});
+    },
+    clearAlarm() {
+      this.$confirm('确认全部删除', "提示").then(() => {
+        $.get("/api/v1/alarm/clear", {}).then(() => {
+          this.getAlarms();
+        })
       }).catch(() => {});
     }
   },

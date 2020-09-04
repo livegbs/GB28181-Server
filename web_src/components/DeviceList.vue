@@ -33,7 +33,7 @@
               <span>{{props.row.ID}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" min-width="220" v-if="isMobile()">
+          <el-table-column label="操作" min-width="240" v-if="isMobile()">
             <template slot-scope="props">
                 <div class="btn-group btn-group-xs">
                     <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">
@@ -82,7 +82,7 @@
           <el-table-column prop="LastRegisterAt" label="最近注册" min-width="160" sortable="custom"></el-table-column>
           <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" sortable="custom"></el-table-column>
           <el-table-column prop="CreatedAt" label="创建时间" min-width="160" sortable="custom"></el-table-column>
-          <el-table-column label="操作" min-width="220" fixed="right" v-if="!isMobile()">
+          <el-table-column label="操作" min-width="240" fixed="right" v-if="!isMobile()">
             <template slot-scope="props">
                 <div class="btn-group btn-group-xs">
                     <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">

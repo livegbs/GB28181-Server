@@ -31,7 +31,7 @@
                   @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
                   <span class="custom-tree-node" slot-scope="{node, data}">
                     <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
-                      <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
+                      <i :class="['fa', {'fa-sitemap' : data.subCount > 0 || !data.code || data.custom,
                         'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
                       <span class="ellipsis" :title="node.label">{{node.label}}</span>
                     </span>
@@ -44,7 +44,8 @@
                   @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
                   <span class="custom-tree-node" slot-scope="{node, data}">
                     <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
-                      <i :class="['fa', {'fa-group' : data.subCount > 0 || !data.code || data.custom,
+                      <i :class="['fa', {'fa-home': !data.code,
+                        'fa-sitemap' : data.code && (data.subCount > 0 || data.custom),
                         'fa-camera': data.subCount == 0 && data.code && data.serial && !data.custom}]"></i>
                       <span class="ellipsis" :title="node.label">{{node.label}}</span>
                     </span>

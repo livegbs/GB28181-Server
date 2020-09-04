@@ -120,6 +120,15 @@ Vue.prototype.hasAnyRole = (serverInfo, userInfo, ...roles) => {
     }
     return checked;
 }
+Vue.prototype.hasAllChannel = (serverInfo, userInfo) => {
+    if (serverInfo && serverInfo.APIAuth === false && !userInfo) {
+        return true;
+    }
+    if (userInfo) {
+      return userInfo.HasAllChannel;
+    }
+    return false;
+}
 Vue.prototype.isDemoUser = (serverInfo, userInfo) => {
   if (serverInfo && userInfo && serverInfo.IsDemo && userInfo.Name == serverInfo.DemoUser) return true;
   return false;
