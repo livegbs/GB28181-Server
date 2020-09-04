@@ -189,6 +189,8 @@ export default {
                 LocalPort: "",
                 Username: "",
                 Password: "",
+                Online: false,
+                Status: "",
                 RegisterTimeout: 3600,
                 KeepaliveInterval: 60,
                 RegisterInterval: 60,
