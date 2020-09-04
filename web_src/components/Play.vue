@@ -555,7 +555,8 @@ export default {
         $.get("/api/v1/control/ptz", {
           serial: this.serial,
           code: this.code,
-          command: "stop"
+          command: "stop",
+          token: this.token
         });
         $(this.$el).find(".ptz-cell.active").removeClass("active");
       }
