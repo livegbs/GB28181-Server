@@ -193,7 +193,7 @@ export default {
                 Status: "",
                 RegisterTimeout: 3600,
                 KeepaliveInterval: 60,
-                RegisterInterval: 60,
+                RegisterInterval: 300,
                 StreamKeepalive: false,
                 AllowControl: true,
                 ShareAllChannel: false,
