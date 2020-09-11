@@ -117,6 +117,14 @@
                                 <td style="width:20%;">负载</td>
                                 <td><span>{{sms.Load}}</span></td>
                             </tr>
+                            <tr v-if="sms.HWDecodeLoad">
+                                <td style="width:20%;">硬解负载</td>
+                                <td><span>{{sms.HWDecodeLoad}}</span></td>
+                            </tr>
+                            <tr v-if="sms.HWEncodeLoad">
+                                <td style="width:20%;">硬编负载</td>
+                                <td><span>{{sms.HWEncodeLoad}}</span></td>
+                            </tr>
                             <tr>
                                 <td>运行时间</td>
                                 <td>
