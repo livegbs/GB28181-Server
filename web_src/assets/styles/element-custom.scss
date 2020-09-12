@@ -21,6 +21,10 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
     border-radius: 0;
 }
 
+.el-tree-node > .el-tree-node__children {
+    overflow: visible;
+}
+
 @media screen and (max-width: $--message-min-width - 1) {
     .el-message {
         min-width: 100% !important;

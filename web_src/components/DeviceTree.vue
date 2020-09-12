@@ -26,7 +26,7 @@
             </ul>
             <div class="tab-content" style="margin: 10px 0;" id="tab-tree-wrapper">
               <div class="tab-pane active" ref="devTreeWrapper" id="dev-tree-wrapper">
-                <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="`${isMobile() ? 'max-height:200px' : 'max-height:800px'};min-height:200px;overflow:auto;`"
+                <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="`${isMobile() ? 'max-height:200px;' : ''};min-height:200px;overflow:auto;`"
                   :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy
                   @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
                   <span class="custom-tree-node" slot-scope="{node, data}">
@@ -39,7 +39,7 @@
                 </el-tree>
               </div>
               <div class="tab-pane" ref="groupTreeWrapper" id="group-tree-wrapper">
-                <el-tree ref="groupTree" id="group-tree" node-key="key" v-if="showGroupTree" :style="`${isMobile() ? 'max-height:200px' : 'max-height:800px'};min-height:200px;overflow:auto;`"
+                <el-tree ref="groupTree" id="group-tree" node-key="key" v-if="showGroupTree" :style="`${isMobile() ? 'max-height:200px;' : ''};min-height:200px;overflow:auto;`"
                   :props="treeProps" :load="groupTreeLoad" :filter-node-method="treeFilter" lazy
                   @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
                   <span class="custom-tree-node" slot-scope="{node, data}">
@@ -127,7 +127,7 @@
       </div> -->
       <DeviceTreeNodeEditDlg ref="nodeEditDlg" @submit="treeRefresh" style="z-index:2001;"></DeviceTreeNodeEditDlg>
       <ChannelCustomListDlg ref="customListDlg" @hide="treeRefresh" style="z-index:2001;"  size="modal-lg" :title="customListDlgTitle"></ChannelCustomListDlg>
-      <resize-observer @notify="resetTreeMaxHeight"/>
+      <!-- <resize-observer @notify="resetTreeMaxHeight"/> -->
     </div>
 </template>
 

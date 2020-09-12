@@ -1,7 +1,7 @@
 <template>
     <FormDlg :title="title" @hide="onHide" @show="onShow" @submit="onSubmit" ref="dlg" :disabled="errors.any()">
         <div :class="{'form-group':true,'has-error': errors.has('parentid')}">
-            <label for="input-serial" class="col-sm-4 control-label">父节点
+            <label for="input-parentid" class="col-sm-4 control-label">父节点
                 <!-- <span class="text-red">*</span> -->
             </label>
             <div class="col-sm-7">
@@ -23,7 +23,7 @@
                 <span class="text-red" v-if="form.add">*</span>
             </label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="input-code" name="code" v-model.trim="form.code" :placeholder="codePlaceholder" data-vv-as="通道编号" v-validate="'required|regex:^[0-9]+'" @keydown.enter="$el.querySelector('#input-name').focus()" v-if="form.add">
+                <input type="text" class="form-control" id="input-code" name="code" v-model.trim="form.code" :placeholder="codePlaceholder" data-vv-as="通道编号" v-validate="'required|regex:^[0-9]+$'" @keydown.enter="$el.querySelector('#input-name').focus()" v-if="form.add">
                 <input type="text" class="form-control" readonly="readonly" id="input-code" name="code" v-model.trim="form.code" data-vv-as="通道编号" v-else>
             </div>
         </div>
