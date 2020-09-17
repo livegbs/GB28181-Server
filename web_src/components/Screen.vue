@@ -371,3 +371,29 @@ export default {
   }
 }
 </style>
+
+<style lang="less">
+.fullscreen {
+    & > .video {
+        &.col-sm-12 {
+            height: 100%;
+        }
+        &.col-sm-6 {
+            height: 50%;
+        }
+        &.col-sm-4 {
+            height: 33.33%;
+        }
+        &.col-sm-3 {
+            height: 25%;
+        }
+        & > .player-wrapper {
+            height: 100%;
+            .video-wrapper {
+                padding-bottom: 0 !important;
+                height: 100%;
+            }
+        }
+    }
+}
+</style>
