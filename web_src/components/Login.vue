@@ -238,5 +238,10 @@ export default {
   -o-transition: -o-transform 0.2s ease;
 }
 
+@media (max-width: 768px) {
+  .login-box, .register-box {
+    width: 100%;
+  }
+}
 </style>
 
