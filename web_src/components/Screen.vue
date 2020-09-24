@@ -4,13 +4,13 @@
   <div class="row hidden-xs text-center">
       <el-button-group class="player-btn-group">
         <el-button type="primary" size="medium" v-for="list in playerBtnGroup" :key="list.num" @click.prevent="setPlayerLength(list.num)" :class="{'active' : playerLength == list.num}">{{list.name}}</el-button>
-        <el-button type="button" id="full-btn-medium" size="medium" @click.prevent="fullscreen" title="全屏显示"><i class="fa fa-arrows-alt"></i></el-button>
+        <el-button type="button" id="full-btn-medium" size="medium" @click.prevent="fullscreen" title="全屏显示" v-if="!isMobile()"><i class="fa fa-arrows-alt"></i></el-button>
       </el-button-group>
   </div>
   <div class="row visible-xs text-center">
     <el-button-group class="player-btn-group">
       <el-button type="primary" size="mini" v-for="list in playerBtnGroup" :key="list.num" @click.prevent="setPlayerLength(list.num)" :class="{'active' : playerLength == list.num}">{{list.name}}</el-button>
-      <el-button type="button" id="full-btn-mini" size="mini" @click.prevent="fullscreen" title="全屏显示"><i class="fa fa-arrows-alt"></i></el-button>
+      <el-button type="button" id="full-btn-mini" size="mini" @click.prevent="fullscreen" title="全屏显示" v-if="!isMobile()"><i class="fa fa-arrows-alt"></i></el-button>
     </el-button-group>
   </div>
   <br><br class="hidden-xs">

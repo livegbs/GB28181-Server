@@ -150,13 +150,11 @@ export default {
         this.timer2 = setInterval(() => {
             this.store();
         }, 5000);
+        $(window).on('resize', this.resize);
         $(document).on('expanded.pushMenu', this.resizeCharts);
         $(document).on('collapsed.pushMenu', this.resizeCharts);
     },
     created() {
-        $(window).resize(() => {
-            this.resize();
-        });
         this.initHeight();
     },
     beforeDestroy() {
@@ -168,13 +166,18 @@ export default {
             clearInterval(this.timer2);
             this.timer2 = 0;
         }
+        $(window).off('resize', this.resize)
         $(document).off('expanded.pushMenu', this.resizeCharts);
         $(document).off('collapsed.pushMenu', this.resizeCharts);
     },
     methods: {
         fullscreen() {
             this.$fullscreen.enter(this.$el.querySelector(".container-fluid"), {
-                wrap: false
+                wrap: false,
+                callback: () => {
+                    this.resize();
+                    this.resizeCharts();
+                }
             })
         },
         top() {

@@ -60,7 +60,11 @@
                 </template>
               </el-table-column>
               <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
-              <el-table-column prop="Name" label="通道名称" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="Name" label="通道名称" min-width="120" show-overflow-tooltip>
+                <template slot-scope="props">
+                  <a href="javascript:;" @click.prevent="editChannelName(props.row)">{{props.row.CustomName||props.row.Name||'-'}}</a>
+                </template>
+              </el-table-column>
               <el-table-column prop="Status" label="在线状态" min-width="100">
                 <template slot-scope="props">
                   <span v-if="props.row.SubCount > 0">-</span>
@@ -70,7 +74,7 @@
               </el-table-column>
               <el-table-column min-width="100" label="快照">
                   <template slot-scope="props">
-                      <el-popover placement="left" :title="`通道${props.row.Channel}-${props.row.Name}`" width="400" trigger="hover">
+                      <el-popover :open-delay="1000" :close-delay="10" placement="left" :title="`通道${props.row.Channel}-${props.row.Name}`" width="400" trigger="hover">
                           <img onerror='this.src="/images/default_snap.png"' style="width:100%;height:100%;" :src="props.row.SnapURL">
                           <img onerror='this.src="/images/default_snap.png"' style="height:30px;width:50px;" slot="reference" :src="props.row.SnapURL">
                       </el-popover>
@@ -143,12 +147,14 @@
             <el-pagination layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
           </div>
         </div>
+        <ChannelNameEditDlg ref="channelNameEditDlg" @submit="getChannels"></ChannelNameEditDlg>
         <VideoDlg ref="videoDlg" live :ptz="!isMobile()"></VideoDlg>
     </div>
 </template>
 
 <script>
 import _ from "lodash";
+import ChannelNameEditDlg from "components/ChannelNameEditDlg";
 import VideoDlg from "components/VideoDlg";
 import { mapState } from "vuex";
 export default {
@@ -203,7 +209,7 @@ export default {
     }
   },
   components: {
-    VideoDlg
+    ChannelNameEditDlg, VideoDlg
   },
   mounted() {
     // this.$refs["q"].focus();
@@ -322,6 +328,15 @@ export default {
       }).then(() => {
         row.AudioEnable = !row.AudioEnable;
       })
+    },
+    editChannelName(row) {
+      this.$refs['channelNameEditDlg'].show({
+        serial: row.DeviceID,
+        code: row.ID,
+        name: row.Name,
+        custom: row.Custom,
+        customName: row.CustomName,
+      });
     },
     toggleOndemand(row) {
       $.get("/api/v1/device/setchannelondemand", {
