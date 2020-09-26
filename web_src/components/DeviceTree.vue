@@ -259,7 +259,15 @@ export default {
       if(!this.hasAnyRole(this.serverInfo, this.userInfo, '管理员')) return;
       this.contextMenuNodeData = data;
       this.pnode = node.parent;
-      var new_event = new MouseEvent(event.type, event);
+      var new_event;
+      if(typeof(MouseEvent) === 'function') {
+          new_event = new MouseEvent(event.type, event);
+      } else {
+          new_event = document.createEvent('MouseEvents');
+          new_event.initMouseEvent(event.type, true, true, event.view, event.detail,
+              event.screenX, event.screenY, event.clientX, event.clientY,
+              event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, event);
+      }
       this.contextMenuTarget.dispatchEvent(new_event);
     },
     treeNodeClick(data, node, c) {
