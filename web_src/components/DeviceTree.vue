@@ -71,48 +71,50 @@
               <i class="fa fa-remove"></i> 删除节点
             </a>
           </VueContextMenu>
-          <div :class="{'col-md-7': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}" id="dev-tree-player">
-            <div class="view-list row">
-              <div class="video-show">
-                <div>
-                  <div class="no-margin no-padding video col-sm-6" @click="clickPlayer(player, index, $event)" :class="{'active': index == playerIdx, 'col-sm-12': playersLength == 1,'col-sm-6': playersLength == 4,'col-sm-4': playersLength == 9,'col-sm-3': playersLength == 16}" v-for="(player,index) in players" :key="index" @mousemove="resetCloseTimer(player)" @touchstart="resetCloseTimer(player)">
-                    <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="player.bLoading" @message="$message"></LivePlayer>
-                    <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo(player)">关闭</div>
+          <div id="dev-tree-right" :class="[{'col-md-9': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}]" data-sticky-wrap>
+            <div class="col-md-9 col-lg-10" id="dev-tree-player">
+              <div class="view-list row">
+                <div class="video-show">
+                  <div>
+                    <div class="no-margin no-padding video col-sm-6" @click="clickPlayer(player, index, $event)" :class="{'active': index == playerIdx, 'col-sm-12': playersLength == 1,'col-sm-6': playersLength == 4,'col-sm-4': playersLength == 9,'col-sm-3': playersLength == 16}" v-for="(player,index) in players" :key="index" @mousemove="resetCloseTimer(player)" @touchstart="resetCloseTimer(player)">
+                      <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" :loading.sync="player.bLoading" @message="$message"></LivePlayer>
+                      <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo(player)">关闭</div>
+                    </div>
                   </div>
                 </div>
               </div>
+                <!-- <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
+                  <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
+                  <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo()">关闭</div>
+                </div> -->
+              <br>
+              <br>
             </div>
-              <!-- <div class="no-margin no-padding video" @mousemove="resetCloseTimer()" @touchstart="resetCloseTimer()">
-                <LivePlayer :videoUrl="player.url" :poster="player.poster" live muted stretch v-loading="player.bLoading" element-loading-text="加载中..." element-loading-background="#000" @message="$message"></LivePlayer>
-                <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo()">关闭</div>
-              </div> -->
-            <br>
-            <br>
-          </div>
-          <div class="col-md-2" id="dev-tree-ptz" v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
-            <div class="ptz-block">
-                <div class="ptz-cell ptz-up" :class="{'readonly': !playing }" command="up" title="上" @mousedown.prevent="ptzControl">
-                    <i class="fa fa-chevron-up"></i>
-                </div>
-                <div class="ptz-cell ptz-left" :class="{'readonly': !playing }" command="left" title="左" @mousedown.prevent="ptzControl">
-                    <i class="fa fa-chevron-left"></i>
-                </div>
-                <div class="ptz-cell ptz-center" title="云台控制">
-                    <i class="fa fa-microphone" :class="{'readonly': !playing }" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
-                    <i class="fa fa-microphone-slash" :class="{'readonly': !playing }" title="由于浏览器安全策略, 非 HTTPS 或 localhost 访问, 对讲不可用" v-if="!canTalk() && serverInfo.VersionType == '旗舰版'"></i>
-                </div>
-                <div class="ptz-cell ptz-right" :class="{'readonly': !playing }" command="right" title="右" @mousedown.prevent="ptzControl">
-                    <i class="fa fa-chevron-right"></i>
-                </div>
-                <div class="ptz-cell ptz-down" :class="{'readonly': !playing }" command="down" title="下" @mousedown.prevent="ptzControl">
-                    <i class="fa fa-chevron-down"></i>
-                </div>
-                <div class="ptz-cell ptz-zoomin" :class="{'readonly': !playing }" command="zoomin" title="放大" @mousedown.prevent="ptzControl">
-                    <i class="fa fa-plus"></i>
-                </div>
-                <div class="ptz-cell ptz-zoomout" :class="{'readonly': !playing }" command="zoomout" title="缩小" @mousedown.prevent="ptzControl">
-                    <i class="fa fa-minus"></i>
-                </div>
+            <div class="col-md-3 col-lg-2" id="dev-tree-ptz" v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
+              <div class="ptz-block">
+                  <div class="ptz-cell ptz-up" :class="{'readonly': !playing }" command="up" title="上" @mousedown.prevent="ptzControl">
+                      <i class="fa fa-chevron-up"></i>
+                  </div>
+                  <div class="ptz-cell ptz-left" :class="{'readonly': !playing }" command="left" title="左" @mousedown.prevent="ptzControl">
+                      <i class="fa fa-chevron-left"></i>
+                  </div>
+                  <div class="ptz-cell ptz-center" title="云台控制">
+                      <i class="fa fa-microphone" :class="{'readonly': !playing }" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
+                      <i class="fa fa-microphone-slash" :class="{'readonly': !playing }" title="由于浏览器安全策略, 非 HTTPS 或 localhost 访问, 对讲不可用" v-if="!canTalk() && serverInfo.VersionType == '旗舰版'"></i>
+                  </div>
+                  <div class="ptz-cell ptz-right" :class="{'readonly': !playing }" command="right" title="右" @mousedown.prevent="ptzControl">
+                      <i class="fa fa-chevron-right"></i>
+                  </div>
+                  <div class="ptz-cell ptz-down" :class="{'readonly': !playing }" command="down" title="下" @mousedown.prevent="ptzControl">
+                      <i class="fa fa-chevron-down"></i>
+                  </div>
+                  <div class="ptz-cell ptz-zoomin" :class="{'readonly': !playing }" command="zoomin" title="放大" @mousedown.prevent="ptzControl">
+                      <i class="fa fa-plus"></i>
+                  </div>
+                  <div class="ptz-cell ptz-zoomout" :class="{'readonly': !playing }" command="zoomout" title="缩小" @mousedown.prevent="ptzControl">
+                      <i class="fa fa-minus"></i>
+                  </div>
+              </div>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -132,6 +134,7 @@
 </template>
 
 <script>
+import Sticky from "sticky-js";
 import _ from "lodash";
 import url from "url";
 import { mapState } from "vuex"
@@ -172,6 +175,7 @@ export default {
         }
       },
       customListDlgTitle: "选择通道",
+      sticky: null,
     };
   },
   components: {
@@ -192,11 +196,16 @@ export default {
     this.setPlayersLength(this.playersLength);
     this.contextMenuTarget = document.querySelector('#tab-tree-wrapper');
     $(document).on("mouseup touchend", this.ctrlStop);
+    this.sticky = new Sticky("#dev-tree-right");
   },
   beforeDestroy() {
     this.ctrlStop();
     $(document).off("mouseup touchend", this.ctrlStop);
     this.clearVideos();
+    if (this.sticky) {
+        this.sticky.destroy();
+        this.sticky = null;
+    }
   },
   beforeRouteLeave(to, from, next) {
     this.ctrlStop();
