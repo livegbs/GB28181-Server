@@ -62,7 +62,9 @@
               <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
               <el-table-column prop="Name" label="通道名称" min-width="120" show-overflow-tooltip>
                 <template slot-scope="props">
-                  <a href="javascript:;" @click.prevent="editChannelName(props.row)">{{props.row.CustomName||props.row.Name||'-'}}</a>
+                  <a href="javascript:;" @click.prevent="editChannelName(props.row)" :class="{'text-orange': !!props.row.CustomName}">
+                    {{props.row.CustomName||props.row.Name||'-'}}
+                  </a>
                 </template>
               </el-table-column>
               <el-table-column prop="Status" label="在线状态" min-width="100">
