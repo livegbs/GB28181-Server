@@ -71,7 +71,7 @@
               <i class="fa fa-remove"></i> 删除节点
             </a>
           </VueContextMenu>
-          <div id="dev-tree-right" :class="[{'col-md-9': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}]" data-sticky-wrap>
+          <div id="dev-tree-right" :class="[{'col-md-9': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}]" data-sticky-wrap data-sticky-for="1000">
             <div class="col-md-9 col-lg-10" id="dev-tree-player">
               <div class="view-list row">
                 <div class="video-show">
@@ -196,11 +196,13 @@ export default {
     this.setPlayersLength(this.playersLength);
     this.contextMenuTarget = document.querySelector('#tab-tree-wrapper');
     $(document).on("mouseup touchend", this.ctrlStop);
+    $(document).on('expanded.pushMenu collapsed.pushMenu', this.updateSticky);
     this.sticky = new Sticky("#dev-tree-right");
   },
   beforeDestroy() {
     this.ctrlStop();
     $(document).off("mouseup touchend", this.ctrlStop);
+    $(document).off('expanded.pushMenu collapsed.pushMenu', this.updateSticky);
     this.clearVideos();
     if (this.sticky) {
         this.sticky.destroy();
@@ -527,7 +529,10 @@ export default {
           $tree.css("max-height", th);
         })
       }
-    }
+    },
+    updateSticky() {
+        this.sticky && this.sticky.update();
+    },
   }
 };
 </script>
