@@ -71,7 +71,7 @@
               <i class="fa fa-remove"></i> 删除节点
             </a>
           </VueContextMenu>
-          <div id="dev-tree-right" :class="[{'col-md-9': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}]" data-sticky-wrap data-sticky-for="1000" data-sticky-class="sticky">
+          <div id="dev-tree-right" :class="['row', {'col-md-9': hasAnyRole(serverInfo, userInfo, '管理员', '操作员'), 'col-md-8': !hasAnyRole(serverInfo, userInfo, '管理员', '操作员')}]" data-sticky-wrap data-sticky-for="1000" data-sticky-class="sticky">
             <div class="col-md-9 col-lg-10" id="dev-tree-player">
               <div class="view-list row">
                 <div class="video-show">
