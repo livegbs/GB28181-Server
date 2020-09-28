@@ -166,7 +166,7 @@ export default {
             clearInterval(this.timer2);
             this.timer2 = 0;
         }
-        $(window).off('resize', this.resize)
+        $(window).off('resize', this.resize);
         $(document).off('expanded.pushMenu', this.resizeCharts);
         $(document).off('collapsed.pushMenu', this.resizeCharts);
     },
