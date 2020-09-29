@@ -19,11 +19,11 @@
               <option value="false">离线</option>
             </select>
           </div>
-          <div class="form-group pull-right">
+          <!-- <div class="form-group pull-right">
             <router-link :to="`/devices/tree`" class="btn btn-default btn-sm">
                 <i class="fa fa-sitemap"></i> 树视图
             </router-link>
-          </div>
+          </div> -->
         </form>
         <br>
         <div class="clearfix"></div>
