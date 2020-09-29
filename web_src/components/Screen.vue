@@ -93,26 +93,26 @@
       </div>
       <div class="col-md-3 col-lg-2" id="dev-tree-ptz" v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
         <div class="ptz-block">
-            <div class="ptz-cell ptz-up" :class="{'readonly': !playing }" command="up" title="上" @mousedown.prevent="ptzControl">
+            <div class="ptz-cell ptz-up" :class="{'readonly': !playing }" command="up" title="上" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                 <i class="fa fa-chevron-up"></i>
             </div>
-            <div class="ptz-cell ptz-left" :class="{'readonly': !playing }" command="left" title="左" @mousedown.prevent="ptzControl">
+            <div class="ptz-cell ptz-left" :class="{'readonly': !playing }" command="left" title="左" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                 <i class="fa fa-chevron-left"></i>
             </div>
             <div class="ptz-cell ptz-center" title="云台控制">
-                <i class="fa fa-microphone" :class="{'readonly': !playing }" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
+                <i class="fa fa-microphone" :class="{'readonly': !playing }" title="按住喊话" @mousedown.prevent="talkStart"  @touchstart.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
                 <i class="fa fa-microphone-slash" :class="{'readonly': !playing }" title="由于浏览器安全策略, 非 HTTPS 或 localhost 访问, 对讲不可用" v-if="!canTalk() && serverInfo.VersionType == '旗舰版'"></i>
             </div>
-            <div class="ptz-cell ptz-right" :class="{'readonly': !playing }" command="right" title="右" @mousedown.prevent="ptzControl">
+            <div class="ptz-cell ptz-right" :class="{'readonly': !playing }" command="right" title="右" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                 <i class="fa fa-chevron-right"></i>
             </div>
-            <div class="ptz-cell ptz-down" :class="{'readonly': !playing }" command="down" title="下" @mousedown.prevent="ptzControl">
+            <div class="ptz-cell ptz-down" :class="{'readonly': !playing }" command="down" title="下" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                 <i class="fa fa-chevron-down"></i>
             </div>
-            <div class="ptz-cell ptz-zoomin" :class="{'readonly': !playing }" command="zoomin" title="放大" @mousedown.prevent="ptzControl">
+            <div class="ptz-cell ptz-zoomin" :class="{'readonly': !playing }" command="zoomin" title="放大" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                 <i class="fa fa-plus"></i>
             </div>
-            <div class="ptz-cell ptz-zoomout" :class="{'readonly': !playing }" command="zoomout" title="缩小" @mousedown.prevent="ptzControl">
+            <div class="ptz-cell ptz-zoomout" :class="{'readonly': !playing }" command="zoomout" title="缩小" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                 <i class="fa fa-minus"></i>
             </div>
         </div>
@@ -196,7 +196,7 @@ export default {
         num: 9,
         name: "九分屏"
       }];
-      if(!this.isIE()) {
+      if(!this.isIE() && !this.isMobile()) {
         list.push({
           num: 16,
           name: "十六分屏"
@@ -214,6 +214,9 @@ export default {
     }
   },
   mounted() {
+    if(this.isMobile()) {
+      this.playerLength = 1;
+    }
     this.setPlayerLength(this.playerLength);
     this.protocol = this.getQueryString("protocol", "");
     this.loadLocalData(false);

@@ -29,26 +29,26 @@
                             </div>
                             <div class="form-group">
                                 <div class="ptz-block">
-                                    <div class="ptz-cell ptz-up" command="up" title="上" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-up" command="up" title="上" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                                         <i class="fa fa-chevron-up"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-left" command="left" title="左" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-left" command="left" title="左" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                                         <i class="fa fa-chevron-left"></i>
                                     </div>
                                     <div class="ptz-cell ptz-center" title="云台控制">
-                                        <i class="fa fa-microphone" title="按住喊话" @mousedown.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
+                                        <i class="fa fa-microphone" title="按住喊话" @mousedown.prevent="talkStart"  @touchstart.prevent="talkStart" v-if="canTalk() && serverInfo.VersionType == '旗舰版'"></i>
                                         <i class="fa fa-microphone-slash" title="由于浏览器安全策略, 非 HTTPS 或 localhost 访问, 对讲不可用" v-if="!canTalk() && serverInfo.VersionType == '旗舰版'"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-right" command="right" title="右" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-right" command="right" title="右" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                                         <i class="fa fa-chevron-right"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-down" command="down" title="下" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-down" command="down" title="下" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                                         <i class="fa fa-chevron-down"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-zoomin" command="zoomin" title="放大" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-zoomin" command="zoomin" title="放大" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                                         <i class="fa fa-plus"></i>
                                     </div>
-                                    <div class="ptz-cell ptz-zoomout" command="zoomout" title="缩小" @mousedown.prevent="ptzControl">
+                                    <div class="ptz-cell ptz-zoomout" command="zoomout" title="缩小" @mousedown.prevent="ptzControl" @touchstart.prevent="ptzControl">
                                         <i class="fa fa-minus"></i>
                                     </div>
                                 </div>
