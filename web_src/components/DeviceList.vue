@@ -60,7 +60,7 @@
                   {{formatTransport(props.row)}} <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="{row: props.row, MediaTransport: 'UDP'}">UDP</el-dropdown-item>
+                  <el-dropdown-item :command="{row: props.row, MediaTransport: 'UDP', MediaTransportMode: 'passive'}">UDP</el-dropdown-item>
                   <el-dropdown-item :command="{row: props.row, MediaTransport: 'TCP', MediaTransportMode: 'passive'}">TCP 被动</el-dropdown-item>
                   <el-dropdown-item :command="{row: props.row, MediaTransport: 'TCP', MediaTransportMode: 'active'}">TCP 主动</el-dropdown-item>
                 </el-dropdown-menu>
