@@ -83,7 +83,7 @@
             <div class="video-close" v-show="player.url && player.bCloseShow" v-on:click="closeVideo(index, true)">关闭</div>
             <div class="video-close channel-selector" v-show="!player.url && player.bCloseShow" v-on:click="selectChannel(index,player)">选择通道</div>
           </div>
-          <ScreenChannelListDlg ref="channelListFullscreenDlg" @selected="play" :title="channelListDlgTitle" style="z-index:2001;"></ScreenChannelListDlg>
+          <ScreenChannelListDlg ref="channelListFullscreenDlg" @selected="play" :title="channelListDlgTitle"></ScreenChannelListDlg>
         </div>
         <div class="clearfix"></div>
         <div class="text-center" v-if="isDemoUser(serverInfo, userInfo)">
@@ -119,9 +119,9 @@
       </div> <!-- dev-tree-ptz -->
     </div> <!-- dev-tree-right -->
   </div> <!-- view-list -->
-  <ScreenChannelListDlg ref="channelListDlg" @selected="play" :title="channelListDlgTitle" style="z-index:2001;"></ScreenChannelListDlg>
-  <DeviceTreeNodeEditDlg ref="nodeEditDlg" @submit="treeRefresh" style="z-index:2001;"></DeviceTreeNodeEditDlg>
-  <ChannelCustomListDlg ref="customListDlg" @hide="treeRefresh" style="z-index:2001;"  size="modal-lg" :title="customListDlgTitle"></ChannelCustomListDlg>
+  <ScreenChannelListDlg ref="channelListDlg" @selected="play" :title="channelListDlgTitle"></ScreenChannelListDlg>
+  <DeviceTreeNodeEditDlg ref="nodeEditDlg" @submit="treeRefresh"></DeviceTreeNodeEditDlg>
+  <ChannelCustomListDlg ref="customListDlg" @hide="treeRefresh" size="modal-lg" :title="customListDlgTitle"></ChannelCustomListDlg>
 </div>
 </template>
 
