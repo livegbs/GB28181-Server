@@ -44,7 +44,7 @@
         </div>
         <div class="tab-pane" ref="groupTreeWrapper" id="group-tree-wrapper">
           <el-tree ref="groupTree" id="group-tree" node-key="key" v-if="showGroupTree" :style="`${isMobile() ? 'max-height:200px;' : ''};min-height:200px;overflow:auto;background-color:transparent;`"
-            :props="treeProps" :load="groupTreeLoad" :filter-node-method="treeFilter" lazy
+            :props="treeProps" :load="groupTreeLoad" :filter-node-method="treeFilter" lazy :default-expanded-keys="[serverInfo.SIPSerial]"
             @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
             <span class="custom-tree-node" slot-scope="{node, data}">
               <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
@@ -483,9 +483,9 @@ export default {
       }, 2000);
     },
     // tree
-    treeLoad(data, resolve) {
-      var serial = data.serial||"";
-      var pcode = data.code||"";
+    treeLoad(node, resolve) {
+      var serial = (node.data||{}).serial||"";
+      var pcode = (node.data||{}).code||"";
       $.get("/api/v1/device/channeltree", {
         serial: serial,
         pcode: pcode
@@ -498,9 +498,9 @@ export default {
         this.$refs['devTree'].filter(this.q);
       })
     },
-    groupTreeLoad(data, resolve) {
-      var serial = data.serial||"";
-      var pcode = data.code||"";
+    groupTreeLoad(node, resolve) {
+      var serial = (node.data||{}).serial||"";
+      var pcode = (node.data||{}).code||"";
       $.get("/api/v1/device/grouptree", {
         serial: serial,
         pcode: pcode
