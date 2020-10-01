@@ -202,6 +202,11 @@ export default {
           })
       })
     },
+    beforeUnload(event) {
+      this.stopPlayback();
+      event.preventDefault();
+      event.returnValue = '';
+    },
     async startPlayback() {
       await this.stopPlayback();
       if(!this.video) return;
@@ -253,11 +258,11 @@ export default {
     if(n < 0) n = 0;
     this.$refs.timeRule.clickMinute(n);
     this.getRecords(true);
-    // $(document).on("keydown", this.keyDown);
+    $(window).on("beforeunload", this.beforeUnload);
   },
   beforeDestroy() {
+    $(window).off("beforeunload", this.beforeUnload);
     this.stopPlayback();
-    // $(document).off('keydown', this.keyDown);
   },
   beforeRouteLeave(to, from, next) {
     this.stopPlayback();

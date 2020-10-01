@@ -60,49 +60,34 @@ export default {
     ...mapState(['userInfo', 'serverInfo']),
   },
   beforeDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = 0;
-    }
+    $(window).off("beforeunload", this.beforeUnload);
+    this.stop();
   },
   mounted() {
-    $(this.$el)
-      .find(".modal-content")
-      .draggable({
-        handle: ".modal-header",
-        cancel: ".modal-title span",
-        addClasses: false,
-        containment: "document",
-        delay: 100,
-        opacity: 0.5
-      });
-    $(this.$el)
-      .on("hide.bs.modal", () => {
-        this.bShow = false;
-        this.snapUrl = "";
-        this.videoUrl = "";
-        if(this.timer) {
-            clearInterval(this.timer);
-            this.timer = 0;
-        }
-        if(this.streamID) {
-          $.get("/api/v1/playback/stop", {
-            streamid: this.streamID
-          });
-        }
-      })
-      .on("show.bs.modal", () => {
-        this.bShow = true;
-        // no need since v1.2
-        // if (this.streamID) {
-        //   this.timer = setInterval(() => {
-        //     $.get("/api/v1/playback/streaminfo", {
-        //       streamid: this.streamID,
-        //       touch: true,
-        //     });
-        //   }, 15000);
-        // }
-      });
+    $(this.$el).find(".modal-content").draggable({
+      handle: ".modal-header",
+      cancel: ".modal-title span",
+      addClasses: false,
+      containment: "document",
+      delay: 100,
+      opacity: 0.5
+    });
+    $(this.$el).on("hide.bs.modal", () => {
+      this.bShow = false;
+      this.stop();
+    }).on("show.bs.modal", () => {
+      this.bShow = true;
+      // no need since v1.2
+      // if (this.streamID) {
+      //   this.timer = setInterval(() => {
+      //     $.get("/api/v1/playback/streaminfo", {
+      //       streamid: this.streamID,
+      //       touch: true,
+      //     });
+      //   }, 15000);
+      // }
+    });
+    $(window).on("beforeunload", this.beforeUnload);
   },
   components: { LivePlayer },
   methods: {
@@ -118,12 +103,31 @@ export default {
       })
       $(this.$el).modal("show");
     },
+    stop() {
+      this.snapUrl = "";
+      this.videoUrl = "";
+      if(this.timer) {
+          clearInterval(this.timer);
+          this.timer = 0;
+      }
+      if(this.streamID) {
+        $.get("/api/v1/playback/stop", {
+          streamid: this.streamID
+        });
+        this.streamID = "";
+      }
+    },
     scale(speed = 1) {
       $.get("/api/v1/playback/control", {
         streamid: this.streamID,
         command: "scale",
         scale: speed
       })
+    },
+    beforeUnload(event) {
+      this.stop();
+      event.preventDefault();
+      event.returnValue = '';
     }
   }
 };
