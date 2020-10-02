@@ -166,6 +166,8 @@ export default {
           type: 'error',
           message: msg
         })
+      } else {
+        console.log(`ajax error: ${xhr.status} ${xhr.responseText}`);
       }
     }).on("click", ".main-header .sidebar-toggle", function () {
       setTimeout(() => {

@@ -314,6 +314,8 @@ export default {
             message: msg
           })
         }
+      } else {
+        console.log(`ajax error: ${xhr.status} ${xhr.responseText}`);
       }
     }).on("mouseup touchend", this.ctrlStop).ready(() => {
       this.$nextTick(() => {
