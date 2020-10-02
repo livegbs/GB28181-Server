@@ -134,7 +134,6 @@ import 'vue-resize/dist/vue-resize.css'
 
 import "bootstrap/dist/js/bootstrap.js"
 import "admin-lte/dist/js/adminlte.js"
-
 import "jquery-ui/ui/widgets/draggable"
 
 import {
@@ -297,23 +296,24 @@ export default {
           }
         }
         return false;
-      }
-      let msg = xhr.responseText || "网络请求失败";
-      if (xhr.status == 404) {
-        msg = "请求服务不存在或已停止";
-      } else if (xhr.status == 504) {
-        msg = "Gateway Timeout";
-      }
-      try {
-        msg = JSON.parse(msg)
-      } catch (error) {}
-      if (this.fullscreen) {
-        console.log(msg);
-      } else {
-        this.$message({
-          type: 'error',
-          message: msg
-        })
+      } else if (xhr.status) {
+        let msg = xhr.responseText || "网络请求失败";
+        if (xhr.status == 404) {
+          msg = "请求服务不存在或已停止";
+        } else if (xhr.status == 504) {
+          msg = "Gateway Timeout";
+        }
+        try {
+          msg = JSON.parse(msg)
+        } catch (error) {}
+        if (this.fullscreen) {
+          console.log(msg);
+        } else {
+          this.$message({
+            type: 'error',
+            message: msg
+          })
+        }
       }
     }).on("mouseup touchend", this.ctrlStop).ready(() => {
       this.$nextTick(() => {

@@ -152,7 +152,7 @@ export default {
       if (xhr.status == 401) {
         location.href = `/login.html?r=${encodeURIComponent(window.location.href)}`;
         return false;
-      } else {
+      } else if (xhr.status) {
         let msg = xhr.responseText || "网络请求失败";
         if (xhr.status == 404) {
           msg = "请求服务不存在或已停止";
