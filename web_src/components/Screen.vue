@@ -31,7 +31,7 @@
       <div class="tab-content" style="margin: 10px 0;" id="tab-tree-wrapper">
         <div class="tab-pane active" ref="devTreeWrapper" id="dev-tree-wrapper">
           <el-tree ref="devTree" id="dev-tree" node-key="key" v-if="showTree" :style="`${isMobile() ? 'max-height:200px;' : ''};min-height:200px;overflow:auto;background-color:transparent;`"
-            :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy
+            :props="treeProps" :load="treeLoad" :filter-node-method="treeFilter" lazy :empty-text="treeEmptyText"
             @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
             <span class="custom-tree-node" slot-scope="{node, data}">
               <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
@@ -44,7 +44,7 @@
         </div>
         <div class="tab-pane" ref="groupTreeWrapper" id="group-tree-wrapper">
           <el-tree ref="groupTree" id="group-tree" node-key="key" v-if="showGroupTree" :style="`${isMobile() ? 'max-height:200px;' : ''};min-height:200px;overflow:auto;background-color:transparent;`"
-            :props="treeProps" :load="groupTreeLoad" :filter-node-method="treeFilter" lazy :default-expanded-keys="[serverInfo.SIPSerial]"
+            :props="treeProps" :load="groupTreeLoad" :filter-node-method="treeFilter" lazy :empty-text="groupTreeEmptyText" :default-expanded-keys="[serverInfo.SIPSerial]"
             @node-click="treeNodeClick" @node-contextmenu="treeNodeRightClick" >
             <span class="custom-tree-node" slot-scope="{node, data}">
               <span :class="{'text-green': data.status === 'ON' && data.subCount === 0 && data.code && data.serial && !data.custom}">
@@ -129,7 +129,7 @@
 import Sticky from "sticky-js";
 import ScreenChannelListDlg from "components/ScreenChannelListDlg.vue";
 import LivePlayer from "@liveqing/liveplayer";
-import _ from 'lodash'
+import _ from 'lodash';
 import { mapState } from "vuex";
 import { component as VueContextMenu } from '@xunlei/vue-context-menu';
 import DeviceTreeNodeEditDlg from 'components/DeviceTreeNodeEditDlg.vue';
@@ -157,6 +157,8 @@ export default {
       protocol: "",
       showTree: true,
       showGroupTree: true,
+      treeLoading: false,
+      groupTreeLoading: false,
       fullscreenFlag: false,
       pnode: null,
       contextMenuTarget: null,
@@ -211,6 +213,12 @@ export default {
     canPTZ() {
       var player = this.players[this.playerIdx]||{};
       return !!player.url && (player.ptzType === 0 || player.ptzType === 1);
+    },
+    treeEmptyText() {
+      return this.treeLoading ? "加载中..." : "暂无数据";
+    },
+    groupTreeEmptyText() {
+      return this.groupTreeLoading ? "加载中..." : "暂无数据";
     }
   },
   mounted() {
@@ -486,6 +494,7 @@ export default {
     treeLoad(node, resolve) {
       var serial = (node.data||{}).serial||"";
       var pcode = (node.data||{}).code||"";
+      this.treeLoading = true;
       $.get("/api/v1/device/channeltree", {
         serial: serial,
         pcode: pcode
@@ -496,11 +505,14 @@ export default {
           })
         }));
         this.$refs['devTree'].filter(this.q);
+      }).always(() => {
+        this.treeLoading = false;
       })
     },
     groupTreeLoad(node, resolve) {
       var serial = (node.data||{}).serial||"";
       var pcode = (node.data||{}).code||"";
+      this.groupTreeLoading = true;
       $.get("/api/v1/device/grouptree", {
         serial: serial,
         pcode: pcode
@@ -511,6 +523,8 @@ export default {
           })
         }));
         this.$refs['groupTree'].filter(this.q);
+      }).always(() => {
+        this.groupTreeLoading = false;
       })
     },
     treeFilter(value, data) {
