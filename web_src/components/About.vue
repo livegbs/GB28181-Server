@@ -62,7 +62,7 @@
                                 <td v-if="!actived">剩余期限{{serverInfo.RemainDays}}天</td>
                                 <td v-else>永久授权</td>
                             </tr>
-                            <tr v-if="actived && serverInfo.ChannelCount && serverInfo.ChannelCount >= 0 && serverInfo.ChannelCount < 1000">
+                            <tr v-if="actived && serverInfo.ChannelCount && serverInfo.ChannelCount >= 0 && serverInfo.ChannelCount != 1000">
                                 <td>通道数</td>
                                 <td>{{serverInfo.ChannelCount}}</td>
                             </tr>
@@ -159,7 +159,7 @@
                                 <td v-if="!activedsms">剩余期限{{smsserverinfo.RemainDays}}天</td>
                                 <td v-else>永久授权</td>
                             </tr>
-                            <tr v-if="(activedsms||expanded) && smsserverinfo.ChannelCount && smsserverinfo.ChannelCount >= 0 && smsserverinfo.ChannelCount < 1000">
+                            <tr v-if="(activedsms||expanded) && smsserverinfo.ChannelCount && smsserverinfo.ChannelCount >= 0 && smsserverinfo.ChannelCount != 1000">
                                 <td>通道数</td>
                                 <td>{{smsserverinfo.ChannelCount}}</td>
                             </tr>
@@ -226,7 +226,7 @@ export default {
             if (this.actived && this.serverInfo.VersionType && this.serverInfo.VersionType.indexOf("旗舰版") < 0) {
                 return true;
             }
-            if (this.actived && this.serverInfo.ChannelCount && this.serverInfo.ChannelCount >= 0 && this.serverInfo.ChannelCount < 1000) {
+            if (this.actived && this.serverInfo.ChannelCount && this.serverInfo.ChannelCount >= 0 && this.serverInfo.ChannelCount != 1000) {
                 return true;
             }
             return false;
