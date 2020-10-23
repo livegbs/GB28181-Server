@@ -278,11 +278,11 @@ export default {
     },
     canPlay(row) {
       // return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.Parental == 0 && row.SubCount == 0;
-      return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0;
+      return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0 && (row.Parental != 1 || row.Manufacturer != "LiveQing");
     },
     canPlayback(row) {
       // return row && row.DeviceOnline && !row.Custom && row.Parental == 0 && row.SubCount == 0;
-      return row && row.DeviceOnline && !row.Custom && row.SubCount == 0;
+      return row && row.DeviceOnline && !row.Custom && row.SubCount == 0 && (row.Parental != 1 || row.Manufacturer != "LiveQing");
     },
     isDir(row) {
       // return row && (row.SubCount > 0 || row.Parental == 1);
