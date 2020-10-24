@@ -6,11 +6,11 @@ LiveGBS 前端工程源码
 
 ```
 # 准备工具
-cnpm install -g cross-env # or npm install -g cross-env
+npm install -g cross-env
 
 cd web_src
 #  安装 npm 依赖
-cnpm install # or npm install
+npm install --registry=https://registry.npm.taobao.org
 
 # 编辑 webpack.config.js > devServer > proxy ip 指向 server ip
 
