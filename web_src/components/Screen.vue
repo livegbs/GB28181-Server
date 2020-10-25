@@ -615,7 +615,14 @@ export default {
       })
     },
     treeLeaf(data) {
-      return data && data.subCount == 0 && data.serial && data.code && !data.custom && (!data.parental || data.manufacturer != 'LiveQing');
+      if (data && data.subCount == 0 && data.serial && data.code && !data.custom) {
+        if (!data.parental || data.manufacturer != 'LiveQing') {
+          if (data.code.length != 20 || data.code.substring(10, 13) != "216") {
+            return true;
+          }
+        }
+      }
+      return false;
     },
     getParentData() {
       if(!this.contextMenuNodeData) return null;

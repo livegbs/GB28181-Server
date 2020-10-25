@@ -278,15 +278,40 @@ export default {
     },
     canPlay(row) {
       // return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.Parental == 0 && row.SubCount == 0;
-      return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0 && (row.Parental != 1 || row.Manufacturer != "LiveQing");
+      if (row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0) {
+        if (row.Parental != 1 || row.Manufacturer != "LiveQing") {
+          if (row.ID.length != 20 || row.ID.substring(10, 13) != "216") {
+            return true;
+          }
+        }
+      }
+      return false;
     },
     canPlayback(row) {
       // return row && row.DeviceOnline && !row.Custom && row.Parental == 0 && row.SubCount == 0;
-      return row && row.DeviceOnline && !row.Custom && row.SubCount == 0 && (row.Parental != 1 || row.Manufacturer != "LiveQing");
+      if (row && row.DeviceOnline && !row.Custom && row.SubCount == 0) {
+        if (row.Parental != 1 || row.Manufacturer != "LiveQing") {
+          if (row.ID.length != 20 || row.ID.substring(10, 13) != "216") {
+            return true;
+          }
+        }
+      }
+      return false;
     },
     isDir(row) {
       // return row && (row.SubCount > 0 || row.Parental == 1);
-      return row && (row.SubCount > 0);
+      if (row) {
+        if (row.SubCount > 0) {
+          return true;
+        }
+        if (row.Parental == 1 && row.Manufacturer == "LiveQing") {
+          return true;
+        }
+        if (row.ID.length == 20 && row.ID.substring(10, 13) == "216") {
+          return true;
+        }
+      }
+      return false;
     },
     formatName(row, col, cell) {
       return row.CustomName || row.Name || "-";
