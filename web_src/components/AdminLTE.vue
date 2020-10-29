@@ -69,6 +69,7 @@ Vue.use(VeeValidate, {
     zh_CN: {
       messages: {
         required: field => `${field} 不能为空`,
+        integer: field => `${field} 不是有效值`,
         confirmed: (field, targetField) => `${field} 和 ${targetField} 不匹配`,
         regex: field => `${field} 不符合要求格式`
       }
