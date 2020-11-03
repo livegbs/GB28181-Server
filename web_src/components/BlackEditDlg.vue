@@ -48,7 +48,8 @@ export default {
             this.errors.clear();
             this.$emit("show");
             if (!this.form.serial) {
-                this.form.oper = 'add'
+                this.form.oper = 'add';
+                this.$el.querySelector('[name=serial]').focus();
             }
         },
         async onSubmit() {
