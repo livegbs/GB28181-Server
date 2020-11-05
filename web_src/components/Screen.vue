@@ -558,7 +558,8 @@ export default {
     },
     treeNodeClick(data, node, c) {
       this.contextMenuNodeData = null;
-      if(this.treeLeaf(data) && data.status === "ON") {
+      // if(this.treeLeaf(data) && data.status === "ON") {
+      if(this.treeLeaf(data)) {
         var player = this.players[this.playerIdx]||{};
         if(player.bLoading) return;
         this.closeVideo(this.playerIdx);

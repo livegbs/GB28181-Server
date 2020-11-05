@@ -278,7 +278,8 @@ export default {
     },
     canPlay(row) {
       // return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.Parental == 0 && row.SubCount == 0;
-      if (row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0) {
+      // if (row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0) {
+      if (row && row.DeviceOnline && !row.Custom && row.SubCount == 0) {
         if (row.Parental != 1 || row.Manufacturer != "LiveQing") {
           if (row.ID.length != 20 || row.ID.substring(10, 13) != "216") {
             return true;
