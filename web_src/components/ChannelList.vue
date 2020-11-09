@@ -108,7 +108,7 @@
               <el-table-column prop="NumOutputs" label="在线人数" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
               <el-table-column prop="SubCount" label="子节点数" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
               <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatManufacturer" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="PTZType" label="云台类型" min-width="140" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
+              <el-table-column prop="PTZType" label="云台类型" min-width="140" v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
                 <template slot-scope="props">
                   <el-dropdown size="small" trigger="click" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" @command="setPTZType">
                     <span :class="['el-dropdown-link', {'text-orange': props.row.CustomPTZType}]">
