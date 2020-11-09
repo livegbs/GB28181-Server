@@ -59,7 +59,7 @@
                     </div>
                 </template>
               </el-table-column>
-              <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
+              <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
               <el-table-column prop="Name" label="通道名称" min-width="120" show-overflow-tooltip>
                 <template slot-scope="props">
                   <a href="javascript:;" @click.prevent="editChannelName(props.row)" :class="{'text-orange': !!props.row.CustomName}" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">

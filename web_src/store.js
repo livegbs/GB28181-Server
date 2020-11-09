@@ -29,7 +29,7 @@ const store = new Vuex.Store({
                 icon: "cloud",
                 title: "云端录像",
                 versionType: "旗舰版",
-                roles: ['管理员','操作员','观众'],
+                roles: ['管理员'],
             }, {
                 path: "/alarms",
                 icon: "bell",

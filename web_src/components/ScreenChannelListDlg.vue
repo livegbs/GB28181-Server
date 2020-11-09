@@ -18,8 +18,8 @@
         <br>
         <el-table :data="channels" stripe @sort-change="sortChange" :max-height="500" @row-click="rowClick" :row-style="rowStyle"
             ref="channelTable" v-loading="loading" element-loading-text="加载中...">
-            <el-table-column prop="DeviceID" label="设备国标编号" min-width="200" show-overflow-tooltip sortable="custom" :fixed="!isMobile()"></el-table-column>
-            <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom" :fixed="!isMobile()"></el-table-column>
+            <el-table-column prop="DeviceID" label="设备国标编号" min-width="200" show-overflow-tooltip sortable="custom" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" :fixed="!isMobile()"></el-table-column>
+            <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" :fixed="!isMobile()"></el-table-column>
             <el-table-column prop="Name" label="通道名称" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
             <el-table-column prop="Status" label="在线状态" min-width="100">
                 <template slot-scope="props">
