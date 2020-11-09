@@ -33,13 +33,13 @@
               <span>{{props.row.ID}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" min-width="240" v-if="isMobile()">
+          <el-table-column label="操作" :min-width="hasAnyRole(serverInfo, userInfo, '管理员') ? 240 : 120" v-if="isMobile()">
             <template slot-scope="props">
                 <div class="btn-group btn-group-xs">
                     <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">
                         查看通道
                     </router-link>
-                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
+                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员')">
                       <i class="fa fa-refresh"></i> 更新通道
                     </button>
                     <button type="button" class="btn btn-warning" @click.prevent="editDevice(props.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
@@ -52,8 +52,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="Name" label="名称" min-width="140" :formatter="formatName" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="CommandTransport" label="信令传输" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="MediaTransport" label="流传输模式" min-width="140">
+          <el-table-column prop="CommandTransport" label="信令传输" min-width="120" :formatter="formatName" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="MediaTransport" label="流传输模式" min-width="140" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
             <template slot-scope="props">
               <el-dropdown size="small" trigger="click" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" @command="setMediaTransport">
                 <span class="el-dropdown-link">
@@ -68,27 +68,27 @@
               <span v-else>{{formatTransport(props.row)}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="ChannelCount" label="通道数" min-width="100" sortable="custom"></el-table-column>
+          <el-table-column prop="ChannelCount" label="通道数" min-width="100" sortable="custom" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
           <el-table-column prop="Online" label="在线状态" min-width="100">
             <template slot-scope="props">
               <span class="text-success" v-if="props.row.Online">在线</span>
               <span class="text-gray" v-else>离线</span>
             </template>
           </el-table-column>
-          <el-table-column prop="RemoteIP" label="出口IP" min-width="140"></el-table-column>
-          <el-table-column prop="RemotePort" label="端口" min-width="100"></el-table-column>
+          <el-table-column prop="RemoteIP" label="出口IP" min-width="140" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
+          <el-table-column prop="RemotePort" label="端口" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
           <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="LastKeepaliveAt" label="最近心跳" min-width="160" sortable="custom"></el-table-column>
-          <el-table-column prop="LastRegisterAt" label="最近注册" min-width="160" sortable="custom"></el-table-column>
-          <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" sortable="custom"></el-table-column>
-          <el-table-column prop="CreatedAt" label="创建时间" min-width="160" sortable="custom"></el-table-column>
-          <el-table-column label="操作" min-width="240" fixed="right" v-if="!isMobile()">
+          <el-table-column prop="LastKeepaliveAt" label="最近心跳" min-width="160" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" sortable="custom"></el-table-column>
+          <el-table-column prop="LastRegisterAt" label="最近注册" min-width="160" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" sortable="custom"></el-table-column>
+          <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" sortable="custom"></el-table-column>
+          <el-table-column prop="CreatedAt" label="创建时间" min-width="160" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" sortable="custom"></el-table-column>
+          <el-table-column label="操作" :min-width="hasAnyRole(serverInfo, userInfo, '管理员') ? 240 : 120" fixed="right" v-if="!isMobile()">
             <template slot-scope="props">
                 <div class="btn-group btn-group-xs">
                     <router-link class="btn btn-info" :to="`/devices/channels/${props.row.ID}/1`" v-if="props.row.ChannelCount > 0">
                        <i class="fa fa-info"></i> 查看通道
                     </router-link>
-                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员', '操作员')">
+                    <button type="button" class="btn btn-primary" @click.prevent="fetchCatalog(props.row)" v-if="props.row.Online && hasAnyRole(serverInfo, userInfo, '管理员')">
                       <i class="fa fa-refresh"></i> 更新通道
                     </button>
                     <button type="button" class="btn btn-warning" @click.prevent="editDevice(props.row)" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">

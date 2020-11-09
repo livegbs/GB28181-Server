@@ -28,7 +28,7 @@
                 <span v-else>离线</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="SubCount" label="子节点数" min-width="100" sortable="custom"></el-table-column>
+            <el-table-column prop="SubCount" label="子节点数" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" sortable="custom"></el-table-column>
             <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatManufacturer" show-overflow-tooltip></el-table-column>
         </el-table>
         <el-pagination v-if="total > 0" layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
@@ -47,7 +47,8 @@
 <script>
 import _ from 'lodash'
 import $ from 'jquery'
-import "jquery-ui/ui/widgets/draggable";
+import "jquery-ui/ui/widgets/draggable"
+import { mapState } from "vuex"
 
 export default {
   props: {
@@ -75,6 +76,9 @@ export default {
       channels: [],
       index: 0,
     };
+  },
+  computed: {
+    ...mapState(["userInfo", "serverInfo"])
   },
   watch: {
     q: function(newVal, oldVal) {

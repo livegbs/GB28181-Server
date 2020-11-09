@@ -62,9 +62,12 @@
               <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
               <el-table-column prop="Name" label="通道名称" min-width="120" show-overflow-tooltip>
                 <template slot-scope="props">
-                  <a href="javascript:;" @click.prevent="editChannelName(props.row)" :class="{'text-orange': !!props.row.CustomName}">
+                  <a href="javascript:;" @click.prevent="editChannelName(props.row)" :class="{'text-orange': !!props.row.CustomName}" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                     {{props.row.CustomName||props.row.Name||'-'}}
                   </a>
+                  <span v-else>
+                    {{props.row.CustomName||props.row.Name||'-'}}
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column prop="Status" label="在线状态" min-width="100">
@@ -102,10 +105,10 @@
                       <el-switch :value="props.row.Shared" @change="toggleShared(props.row)" :disabled="isDir(props.row)"></el-switch>
                   </template>
               </el-table-column>
-              <el-table-column prop="NumOutputs" label="在线人数" min-width="100"></el-table-column>
-              <el-table-column prop="SubCount" label="子节点数" min-width="100"></el-table-column>
+              <el-table-column prop="NumOutputs" label="在线人数" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
+              <el-table-column prop="SubCount" label="子节点数" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
               <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatManufacturer" show-overflow-tooltip></el-table-column>
-              <el-table-column prop="PTZType" label="云台类型" min-width="140">
+              <el-table-column prop="PTZType" label="云台类型" min-width="140" v-if="hasAnyRole(serverInfo, userInfo, '管理员')">
                 <template slot-scope="props">
                   <el-dropdown size="small" trigger="click" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" @command="setPTZType">
                     <span :class="['el-dropdown-link', {'text-orange': props.row.CustomPTZType}]">
