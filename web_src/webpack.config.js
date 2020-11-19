@@ -63,6 +63,9 @@ module.exports = {
             test: /pretty-bytes/,
             loader: 'babel-loader'
         }, {
+            test: /asn1\.js/,
+            loader: 'babel-loader'
+        }, {
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {

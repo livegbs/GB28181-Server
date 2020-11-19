@@ -10,7 +10,7 @@ npm install -g cross-env
 
 cd web_src
 #  安装 npm 依赖
-npm install --registry=https://registry.npm.taobao.org
+cnpm install
 
 # 编辑 webpack.config.js > devServer > proxy ip 指向 server ip
 
