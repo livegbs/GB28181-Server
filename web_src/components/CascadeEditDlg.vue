@@ -153,7 +153,7 @@
                     &nbsp;&nbsp;
                     <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.AllowControl" name="AllowControl">允许云台控制</el-checkbox>
                     &nbsp;&nbsp;
-                    <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.StreamKeepalive" name="StreamKeepalive" v-if="form.CommandTransport == 'UDP' || form.CommandTransport == 'udp'" title="开启RTCP流保活可防止产生野流">RTCP流保活</el-checkbox>
+                    <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.StreamKeepalive" name="StreamKeepalive" title="开启RTCP流保活可防止产生野流">RTCP流保活</el-checkbox>
                 </div>
             </div>
         </div>
