@@ -224,26 +224,7 @@ export default {
             this.$refs["memChart"].resize();
         },
         resize() {
-            var newPageWidth = window.innerWidth;
-            var newPageHeight = window.innerHeight;
-            if (typeof pageWidth != "number") {
-                if (document.compatMode == "CSS1Compat") {
-                    newPageWidth = document.documentElement.clientWidth;
-                    newPageHeight = document.documentElement.clientHeight;
-                } else {
-                    newPageWidth = document.body.clientWidth;
-                    newPageHeight = document.body.clientHeight;
-                }
-            }
-            if (newPageWidth != this.pageWidth || newPageHeight != this.pageHeight) {
-                this.pageWidth = newPageWidth;
-                this.pageHeight = newPageHeight;
-            }
-            if (this.pageHeight >= screen.height) {
-                $(".qcontent .container-fluid").css("height", this.pageHeight + "px");
-            } else {
-                $(".qcontent .container-fluid").css("height", (this.pageHeight - 140) + "px");
-            }
+            this.initHeight();
             if (this.pageHeight > 800) {
                 $(".auth-view").css("padding-top", "16%")
             } else if (this.pageHeight > 630) {
