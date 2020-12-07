@@ -178,16 +178,12 @@ export default {
       this.$nextTick(() => {
         $("body").layout("fix");
         this.fixHover();
-        if(!this.isIE() && !this.isMobile()) {
-          this.nice = $("body").niceScroll({
-              zindex: 999999,
-              cursorwidth: "10px",
-              cursoropacitymax: 0.5,
-              preservenativescrolling: false,
-              enablekeyboard: false,
-          });
-        }
+        this.initNiceScroll();
       });
+    }).on('shown.bs.modal', () => {
+        this.removeNiceScroll();
+    }).on('hidden.bs.modal', () => {
+        this.initNiceScroll();
     });
     $("body").addClass(localStorage["sidebar-collapse"]);
   },
@@ -216,6 +212,23 @@ export default {
     ...mapActions([
       "getServerInfo"
     ]),
+    initNiceScroll() {
+        if(!this.isIE() && !this.isMobile() && !this.nice) {
+            this.nice = $('body').niceScroll({
+                zindex: 999999,
+                cursorwidth: "10px",
+                cursoropacitymax: 0.5,
+                preservenativescrolling: false,
+                enablekeyboard: false,
+            });
+        }
+    },
+    removeNiceScroll() {
+        if (this.nice) {
+            this.nice.remove();
+            this.nice = null;
+        }
+    },
     fixHover() {
         if(videojs.browser.IS_IOS||videojs.browser.IS_ANDROID) {
             for(var sheetI = document.styleSheets.length - 1; sheetI >= 0; sheetI--) {
