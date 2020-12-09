@@ -150,9 +150,13 @@ export default {
         this.timer2 = setInterval(() => {
             this.store();
         }, 5000);
+        this.timer3 = setTimeout(() => {
+            this.resizeCharts();
+        }, 1000);
         $(window).on('resize', this.resize);
         $(document).on('expanded.pushMenu', this.resizeCharts);
         $(document).on('collapsed.pushMenu', this.resizeCharts);
+        this.fixAuthView();
     },
     created() {
         this.initHeight();
@@ -165,6 +169,10 @@ export default {
         if (this.timer2) {
             clearInterval(this.timer2);
             this.timer2 = 0;
+        }
+        if (this.timer3) {
+            clearTimeout(this.timer3);
+            this.timer3 = 0;
         }
         $(window).off('resize', this.resize);
         $(document).off('expanded.pushMenu', this.resizeCharts);
@@ -225,13 +233,15 @@ export default {
         },
         resize() {
             this.initHeight();
-            if (this.pageHeight > 800) {
-                $(".auth-view").css("padding-top", "16%")
-            } else if (this.pageHeight > 630) {
-                $(".auth-view").css("padding-top", "10%")
+            this.fixAuthView();
+        },
+        fixAuthView() {
+            if (this.pageHeight >= 600) {
+                $(".auth-view").css("padding-top", `${this.pageHeight/10}px`);
             } else {
-                $(".auth-view").css("padding-top", "2%")
+                $(".auth-view").css("padding-top", `20px`);
             }
+            return
         }
     }
 };
@@ -313,7 +323,7 @@ export default {
 
 .auth-view {
     min-height: 200px;
-    padding-top: 10%;
+    padding-top: 78px;
 }
 
 .auth-title {

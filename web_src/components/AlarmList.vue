@@ -35,7 +35,28 @@
                   <option value="7">其他报警</option>
                 </select>
               </div>
-              <!-- <span class="hidden-xs">&nbsp;&nbsp;</span> -->
+              <span class="hidden-xs">&nbsp;&nbsp;</span>
+              <div class="form-group">
+                  <div class="input-group input-group-sm">
+                      <DatePicker class="form-control input-group-sm" clearBtn :day.sync="starttime" ref="startDatePicker" placeholder="开始日期"></DatePicker>
+                      <div class="input-group-btn">
+                          <button type="button" class="btn btn-sm btn-default" @click.prevent="showStartDatePicker">
+                            <i class="fa fa-calendar"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+              <span class="hidden-xs">&nbsp;-&nbsp;</span>
+              <div class="form-group">
+                  <div class="input-group input-group-sm">
+                      <DatePicker class="form-control input-group-sm" clearBtn :day.sync="endtime" ref="endDatePicker" placeholder="结束日期"></DatePicker>
+                      <div class="input-group-btn">
+                          <button type="button" class="btn btn-sm btn-default" @click.prevent="showEndDatePicker">
+                            <i class="fa fa-calendar"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
               <div class="form-group form-group-sm pull-right" v-if="hasAnyRole(serverInfo, userInfo, '管理员') && hasAllChannel(serverInfo, userInfo)">
                 <div class="input-group input-group-sm">
                   <button type="button" class="btn btn-sm btn-danger" @click.prevent="clearAlarm">
@@ -95,7 +116,9 @@
 
 <script>
 import _ from "lodash";
+import DatePicker from "components/DatePicker.vue";
 import { mapState } from "vuex";
+import moment from 'moment';
 export default {
   props: {
   },
@@ -104,6 +127,8 @@ export default {
       q: "",
       priority: "",
       method: "",
+      starttime: "",
+      endtime: "",
       total: 0,
       pageSize: 10,
       currentPage: 1,
@@ -122,6 +147,12 @@ export default {
     q: function(newVal, oldVal) {
       this.doDelaySearch();
     },
+    starttime: function(newVal, oldVal) {
+      this.doSearch();
+    },
+    endtime: function(newVal, oldVal) {
+      this.doSearch();
+    },
     priority: function(newVal, oldVal) {
       this.doSearch();
     },
@@ -133,7 +164,7 @@ export default {
     }
   },
   components: {
-    // CascadeEditDlg
+    DatePicker
   },
   mounted() {
     // this.timer = setInterval(() => {
@@ -150,6 +181,8 @@ export default {
     doSearch(page = 1) {
       var query = {};
       if (this.q) query["q"] = this.q;
+      if (this.starttime) query["starttime"] = this.starttime;
+      if (this.endtime) query["endtime"] = this.endtime;
       if (this.priority) query["priority"] = this.priority;
       if (this.method) query["method"] = this.method;
       this.$router.replace({
@@ -165,6 +198,8 @@ export default {
         q: this.q,
         start: (this.currentPage -1) * this.pageSize,
         limit: this.pageSize,
+        starttime: this.starttime ? moment(this.starttime, "YYYYMMDD").startOf('day').format("YYYY-MM-DDTHH:mm:ss") : "",
+        endtime: this.endtime ? moment(this.endtime, "YYYYMMDD").endOf('day').format("YYYY-MM-DDTHH:mm:ss") : "",
         priority: this.priority,
         method: this.method,
         sort: this.sort,
@@ -232,6 +267,12 @@ export default {
       }
       return "-";
     },
+    showStartDatePicker() {
+      $(this.$refs.startDatePicker.$el).focus();
+    },
+    showEndDatePicker() {
+      $(this.$refs.endDatePicker.$el).focus();
+    },
     removeAlarm(row) {
       this.$confirm(`确认删除`, "提示").then(() => {
         $.get("/api/v1/alarm/remove", {
@@ -252,6 +293,8 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.q = to.query.q || "";
+      vm.starttime = to.query.starttime || "";
+      vm.endtime = to.query.endtime || "";
       vm.priority = to.query.priority || "";
       vm.method = to.query.method || "";
       vm.currentPage = parseInt(to.params.page) || 1;
@@ -261,6 +304,8 @@ export default {
     next();
     this.$nextTick(() => {
       this.q = to.query.q || "";
+      this.starttime = to.query.starttime || "";
+      this.endtime = to.query.endtime || "";
       this.priority = to.query.priority || "";
       this.method = to.query.method || "";
       this.currentPage = parseInt(to.params.page) || 1;

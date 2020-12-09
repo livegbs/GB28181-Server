@@ -17,6 +17,7 @@ const ChannelList = () => import( /* webpackChunkName: 'device' */ 'components/C
 const PlaybackList = () => import(/* webpackChunkName: 'device' */ 'components/PlaybackList.vue')
 const PlaybackTimebox = () => import(/* webpackChunkName: 'device' */ 'components/PlaybackTimebox.vue')
 const AlarmList = () => import(/* webpackChunkName: 'alarm' */ 'components/AlarmList.vue')
+const LogList = () => import(/* webpackChunkName: 'log' */ 'components/LogList.vue')
 const CascadeList = () => import(/* webpackChunckName: 'cascade' */ 'components/CascadeList.vue')
 const UserList = () => import(/* webpackChunckName: 'user' */ 'components/UserList.vue')
 const Config = () => import(/* webpackChunkName: 'config' */ 'components/Config.vue')
@@ -189,6 +190,20 @@ const router = new Router({
           }, {
             path: ':page',
             component: BlackList,
+            props: true
+          }
+        ]
+      }, {
+        path : 'logs',
+        meta: { needLogin: true },
+        component: ContentRoot,
+        children: [
+          {
+            path: '',
+            redirect: '1'
+          }, {
+            path: ':page',
+            component: LogList,
             props: true
           }
         ]

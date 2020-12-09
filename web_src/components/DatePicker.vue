@@ -1,5 +1,5 @@
 <template>
-<input type="text" placeholder="选择日期">
+<input type="text" :placeholder="placeholder">
 </template>
 
 <script>
@@ -19,23 +19,43 @@ export default {
         id: {
             default: ""
         },
+        placeholder: {
+            default: "选择日期"
+        },
+        clearBtn: {
+            type: Boolean,
+            default: false
+        },
         day: {
-            default: () => moment().format("YYYYMMDD")
+            default: ""
         }
     },
     mounted() {
         $(this.$el).datepicker({
             language: "zh-CN",
             autoclose: true,
+            clearBtn: this.clearBtn,
             format: "yyyy-mm-dd",
             todayHighlight: true
-        }).datepicker("setDate", moment(this.day, "YYYYMMDD").toDate()).on("changeDate", e => {
-            this.$emit("update:day", moment(e.date).format('YYYYMMDD'));
+        }).on("changeDate", e => {
+            if (!e.date) {
+                this.$emit("update:day", "");
+            } else {
+                this.$emit("update:day", moment(e.date).format('YYYYMMDD'));
+            }
+        }).on("change", () => {
+            if (!this.$el.value) {
+                this.$emit("update:day", "");
+            }
         })
+        if(this.day) {
+            $(this.$el).datepicker("setDate", moment(this.day, "YYYYMMDD").toDate());
+        }
         this.update();
     },
     watch: {
         day: function (val) {
+            if (!val) return;
             let d = $(this.$el).datepicker("getDate");
             if (val != moment(d).format("YYYYMMDD")) {
                 $(this.$el).datepicker("setDate", moment(val, "YYYYMMDD").toDate());
