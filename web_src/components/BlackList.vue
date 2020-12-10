@@ -46,7 +46,7 @@
             </el-table>
         </div>
         <div class="box-footer" v-if="total > 0">
-            <el-pagination layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
+            <el-pagination layout="total,prev,pager,next" :pager-count="isMobile() ? 3 : 5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
         </div>
 
         <UploadDlg ref="uploadDlg" title="上传黑名单" url="/api/v1/black/import" @uploaded="uploaded"></UploadDlg>

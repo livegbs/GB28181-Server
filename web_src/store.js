@@ -48,7 +48,7 @@ const store = new Vuex.Store({
                 roles: ['管理员'],
             }, {
                 path: "/logs",
-                icon: "paw",
+                icon: "list",
                 title: "操作日志",
                 roles: ['管理员'],
             }, {

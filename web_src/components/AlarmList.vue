@@ -60,7 +60,7 @@
               <div class="form-group form-group-sm pull-right" v-if="hasAnyRole(serverInfo, userInfo, '管理员') && hasAllChannel(serverInfo, userInfo)">
                 <div class="input-group input-group-sm">
                   <button type="button" class="btn btn-sm btn-danger" @click.prevent="clearAlarm">
-                    <i class="fa fa-remove"></i> 全部删除
+                    <i class="fa fa-remove"></i> 清空
                   </button>
                 </div>
               </div>
@@ -102,7 +102,7 @@
             </el-table>
           </div>
           <div class="box-footer" v-if="total > 0">
-            <el-pagination layout="total,prev,pager,next" :pager-count="5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
+            <el-pagination layout="total,prev,pager,next" :pager-count="isMobile() ? 3 : 5" class="pull-right" :total="total" :page-size.sync="pageSize" :current-page.sync="currentPage"></el-pagination>
           </div>
         </div>
         <div class="alert text-center" v-if="alarmPublishToRedis && serverInfo.IsDemo">
