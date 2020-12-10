@@ -174,7 +174,7 @@ export default {
           node.code = data.code;
           var label = (data.customName || data.name || data.code || data.id);
           if(!this.treeLeaf(data)) {
-            label += ` [${data.onlineSubCount}/${data.subCount}]`;
+            label += ` [${data.onlineSubCount}/${data.subCountDevice}]`;
           }
           return label;
         },
