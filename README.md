@@ -5,7 +5,7 @@
 
 ## 服务资源
 
-  [试用安装包下载](https://www.liveqing.com/docs/download/LiveGBS.html) | [在线演示](http://gbs.liveqing.com) | [在线API](http://gbs.liveqing.com/apidoc) | QQ交流群：[947137753](https://jq.qq.com/?_wv=1027&k=51AHErq)
+  [试用安装包下载](https://www.liveqing.com/docs/download/LiveGBS.html) | [在线演示](http://gbs.liveqing.com) | [在线API](http://gbs.liveqing.com/apidoc) | QQ交流群：[605916552](https://jq.qq.com/?_wv=1027&k=cEUIvaNw)
 
 ## 服务说明
 
@@ -249,9 +249,9 @@ https://www.liveqing.com/docs/faq/LiveGBS.html
 
 ## 获取更多信息
 
-安防流媒体互联直播-QQ交流群：[615081503](https://jq.qq.com/?_wv=1027&k=5pdZ4ab)
+安防流媒体互联直播-QQ交流群：[592704822](https://jq.qq.com/?_wv=1027&k=MXQXPpWG)
 
-LiveGBS-QQ交流群：[947137753](https://jq.qq.com/?_wv=1027&k=5UDV5Pt)
+LiveGBS-QQ交流群：[605916552](https://jq.qq.com/?_wv=1027&k=cEUIvaNw)
 
 联系方式：151-5689-6292（同微信）
 
