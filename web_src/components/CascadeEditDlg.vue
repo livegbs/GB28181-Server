@@ -31,7 +31,7 @@
                     <span class="text-red">*</span>
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="host" name="Host" v-model.trim="form.Host" data-vv-as="SIP服务IP" v-validate="'required|url'" @keydown.enter="$el.querySelector('#port').focus()">
+                    <input type="text" class="form-control" id="host" name="Host" v-model.trim="form.Host" data-vv-as="SIP服务IP" v-validate="'required'" @keydown.enter="$el.querySelector('#port').focus()">
                 </div>
             </div>
             <div :class="{'form-group':true, 'has-error': errors.has('Port')}">

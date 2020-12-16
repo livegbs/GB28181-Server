@@ -137,7 +137,7 @@
                         <div :class="['form-group' , {'has-error': errors.has('WanIP')}]">
                             <label class="col-sm-4 control-label">外网 IP(可选)</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" name="WanIP" data-vv-as="外网 IP" v-model.trim="smsbaseconfig.WanIP" v-validate="'url'" placeholder="选填">
+                                <input type="text" class="form-control" name="WanIP" data-vv-as="外网 IP" v-model.trim="smsbaseconfig.WanIP" placeholder="选填">
                                 <span class="help-block">{{errors.first('WanIP')}}</span>
                             </div>
                         </div>
