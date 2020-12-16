@@ -166,7 +166,7 @@ export default {
           node.serial = data.serial;
           node.code = data.code;
           var label = (data.customName || data.name || data.id);
-          if(!this.treeLeaf(data)) {
+          if(!this.treeLeaf(data) && (!data.custom || data.subCount > 0)) {
             label += ` [${data.onlineSubCount}/${data.subCount}]`;
           }
           return label;

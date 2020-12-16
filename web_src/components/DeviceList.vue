@@ -28,7 +28,7 @@
         <br>
         <div class="clearfix"></div>
         <el-table :data="devices" stripe :default-sort="{prop: 'ID', order: 'ascending'}" @sort-change="sortChange">
-          <el-table-column prop="ID" label="设备国标编号" min-width="200" sortable="custom">
+          <el-table-column prop="ID" label="设备国标编号" min-width="200" sortable="custom" show-overflow-tooltip>
             <template slot-scope="props">
               <span>{{props.row.ID}}</span>
             </template>
@@ -75,7 +75,7 @@
               <span class="text-gray" v-else>离线</span>
             </template>
           </el-table-column>
-          <el-table-column prop="RemoteIP" label="出口IP" min-width="140" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
+          <el-table-column prop="RemoteIP" label="出口IP" min-width="140" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" show-overflow-tooltip></el-table-column>
           <el-table-column prop="RemotePort" label="端口" min-width="100" v-if="hasAnyRole(serverInfo, userInfo, '管理员')"></el-table-column>
           <el-table-column prop="Manufacturer" label="厂家" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
           <el-table-column prop="LastKeepaliveAt" label="最近心跳" min-width="160" v-if="hasAnyRole(serverInfo, userInfo, '管理员')" sortable="custom"></el-table-column>
