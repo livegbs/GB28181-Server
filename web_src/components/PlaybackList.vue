@@ -120,7 +120,7 @@ export default {
       this.$router.replace(`/devices/playback/${this.mode}/${this.devid}/${this.channel}/${day}`);
     },
     nextTimeRange() {
-      var end = moment(this.day, "YYYYMMDD").add(24, 'hours');
+      var end = moment(this.day, "YYYYMMDD").endOf('day');
       var now = moment().startOf("second");
       if(end.isAfter(now, "second")) {
         end = now;
@@ -133,9 +133,10 @@ export default {
       if(r2.isAfter(end)) {
         r2 = end;
       }
-      if(r2.startOf("minute").isSameOrBefore(r1.startOf("minute"), "second")) {
+      if(r2.clone().startOf("minute").isSameOrBefore(r1.clone().startOf("minute"), "second")) {
         return false;
       }
+      console.log(r1.format("YY-MM-DD HH:mm:ss"), "~", r2.format("YY-MM-DD HH:mm:ss"), "loading...");
       this.timerange = [r1.toDate(), r2.toDate()];
       return true;
     },
@@ -228,6 +229,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.devid, this.channel, this.day)
     this.getRecords(true);
     // $(document).on("keydown", this.keyDown);
   },
@@ -237,7 +239,10 @@ export default {
   beforeRouteUpdate(to, from, next) {
     next();
     this.$nextTick(() => {
-      this.getRecords(true);
+      if(!this.loading) {
+        console.log(this.devid, this.channel, this.day)
+        this.getRecords(true);
+      }
     })
   }
 };
