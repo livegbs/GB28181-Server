@@ -18,9 +18,9 @@
                           <button type="button" class="btn btn-sm btn-default" @click.prevent="showDatePicker">
                             <i class="fa fa-calendar"></i>
                           </button>
-                          <router-link :to="`/devices/playback/list/${this.devid}/${this.channel}/${this.day}`" replace class="btn btn-default btn-sm">
+                          <button @click.prevent="toListView" class="btn btn-default btn-sm">
                               <i class="fa fa-hand-o-right"></i> 列表视图
-                          </router-link>
+                          </button>
                       </div>
                   </div>
               </div>
@@ -80,6 +80,8 @@ export default {
       ],
       videoLoading: false,
       loading: false,
+      center: "",
+      indistinct: "",
       records: [],
       currentTime: null,
       videos: [],
@@ -94,6 +96,18 @@ export default {
   },
   watch: {
     day: function(newVal, oldVal) {
+      this.timerange = [
+        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+      ]
+    },
+    center: function(newVal, oldVal) {
+      this.timerange = [
+        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+      ]
+    },
+    indistinct: function(newVal, oldVal) {
       this.timerange = [
         moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
         moment(this.day, "YYYYMMDD").startOf('hour').toDate()
@@ -123,7 +137,12 @@ export default {
       $(this.$refs.datePicker.$el).focus();
     },
     updateDay(day) {
-      this.$router.replace(`/devices/playback/${this.mode}/${this.devid}/${this.channel}/${day}`);
+      this.$nextTick(() => {
+        this.$router.replace({
+          path: `/devices/playback/${this.mode}/${this.devid}/${this.channel}/${day}`,
+          query: Object.assign({}, this.$route.query, { center: this.center, indistinct: this.indistinct}),
+        });
+      })
     },
     nextTimeRange() {
       var end = moment(this.day, "YYYYMMDD").endOf('day');
@@ -163,6 +182,8 @@ export default {
           timeout: 5,
           serial: this.devid,
           code: this.channel,
+          center: this.center,
+          indistinct: this.indistinct,
           starttime: moment(this.timerange[0]).format("YYYY-MM-DDTHH:mm:ss"),
           endtime: moment(this.timerange[1]).format("YYYY-MM-DDTHH:mm:ss")
         }
@@ -242,6 +263,12 @@ export default {
         streamid: this.streamID
       })
     },
+    toListView() {
+      this.$router.replace({
+        path: `/devices/playback/list/${this.devid}/${this.channel}/${this.day}`,
+        query: Object.assign({}, this.$route.query, { center: this.center, indistinct: this.indistinct }),
+      });
+    },
     onTimeChange(video) {
       this.video = video;
     },
@@ -270,7 +297,15 @@ export default {
     this.stopPlayback();
     next();
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.center = to.query.center;
+      vm.indistinct = to.query.indistinct;
+    })
+  },
   beforeRouteUpdate(to, from, next) {
+    this.center = to.query.center;
+    this.indistinct = to.query.indistinct;
     this.stopPlayback();
     next();
     this.$nextTick(() => {
