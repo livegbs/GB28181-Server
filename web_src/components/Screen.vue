@@ -173,7 +173,7 @@ export default {
           node.serial = data.serial;
           node.code = data.code;
           var label = (data.customName || data.name || data.code || data.id);
-          if(!this.treeLeaf(data) && (!data.custom || data.subCountDevice > 0)) {
+          if(!this.treeLeaf(data) && data.subCountDevice > 0) {
             label += ` [${data.onlineSubCount}/${data.subCountDevice}]`;
           }
           return label;
