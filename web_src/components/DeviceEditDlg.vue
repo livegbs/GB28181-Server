@@ -86,15 +86,15 @@
                 </el-radio-group>
             </div>
         </div>
-        <!-- <div :class="{'form-group':true,'has-error': errors.has('forbidden')}">
-            <label for="input-forbidden" class="col-sm-4 control-label">其它设置
+        <div :class="{'form-group':true,'has-error': errors.has('record')}">
+            <label for="input-record" class="col-sm-4 control-label">设备录像
             </label>
             <div class="col-sm-7 checkbox">
-                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.forbidden" name="forbidden">禁止接入</el-checkbox>
+                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.record_center" name="record_center">中心检索</el-checkbox>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.freeticket" name="freeticket">免密注册</el-checkbox>
+                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.record_indistinct" name="record_indistinct">模糊查询</el-checkbox>
             </div>
-        </div> -->
+        </div>
     </FormDlg>
 </template>
 
@@ -125,6 +125,8 @@ export default {
                 charset: '',
                 catalog_interval: 3600,
                 subscribe_interval: 600,
+                record_center: false,
+                record_indistinct: false,
                 password: '',
             }
         },

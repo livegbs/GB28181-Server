@@ -241,6 +241,8 @@ export default {
         catalog_interval: row.CatalogInterval,
         subscribe_interval: row.SubscribeInterval,
         password: row.Password,
+        record_center: row.RecordCenter,
+        record_indistinct: row.RecordIndistinct,
       });
     },
     formatName(row, col, cell) {
