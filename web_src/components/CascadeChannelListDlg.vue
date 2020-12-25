@@ -44,10 +44,14 @@
                         <el-table-column type="selection" width="55" fixed :selectable="selectable"></el-table-column>
                         <el-table-column prop="DeviceID" label="设备国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                         <el-table-column prop="ID" label="通道国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
-                        <el-table-column prop="CustomCode" label="自定义通道国标编号" min-width="200" show-overflow-tooltip sortable="custom">
+                        <el-table-column prop="CustomID" label="自定义通道国标编号" min-width="200" show-overflow-tooltip sortable="custom">
                             <template slot-scope="props">
                                 <a href="javascript:;" :class="{'text-orange': !!props.row.CustomCode}" @click.prevent="setChannelID(props.row, true, $event)" v-if="!props.row.Editing">{{props.row.CustomCode || props.row.ID}}</a>
-                                <input type="text" style="width:170px;padding:0 2px;" @keydown.enter.prevent="setChannelID(props.row, false, $event)" @blur="setChannelID(props.row, false, $event)" :value="props.row.CustomCode" :placeholder="props.row.ID" v-else v-focus>
+                                <input type="text" style="width:170px;padding:0 2px;"
+                                    @keydown.esc.stop.prevent="setChannelID(props.row, false, $event)"
+                                    @keydown.enter.stop.prevent="setChannelID(props.row, false, $event)"
+                                    @blur="setChannelID(props.row, false, $event)" :value="props.row.CustomCode"
+                                :placeholder="props.row.ID" v-else v-focus>
                             </template>
                         </el-table-column>
                         <el-table-column prop="Name" label="通道名称" min-width="120" :formatter="formatName" show-overflow-tooltip></el-table-column>
