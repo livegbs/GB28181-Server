@@ -47,7 +47,7 @@
                         <el-table-column prop="CustomID" label="自定义通道国标编号" min-width="200" show-overflow-tooltip sortable="custom">
                             <template slot-scope="props">
                                 <a href="javascript:;" :class="{'text-orange': !!props.row.CustomCode}" @click.prevent="setChannelID(props.row, true, $event)" v-if="!props.row.Editing">{{props.row.CustomCode || props.row.ID}}</a>
-                                <input type="text" style="width:170px;padding:0 2px;"
+                                <input type="text" style="width:170px;padding:0 2px;" oninput="value=value.replace(/[^\d]/g,'')"
                                     @keydown.esc.stop.prevent="setChannelID(props.row, false, $event)"
                                     @keydown.enter.stop.prevent="setChannelID(props.row, false, $event)"
                                     @blur="setChannelID(props.row, false, $event)" :value="props.row.CustomCode"
