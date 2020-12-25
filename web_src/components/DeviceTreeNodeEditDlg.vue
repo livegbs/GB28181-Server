@@ -18,6 +18,20 @@
                 <input type="text" class="form-control" readonly="readonly" id="input-serial" name="serial" :value="form.serial" data-vv-as="设备编号" >
             </div>
         </div>
+        <div :class="{'form-group':true,'has-error': errors.has('import_serial')}" v-if="bImport">
+            <label for="input-serial" class="col-sm-4 control-label">导入设备
+                <span class="text-red">*</span>
+            </label>
+            <div class="col-sm-7">
+                <el-select filterable clearable remote :remote-method="loadDevice" :loading="bLoading" v-model="form.import_serial"
+                    @change="changeDevice" @clear="clearDevice" ref="selectDevice"
+                    id="input-import-serial" name="import_serial" data-vv-as="导入设备" v-validate="'required'"
+                    placeholder="搜索" size="small" style="width:100%;">
+                    <el-option v-for="item in devices" :key="item.ID" :label="item.Name||item.ID" :value="item.ID">
+                    </el-option>
+                </el-select>
+            </div>
+        </div>
         <div :class="{'form-group':true,'has-error': errors.has('code')}">
             <label for="input-code" class="col-sm-4 control-label">通道编号
                 <span class="text-red" v-if="form.add">*</span>
@@ -44,6 +58,9 @@ import $ from 'jquery'
 export default {
     data() {
         return {
+            bImport: false,
+            bLoading: false,
+            devices: [],
             form: this.defForm(),
         }
     },
@@ -71,10 +88,14 @@ export default {
                 parentid: '',
                 parentname: '根节点',
                 add: false,
+                import_serial: '',
             }
         },
         onHide() {
             this.form = this.defForm();
+            this.bLoading = false;
+            this.bImport = false;
+            this.devices = [];
             this.$emit("hide");
         },
         onShow() {
@@ -98,6 +119,7 @@ export default {
                 name: this.form.customName,
                 parentid: this.form.parentid,
                 add: this.form.add,
+                import_serial: this.form.import_serial,
             }).then(data => {
                 this.$refs['dlg'].hide();
                 this.$emit("submit");
@@ -106,6 +128,7 @@ export default {
         show(data) {
             this.errors.clear();
             if(data) {
+                this.bImport = !!data.import;
                 this.form.add = !!data.add;
                 this.form.id = data.id;
                 this.form.serial = data.serial;
@@ -121,9 +144,42 @@ export default {
                     this.form.parentname = data.parent.customName || data.parent.name || data.parent.id;
                 }
             }
+            if(this.bImport) {
+                this.loadDevice();
+            }
             this.$nextTick(() => {
                 this.$refs['dlg'].show();
             })
+        },
+        loadDevice(q) {
+            this.bLoading = true;
+            $.get("/api/v1/device/list", {
+                q: q,
+                limit: 10,
+            }).then(data => {
+                this.devices = data.DeviceList || [];
+            }).always(() => {
+                this.bLoading = false;
+            })
+        },
+        changeDevice(v) {
+            if(!v) {
+                this.form.code = '';
+                this.form.customName = '';
+                this.form.import_serial = '';
+            } else {
+                this.form.code = v;
+                this.form.import_serial = v;
+                this.$nextTick(() => {
+                    this.form.customName = this.$refs['selectDevice'].selectedLabel;
+                })
+            }
+        },
+        clearDevice() {
+            this.form.code = '';
+            this.form.customName = '';
+            this.form.import_serial = '';
+            this.loadDevice();
         }
     }
 }

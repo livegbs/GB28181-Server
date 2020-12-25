@@ -69,6 +69,9 @@
       <a href="javascript:;" @click="showNodeAddDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom">
         <i class="fa fa-plus"></i> 新建节点
       </a>
+      <a href="javascript:;" @click="showNodeImportDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom">
+        <i class="fa fa-arrow-right"></i> 导入设备
+      </a>
       <a href="javascript:;" @click="showCustomListDlg" v-show="contextMenuNodeData && contextMenuNodeData.custom && contextMenuNodeData.code">
         <i class="fa fa-check"></i> 选择通道
       </a>
@@ -583,6 +586,16 @@ export default {
         name: '',
         customName: '',
       }, { parent: this.contextMenuNodeData, add: true});
+      this.$refs['nodeEditDlg'].show(data, true);
+    },
+    showNodeImportDlg() {
+      this.contextMenuVisible = false;
+      var data = Object.assign({
+        serial: this.contextMenuNodeData.serial||'',
+        code: '',
+        name: '',
+        customName: '',
+      }, { parent: this.contextMenuNodeData, add:true, import: true});
       this.$refs['nodeEditDlg'].show(data);
     },
     showCustomListDlg() {
