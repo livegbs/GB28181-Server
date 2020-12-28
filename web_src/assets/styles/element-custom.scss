@@ -17,7 +17,7 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
     border-bottom:0;
 }
 
-.el-autocomplete .el-input__inner {
+.el-autocomplete .el-input__inner, .el-select .el-input__inner {
     border-radius: 0;
 }
 
