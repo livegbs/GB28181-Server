@@ -114,17 +114,6 @@ export default {
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
   },
-  watch: {
-    q: function(newVal, oldVal) {
-      this.doDelaySearch();
-    },
-    enable: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    currentPage: function(newVal, oldVal) {
-      this.doSearch(newVal);
-    }
-  },
   components: {
     UserEditDlg, UserChannelListDlg
   },
@@ -140,6 +129,17 @@ export default {
     }
   },
   methods: {
+    ready(){
+      this.$watch('q', function(newVal, oldVal) {
+        this.doDelaySearch();
+      });
+      this.$watch('enable', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('currentPage', function(newVal, oldVal) {
+        this.doSearch(newVal);
+      });
+    },
     doSearch(page = 1) {
       var query = {};
       if (this.q) query["q"] = this.q;
@@ -216,6 +216,7 @@ export default {
       vm.q = to.query.q || "";
       vm.enable = to.query.enable || "";
       vm.currentPage = parseInt(to.params.page) || 1;
+      vm.ready();
     });
   },
   beforeRouteUpdate(to, from, next) {

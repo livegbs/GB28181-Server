@@ -95,30 +95,32 @@ export default {
       records: []
     };
   },
-  watch: {
-    day: function(newVal, oldVal) {
-      this.timerange = [
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
-      ]
-    },
-    center: function(newVal, oldVal) {
-      this.timerange = [
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
-      ]
-    },
-    indistinct: function(newVal, oldVal) {
-      this.timerange = [
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
-      ]
-    }
-  },
   components: {
     PlaybackVideoDlg, PlaybackDownloadDlg, DatePicker
   },
   methods: {
+    ready(){
+      this.$watch('day', function(newVal, oldVal) {
+        this.timerange = [
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+        ]
+      });
+      this.$watch('center', function(newVal, oldVal) {
+        this.timerange = [
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+        ]
+      });
+      this.$watch('indistinct', function(newVal, oldVal) {
+        this.timerange = [
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+        ]
+      });
+      console.log(this.devid, this.channel, this.day)
+      this.getRecords(true);
+    },
     keyDown(e) {
       if(e.keyCode == 27) {
         this.$el.querySelector('.fa-chevron-left').click();
@@ -256,8 +258,8 @@ export default {
     },
   },
   mounted() {
-    console.log(this.devid, this.channel, this.day)
-    this.getRecords(true);
+    // console.log(this.devid, this.channel, this.day)
+    // this.getRecords(true);
     // $(document).on("keydown", this.keyDown);
   },
   beforeDestroy() {
@@ -267,6 +269,7 @@ export default {
     next(vm => {
       vm.center = to.query.center;
       vm.indistinct = to.query.indistinct;
+      vm.ready();
     })
   },
   beforeRouteUpdate(to, from, next) {

@@ -196,33 +196,33 @@ export default {
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
   },
-  watch: {
-    q: function(newVal, oldVal) {
-      this.doDelaySearch();
-    },
-    online: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    channel_type: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    dir_serial: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    currentPage: function(newVal, oldVal) {
-      this.doSearch(newVal);
-    }
-  },
+  // watch: {
+  //   q: function(newVal, oldVal) {
+  //     this.doDelaySearch();
+  //   },
+  //   online: function(newVal, oldVal) {
+  //     this.doSearch();
+  //   },
+  //   channel_type: function(newVal, oldVal) {
+  //     this.doSearch();
+  //   },
+  //   dir_serial: function(newVal, oldVal) {
+  //     this.doSearch();
+  //   },
+  //   currentPage: function(newVal, oldVal) {
+  //     this.doSearch(newVal);
+  //   }
+  // },
   components: {
     ChannelNameEditDlg, VideoDlg
   },
   mounted() {
     // this.$refs["q"].focus();
-    this.getChannels();
-    this.timer = setInterval(() => {
-        this.getChannels();
-    }, 3000);
-    $(document).on("mouseup", this.talkStop); //.on("keydown", this.keyDown);
+    // this.getChannels();
+    // this.timer = setInterval(() => {
+    //     this.getChannels();
+    // }, 3000);
+    // $(document).on("mouseup", this.talkStop); //.on("keydown", this.keyDown);
   },
   beforeDestroy() {
     if (this.timer) {
@@ -233,6 +233,27 @@ export default {
     $(document).off("mouseup", this.talkStop); //.off('keydown', this.keyDown);
   },
   methods: {
+    ready(){
+      this.$watch('q', function(newVal, oldVal) {
+        this.doDelaySearch();
+      });
+      this.$watch('online', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('channel_type', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('dir_serial', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('currentPage', function(newVal, oldVal) {
+        this.doSearch(newVal);
+      });
+      this.timer = setInterval(() => {
+          this.getChannels();
+      }, 3000);
+      $(document).on("mouseup", this.talkStop); //.on("keydown", this.keyDown);
+    },
     keyDown(e) {
       if(e.keyCode == 27) {
         this.$el.querySelector('.fa-chevron-left').click();
@@ -495,6 +516,7 @@ export default {
       vm.channel_type = to.query.channel_type || "";
       vm.dir_serial = to.query.dir_serial || "";
       vm.currentPage = parseInt(to.params.page) || 1;
+      vm.ready();
     });
   },
   beforeRouteLeave(to, from, next) {

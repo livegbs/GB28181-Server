@@ -83,20 +83,20 @@ export default {
     computed: {
         ...mapState(['userInfo', 'serverInfo']),
     },
-    watch: {
-        q: function (newVal, oldVal) {
-            this.doDelaySearch();
-        },
-        currentPage: function (newVal, oldVal) {
-            this.doSearch(newVal);
-        }
-    },
     mounted() {
         // this.getWhiteList();
     },
     beforeDestroy() {
     },
     methods: {
+        ready(){
+            this.$watch('q', function(newVal, oldVal) {
+                this.doDelaySearch();
+            });
+            this.$watch('currentPage', function(newVal, oldVal) {
+                this.doSearch(newVal);
+            });
+        },
         download() {
             window.open(`/api/v1/white/export`);
         },
@@ -169,6 +169,7 @@ export default {
         next(vm => {
             vm.q = to.query.q || "";
             vm.currentPage = parseInt(to.params.page) || 1;
+            vm.ready();
         });
     },
     beforeRouteLeave(to, from, next) {

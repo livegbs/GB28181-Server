@@ -61,18 +61,18 @@ export default {
         // this.$refs['q'].focus();
         // this.load(); //load when sort change
     },
-    watch: {
-        q: function () {
-            this.doDelaySearch();
-        },
-        page: function (val) {
-            this.doSearch(val);
-        }
-    },
     computed: {
         ...mapState(['serverInfo', 'userInfo'])
     },
     methods: {
+        ready(){
+            this.$watch('q', function() {
+                this.doDelaySearch();
+            });
+            this.$watch('page', function(val) {
+                this.doSearch(val);
+            });
+        },
         load() {
             $.get('/api/v1/cloudrecord/querychannels', {
                 start: (this.page - 1) * this.pageSize,
@@ -119,6 +119,7 @@ export default {
         next(vm => {
             vm.q = to.query.q || "";
             vm.page = parseInt(to.params.page) || 1;
+            vm.ready();
         })
     },
     beforeRouteUpdate(to, from, next) {

@@ -129,24 +129,11 @@ export default {
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
   },
-  watch: {
-    q: function(newVal, oldVal) {
-      this.doDelaySearch();
-    },
-    online: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    currentPage: function(newVal, oldVal) {
-      this.doSearch(newVal);
-    }
-  },
   components: {
     CascadeEditDlg, CascadeChannelListDlg
   },
   mounted() {
-    this.timer = setInterval(() => {
-      this.getCascades();
-    }, 3000);
+    // this.getCascades();
   },
   beforeDestroy() {
     if (this.timer) {
@@ -155,6 +142,20 @@ export default {
     }
   },
   methods: {
+    ready(){
+        this.$watch('q', function(newVal, oldVal) {
+            this.doDelaySearch();
+        });
+        this.$watch('online', function(newVal, oldVal) {
+            this.doSearch(newVal);
+        });
+        this.$watch('currentPage', function(newVal, oldVal) {
+            this.doSearch(newVal);
+        });
+        this.timer = setInterval(() => {
+          this.getCascades();
+        }, 3000);
+    },
     doSearch(page = 1) {
       var query = {};
       if (this.q) query["q"] = this.q;
@@ -231,6 +232,7 @@ export default {
       vm.q = to.query.q || "";
       vm.online = to.query.online || "";
       vm.currentPage = parseInt(to.params.page) || 1;
+      vm.ready();
     });
   },
   beforeRouteUpdate(to, from, next) {

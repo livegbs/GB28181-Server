@@ -146,9 +146,9 @@ export default {
   mounted() {
     // this.$refs["q"].focus();
     // this.getDeviceList();
-    this.timer = setInterval(() => {
-        this.getDeviceList();
-    }, 3000);
+    // this.timer = setInterval(() => {
+    //     this.getDeviceList();
+    // }, 3000);
   },
   beforeDestroy() {
     if (this.timer) {
@@ -156,18 +156,21 @@ export default {
       this.timer = 0;
     }
   },
-  watch: {
-    q: function(newVal, oldVal) {
-      this.doDelaySearch();
-    },
-    online: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    currentPage: function(newVal, oldVal) {
-      this.doSearch(newVal);
-    },
-  },
   methods: {
+    ready() {
+      this.$watch('q', function(newVal, oldVal) {
+        this.doDelaySearch();
+      });
+      this.$watch('online', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('currentPage', function(newVal, oldVal) {
+        this.doSearch(newVal);
+      });
+      this.timer = setInterval(() => {
+        this.getDeviceList();
+      }, 3000);
+    },
     isMobile() {
       return videojs.browser.IS_IOS || videojs.browser.IS_ANDROID;
     },
@@ -271,6 +274,7 @@ export default {
       vm.q = to.query.q || "";
       vm.online = to.query.online || "";
       vm.currentPage = parseInt(to.params.page) || 1;
+      vm.ready();
     });
   },
   beforeRouteLeave(to, from, next) {

@@ -94,37 +94,46 @@ export default {
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
   },
-  watch: {
-    day: function(newVal, oldVal) {
-      this.timerange = [
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
-      ]
-    },
-    center: function(newVal, oldVal) {
-      this.timerange = [
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
-      ]
-    },
-    indistinct: function(newVal, oldVal) {
-      this.timerange = [
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
-        moment(this.day, "YYYYMMDD").startOf('hour').toDate()
-      ]
-    },
-    video: function(newVal, oldVal) {
-      if(newVal && newVal != oldVal) {
-        this.startPlayback();
-      } else {
-        this.stopPlayback();
-      }
-    }
-  },
   components: {
     DatePicker, LivePlayer, TimeRule
   },
   methods: {
+    ready(){
+      this.$watch('day', function(newVal, oldVal) {
+        this.timerange = [
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+        ]
+      });
+      this.$watch('center', function(newVal, oldVal) {
+        this.timerange = [
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+        ]
+      });
+      this.$watch('indistinct', function(newVal, oldVal) {
+        this.timerange = [
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate(),
+          moment(this.day, "YYYYMMDD").startOf('hour').toDate()
+        ]
+      });
+      this.$watch('video', function(newVal, oldVal) {
+        if(newVal && newVal != oldVal) {
+          this.startPlayback();
+        } else {
+          this.stopPlayback();
+        }
+      });
+
+      let mmt = moment();
+      let n = mmt.diff(mmt.clone().startOf('day'), 'minutes');
+      n -= 10;
+      if(n < 0) n = 0;
+      this.$refs.timeRule.clickMinute(n);
+      console.log(this.devid, this.channel, this.day)
+      this.getRecords(true);
+      $(window).on("beforeunload", this.beforeUnload);
+    },
     keyDown(e) {
       if(e.keyCode == 27) {
         this.$el.querySelector('.fa-chevron-left').click();
@@ -280,14 +289,14 @@ export default {
     }
   },
   mounted() {
-    let mmt = moment();
-    let n = mmt.diff(mmt.clone().startOf('day'), 'minutes');
-    n -= 10;
-    if(n < 0) n = 0;
-    this.$refs.timeRule.clickMinute(n);
-    console.log(this.devid, this.channel, this.day)
-    this.getRecords(true);
-    $(window).on("beforeunload", this.beforeUnload);
+    // let mmt = moment();
+    // let n = mmt.diff(mmt.clone().startOf('day'), 'minutes');
+    // n -= 10;
+    // if(n < 0) n = 0;
+    // this.$refs.timeRule.clickMinute(n);
+    // console.log(this.devid, this.channel, this.day)
+    // this.getRecords(true);
+    // $(window).on("beforeunload", this.beforeUnload);
   },
   beforeDestroy() {
     $(window).off("beforeunload", this.beforeUnload);
@@ -301,6 +310,7 @@ export default {
     next(vm => {
       vm.center = to.query.center;
       vm.indistinct = to.query.indistinct;
+      vm.ready();
     })
   },
   beforeRouteUpdate(to, from, next) {

@@ -143,26 +143,6 @@ export default {
   computed: {
     ...mapState(['userInfo', 'serverInfo']),
   },
-  watch: {
-    q: function(newVal, oldVal) {
-      this.doDelaySearch();
-    },
-    starttime: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    endtime: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    priority: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    method: function(newVal, oldVal) {
-      this.doSearch();
-    },
-    currentPage: function(newVal, oldVal) {
-      this.doSearch(newVal);
-    }
-  },
   components: {
     DatePicker
   },
@@ -178,6 +158,26 @@ export default {
     }
   },
   methods: {
+    ready(){
+      this.$watch('q', function(newVal, oldVal) {
+        this.doDelaySearch();
+      });
+      this.$watch('starttime', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('endtime', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('priority', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('method', function(newVal, oldVal) {
+        this.doSearch();
+      });
+      this.$watch('currentPage', function(newVal, oldVal) {
+        this.doSearch(newVal);
+      });
+    },
     doSearch(page = 1) {
       var query = {};
       if (this.q) query["q"] = this.q;
@@ -298,6 +298,7 @@ export default {
       vm.priority = to.query.priority || "";
       vm.method = to.query.method || "";
       vm.currentPage = parseInt(to.params.page) || 1;
+      vm.ready();
     });
   },
   beforeRouteUpdate(to, from, next) {
