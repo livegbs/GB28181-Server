@@ -15,6 +15,20 @@
             <input type="text" class="form-control" name="password" v-model.trim="form.password" placeholder="为空时免密接入" data-vv-as="接入密码">
         </div>
     </div>
+    <div :class="{'form-group':true,'has-error': errors.has('remote_ip')}">
+        <label class="col-sm-4 control-label">接入IP
+        </label>
+        <div class="col-sm-7">
+            <input type="text" class="form-control" name="remote_ip" v-model.trim="form.remote_ip" placeholder="为空时不限接入IP" data-vv-as="接入IP">
+        </div>
+    </div>
+    <div :class="{'form-group':true,'has-error': errors.has('remote_port')}">
+        <label class="col-sm-4 control-label">接入端口
+        </label>
+        <div class="col-sm-7">
+            <input type="text" class="form-control" name="remote_port" v-model.trim="form.remote_port" placeholder="为空时不限接入端口" v-validate="'numeric'" data-vv-as="接入端口">
+        </div>
+    </div>
     <div :class="{'form-group':true,'has-error': errors.has('description')}">
         <label class="col-sm-4 control-label">描述
         </label>
@@ -45,6 +59,8 @@ export default {
                 serial: '',
                 description: '',
                 password: '',
+                remote_ip: '',
+                remote_port: '',
             }
         },
         onHide() {
@@ -79,6 +95,9 @@ export default {
             this.errors.clear();
             if (data) {
                 Object.assign(this.form, data);
+                if (this.form.remote_port === 0) {
+                    this.form.remote_port = '';
+                }
             }
             this.$nextTick(() => {
                 this.$refs['dlg'].show();

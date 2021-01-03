@@ -26,8 +26,10 @@
             </form>
             <br>
             <el-table :data="whiteList" stripe :default-sort="{prop: 'Serial', order: 'ascending'}" @sort-change="sortChange" v-loading="loading" element-loading-text="加载中...">
-                <el-table-column prop="Serial" label="设备国标编号" min-width="300" show-overflow-tooltip sortable="custom"></el-table-column>
-                <el-table-column prop="Password" label="接入密码" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
+                <el-table-column prop="Serial" label="设备国标编号" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
+                <el-table-column prop="Password" label="接入密码" min-width="140" show-overflow-tooltip sortable="custom"></el-table-column>
+                <el-table-column prop="RemoteIP" label="接入IP" min-width="140" :formatter="formatRemoteIP" show-overflow-tooltip sortable="custom"></el-table-column>
+                <el-table-column prop="RemotePort" label="接入端口" min-width="140" :formatter="formatRemotePort" show-overflow-tooltip sortable="custom"></el-table-column>
                 <el-table-column prop="Description" label="描述" min-width="200" show-overflow-tooltip sortable="custom"></el-table-column>
                 <el-table-column prop="CreatedAt" label="创建时间" min-width="160" sortable="custom"></el-table-column>
                 <el-table-column prop="UpdatedAt" label="更新时间" min-width="160" sortable="custom"></el-table-column>
@@ -155,6 +157,8 @@ export default {
                 serial: row.Serial,
                 password: row.Password,
                 description: row.Description,
+                remote_ip: row.RemoteIP,
+                remote_port: row.RemotePort,
             });
         },
         addWhite(row) {
@@ -163,6 +167,18 @@ export default {
                 password: "",
                 description: "",
             });
+        },
+        formatRemoteIP(row, col, cell) {
+            if (!cell) {
+                return "";
+            }
+            return cell;
+        },
+        formatRemotePort(row, col, cell) {
+            if (!cell) {
+                return "";
+            }
+            return cell;
         },
     },
     beforeRouteEnter(to, from, next) {
