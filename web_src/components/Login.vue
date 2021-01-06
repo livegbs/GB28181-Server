@@ -119,8 +119,10 @@ export default {
     ...mapState(["userInfo", "serverInfo"])
   },
   async mounted() {
-    await this.getServerInfo();
-    document.title = this.serverInfo.LogoText || "LiveGBS";
+    var serverInfo = await this.getServerInfo();
+    if(serverInfo) {
+      document.title = serverInfo.LogoText || "LiveGBS";
+    }
     var userInfo = await this.getUserInfo();
     if(userInfo) {
         window.location.href = "/"

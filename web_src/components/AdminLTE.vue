@@ -141,13 +141,6 @@ export default {
       nice: null,
     }
   },
-  watch: {
-    serverInfo(val) {
-      if (val) {
-       document.title = val.LogoText || "LiveGBS";
-      }
-    }
-  },
   mounted() {
     $(document).ajaxError((evt, xhr, opts, ex) => {
       if (xhr.status == 401) {

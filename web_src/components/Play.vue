@@ -228,7 +228,7 @@ export default {
       shareUrl: "",
       snapUrl: "",
       ptz: true,
-      share: true,
+      share: false,
       fluent: true,
       stretch: false,
       autoplay: true,
@@ -255,12 +255,17 @@ export default {
     this.ctrlStop();
     $(document).off("mouseup touchend", this.ctrlStop);
   },
-  created() {
+  async mounted() {
+    await this.getServerInfo();
+    await this.getUserInfo();
+    document.title = this.serverInfo.LogoText || "LiveGBS";
+
     this.aspect = this.getQueryString("aspect","").replace("x", ":");
     this.autoplay = this.getQueryString("autoplay", "yes") == "yes";
     this.controls = this.getQueryString("controls", "yes") == "yes";
     this.ptz = this.getQueryString("ptz", "yes") == "yes";
-    this.share = this.getQueryString("share", "yes") == "yes";
+    var defShare = this.serverInfo.ShowShare ? "yes" : "no";
+    this.share = this.getQueryString("share", defShare) == "yes";
     this.fluent = this.getQueryString("fluent", "yes") == "yes";
     this.stretch = this.getQueryString("stretch", "no") == "yes";
     this.type = this.getQueryString("type", "stream");
@@ -276,11 +281,6 @@ export default {
     this.talk = this.getQueryString("talk", "no") == "yes";
     this.otherParams = this.getOtherParams(["aspect", "autoplay", "controls", "ptz", "share", "fluent", "stretch", "type", "starttime", "endtime", "serial", "code", "channel", "protocol", "muted", "talk", "debug"])
     this.shareUrl = location.href;
-  },
-  async mounted() {
-    await this.getServerInfo();
-    await this.getUserInfo();
-    document.title = this.serverInfo.LogoText || "LiveGBS";
     $(document).ajaxError((evt, xhr, opts, ex) => {
       if (xhr.status == 401) {
         if (this.serverInfo.IsDemo) {

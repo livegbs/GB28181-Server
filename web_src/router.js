@@ -232,6 +232,9 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   var serverInfo = await store.dispatch("getServerInfo");
+  if(serverInfo) {
+    document.title = serverInfo.LogoText || "LiveGBS";
+  }
   var userInfo = await store.dispatch("getUserInfo");
   // if (serverInfo && serverInfo.APIAuth === false && !userInfo) {
   //   next();
