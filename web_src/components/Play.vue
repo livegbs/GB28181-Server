@@ -162,6 +162,14 @@ Vue.prototype.$updateQueryString = (uri, key, value) => {
     return uri + separator + key + "=" + value;
   }
 }
+Vue.prototype.$getQueryString = (name, defVal = "") => {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) {
+    return unescape(r[2]);
+  }
+  return defVal;
+}
 Vue.prototype.$iframe = (link, w, h) => {
   var _link = Vue.prototype.$updateQueryString(link, "aspect", "fullscreen")
   return `<iframe src="${_link}" width="${w}" height="${h}" allowfullscreen allow="autoplay; fullscreen"></iframe>`
@@ -255,30 +263,35 @@ export default {
     this.ctrlStop();
     $(document).off("mouseup touchend", this.ctrlStop);
   },
+  created(){
+    this.aspect = this.$getQueryString("aspect","").replace("x", ":");
+    this.ptz = this.$getQueryString("ptz", "yes") == "yes";
+    this.talk = this.$getQueryString("talk", "no") == "yes";
+  },
   async mounted() {
-    await this.getServerInfo();
+    var defShare = "yes";
+    var serverInfo = await this.getServerInfo();
+    if (serverInfo) {
+      document.title = serverInfo.LogoText || "LiveGBS";
+      defShare = serverInfo.ShowShare ? "yes" : "no";
+    }
     await this.getUserInfo();
-    document.title = this.serverInfo.LogoText || "LiveGBS";
 
-    this.aspect = this.getQueryString("aspect","").replace("x", ":");
-    this.autoplay = this.getQueryString("autoplay", "yes") == "yes";
-    this.controls = this.getQueryString("controls", "yes") == "yes";
-    this.ptz = this.getQueryString("ptz", "yes") == "yes";
-    var defShare = this.serverInfo.ShowShare ? "yes" : "no";
-    this.share = this.getQueryString("share", defShare) == "yes";
-    this.fluent = this.getQueryString("fluent", "yes") == "yes";
-    this.stretch = this.getQueryString("stretch", "no") == "yes";
-    this.type = this.getQueryString("type", "stream");
-    this.starttime = this.getQueryString("starttime", "");
-    this.endtime = this.getQueryString("endtime", "");
-    this.serial = this.getQueryString("serial", "");
-    this.code = this.getQueryString("code", "");
-    this.channel = this.getQueryString("channel", "1");
-    this.protocol = this.getQueryString("protocol", "");
-    this.debug = this.getQueryString("debug") == "yes";
-    this.token = this.getQueryString("token", "");
-    this.muted = this.getQueryString("muted", "yes") == "yes";
-    this.talk = this.getQueryString("talk", "no") == "yes";
+    this.autoplay = this.$getQueryString("autoplay", "yes") == "yes";
+    this.controls = this.$getQueryString("controls", "yes") == "yes";
+    this.share = this.$getQueryString("share", defShare) == "yes";
+    this.fluent = this.$getQueryString("fluent", "yes") == "yes";
+    this.stretch = this.$getQueryString("stretch", "no") == "yes";
+    this.type = this.$getQueryString("type", "stream");
+    this.starttime = this.$getQueryString("starttime", "");
+    this.endtime = this.$getQueryString("endtime", "");
+    this.serial = this.$getQueryString("serial", "");
+    this.code = this.$getQueryString("code", "");
+    this.channel = this.$getQueryString("channel", "1");
+    this.protocol = this.$getQueryString("protocol", "");
+    this.debug = this.$getQueryString("debug") == "yes";
+    this.token = this.$getQueryString("token", "");
+    this.muted = this.$getQueryString("muted", "yes") == "yes";
     this.otherParams = this.getOtherParams(["aspect", "autoplay", "controls", "ptz", "share", "fluent", "stretch", "type", "starttime", "endtime", "serial", "code", "channel", "protocol", "muted", "talk", "debug"])
     this.shareUrl = location.href;
     $(document).ajaxError((evt, xhr, opts, ex) => {
@@ -343,7 +356,7 @@ export default {
             code: this.code,
             token: this.token,
           }).then(streamInfo => {
-            if(!this.getQueryString("ptz", "") && streamInfo.ChannelPTZType == 3) { // 0 - 未知, 1 - 球机, 2 - 半球, 3 - 固定枪机, 4 - 遥控枪机
+            if(!this.$getQueryString("ptz", "") && streamInfo.ChannelPTZType == 3) { // 0 - 未知, 1 - 球机, 2 - 半球, 3 - 固定枪机, 4 - 遥控枪机
               this.ptz = false;
             }
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
@@ -393,7 +406,7 @@ export default {
           })
           break;
         case "playback":
-          if(!this.getQueryString("ptz", "")) {
+          if(!this.$getQueryString("ptz", "")) {
             this.ptz = false;
           }
           this.bLoading = true;
@@ -530,14 +543,6 @@ export default {
     },
     thisYear() {
       return moment().format("YYYY");
-    },
-    getQueryString(name, defVal = "") {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg);
-      if (r != null) {
-        return unescape(r[2]);
-      }
-      return defVal;
     },
     getOtherParams(without) {
       var url = location.search;
