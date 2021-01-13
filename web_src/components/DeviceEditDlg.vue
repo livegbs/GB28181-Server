@@ -95,6 +95,13 @@
                 <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.record_indistinct" name="record_indistinct">模糊查询</el-checkbox>
             </div>
         </div>
+        <div :class="{'form-group':true,'has-error': errors.has('catalog')}">
+            <label for="input-catalog" class="col-sm-4 control-label">目录结构
+            </label>
+            <div class="col-sm-7 checkbox">
+                <el-checkbox style="margin-left:-19px;margin-top:-5px;" size="small" v-model.trim="form.civil_code_first" name="civil_code_first">行政区域优先</el-checkbox>
+            </div>
+        </div>
     </FormDlg>
 </template>
 
@@ -127,6 +134,7 @@ export default {
                 subscribe_interval: 600,
                 record_center: false,
                 record_indistinct: false,
+                civil_code_first: false,
                 password: '',
             }
         },

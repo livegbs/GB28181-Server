@@ -246,6 +246,7 @@ export default {
         password: row.Password,
         record_center: row.RecordCenter,
         record_indistinct: row.RecordIndistinct,
+        civil_code_first: row.CivilCodeFirst,
       });
     },
     formatName(row, col, cell) {
