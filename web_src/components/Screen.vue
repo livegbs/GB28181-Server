@@ -39,7 +39,7 @@
                   'fa-sitemap' : !treeLeaf(data),
                   'fa-camera': treeLeaf(data)
                 }]"></i>
-                <span class="ellipsis" :title="node.label">{{node.label}}</span>
+                <span class="ellipsis" style="user-select:none;" :title="node.label">{{node.label}}</span>
               </span>
             </span>
           </el-tree>
@@ -55,7 +55,7 @@
                   'fa-sitemap' : data.code && !treeLeaf(data),
                   'fa-camera': treeLeaf(data)
                 }]"></i>
-                <span class="ellipsis" :title="node.label">{{node.label}}</span>
+                <span class="ellipsis" style="user-select:none;" :title="node.label">{{node.label}}</span>
               </span>
             </span>
           </el-tree>
@@ -561,16 +561,30 @@ export default {
     },
     treeNodeClick(data, node, c) {
       this.contextMenuNodeData = null;
-      if(this.treeLeaf(data) && data.status === "ON") {
-        var player = this.players[this.playerIdx]||{};
-        if(player.bLoading) return;
-        this.closeVideo(this.playerIdx);
-        this.play(this.playerIdx, {
-          DeviceID: data.serial,
-          ID: data.code,
-          PTZType: data.ptzType,
-        });
-        this.setPlayerIdx(this.playerIdx + 1);
+      if(this.treeLeaf(data)) {
+        if (node.timer) {
+          clearTimeout(node.timer);
+        }
+        if (!node.clickCnt || node.clickCnt > 1) {
+          node.clickCnt = 1;
+        } else {
+          node.clickCnt++;
+        }
+        node.timer = setTimeout(() => {
+          node.clickCnt = 0;
+          node.timer = 0;
+        }, 500);
+        if (data.status === "ON" || node.clickCnt == 2) {
+          var player = this.players[this.playerIdx]||{};
+          if(player.bLoading) return;
+          this.closeVideo(this.playerIdx);
+          this.play(this.playerIdx, {
+            DeviceID: data.serial,
+            ID: data.code,
+            PTZType: data.ptzType,
+          });
+          this.setPlayerIdx(this.playerIdx + 1);
+        }
       }
     },
     showNodeEditDlg() {
