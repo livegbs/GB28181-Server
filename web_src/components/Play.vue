@@ -362,11 +362,7 @@ export default {
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
             var _snapUrl = this.isMobile() ? streamInfo.SnapURL : "";
             if (this.flvSupported()) {
-              if (streamInfo.WS_FLV && !this.isIE()) {
-                _videoUrl = streamInfo.WS_FLV;
-              } else if(streamInfo.FLV) {
-                _videoUrl = streamInfo.FLV;
-              }
+              _videoUrl = this.isIE() ? streamInfo.WS_FLV : streamInfo.FLV;
               _snapUrl = streamInfo.SnapURL;
             }
             var _protocol = String(this.protocol).toUpperCase();
@@ -420,11 +416,7 @@ export default {
             var _videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
             var _snapUrl = this.isMobile() ? streamInfo.SnapURL : "";
             if (this.flvSupported()) {
-              if(streamInfo.WS_FLV && !this.isIE()) {
-                _videoUrl = streamInfo.WS_FLV;
-              } else if (streamInfo.FLV) {
-                _videoUrl = streamInfo.FLV;
-              }
+              _videoUrl = this.isIE() ? streamInfo.WS_FLV : streamInfo.FLV;
               _snapUrl = streamInfo.SnapURL;
             }
             var _protocol = String(this.protocol).toUpperCase();

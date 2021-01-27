@@ -209,8 +209,8 @@ export default {
         starttime: row.StartTime,
         endtime: row.EndTime,
         download: true
-      }).then(ret => {
-        this.$refs["playbackDownloadDlg"].download(row.StartTime + " - " + row.EndTime, ret.StreamID);
+      }).then(streamInfo => {
+        this.$refs["playbackDownloadDlg"].download(row.StartTime + " - " + row.EndTime, streamInfo.StreamID);
       }).always(() => {
         this.loading = false;
         this.$delete(row, "Starting");
@@ -224,17 +224,12 @@ export default {
         code: this.channel,
         starttime: row.StartTime,
         endtime: row.EndTime
-      }).then(ret => {
-        var videoUrl = this.isMobile() ? ret.HLS : ret.RTMP;
+      }).then(streamInfo => {
+        var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
         var protocol = this.isMobile() ? "HLS" : "RTMP";
         if(this.flvSupported()) {
-          if(ret.FLV) {
-            protocol = "FLV";
-            videoUrl = ret.FLV;
-          } else if(ret.WS_FLV && !this.isIE()) {
-            protocol = "WS_FLV";
-            videoUrl = ret.WS_FLV;
-          }
+          protocol = this.isIE() ? "WS_FLV" : "FLV";
+          videoUrl = this.isIE() ? streamInfo.WS_FLV : streamInfo.FLV;
         }
         var snap = protocol == "RTMP" ? "" : (row.Snap || "");
         this.$refs["playbackVideoDlg"].play(
@@ -243,7 +238,7 @@ export default {
           snap,
           this.devid,
           this.channel,
-          ret.StreamID
+          streamInfo.StreamID
         );
       }).always(() => {
         this.loading = false;

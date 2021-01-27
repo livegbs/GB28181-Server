@@ -250,11 +250,7 @@ export default {
       }).then(streamInfo => {
         var videoUrl = this.isMobile() ? streamInfo.HLS : streamInfo.RTMP;
         if(this.flvSupported()) {
-          if(streamInfo.FLV) {
-            videoUrl = streamInfo.FLV;
-          } else if(streamInfo.WS_FLV && !this.isIE()) {
-            videoUrl = streamInfo.WS_FLV;
-          }
+          videoUrl = this.isIE() ? streamInfo.WS_FLV : streamInfo.FLV;
         }
         this.streamID = streamInfo.StreamID;
         this.videoUrl = videoUrl;
