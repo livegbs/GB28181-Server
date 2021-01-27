@@ -372,10 +372,10 @@ export default {
             protocol = "FLV";
           }
         }
-        if(this.isIE() && i > 0) {
-          videoUrl = stream.HLS;
-          protocol = "HLS";
-        }
+        // if(this.isIE() && i > 0) {
+        //   videoUrl = stream.HLS;
+        //   protocol = "HLS";
+        // }
         var _protocol = String(this.protocol).toUpperCase();
         switch (_protocol) {
           case "RTMP":
