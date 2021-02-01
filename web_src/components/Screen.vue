@@ -653,8 +653,12 @@ export default {
     },
     getParentData() {
       if(!this.contextMenuNodeData) return null;
-      if(!this.$refs["devTree"]) return null;
-      var pNode = this.$refs["devTree"].getNode(this.contextMenuNodeData);
+      var ref = "devTree";
+      if ($("#group-tree-wrapper").hasClass("active")) {
+        ref = "groupTree";
+      }
+      if(!this.$refs[ref]) return null;
+      var pNode = this.$refs[ref].getNode(this.contextMenuNodeData);
       if(!pNode) return null;
       if(!pNode.parent) return null;
       return pNode.parent.data;
