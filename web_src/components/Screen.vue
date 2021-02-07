@@ -644,7 +644,7 @@ export default {
     treeLeaf(data) {
       if (data && data.subCount == 0 && data.serial && data.code && !data.custom) {
         if (!data.parental || data.manufacturer != 'LiveQing') {
-          if (data.code.length != 20 || data.code.substring(10, 13) != "216") {
+          if (data.code.length != 20 || data.code.substring(10, 13) != "216" || data.code.substring(10, 13) != "215") {
             return true;
           }
         }

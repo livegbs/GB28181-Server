@@ -304,7 +304,7 @@ export default {
       // return row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.Parental == 0 && row.SubCount == 0;
       if (row && row.DeviceOnline && row.Status == "ON" && !row.Custom && row.SubCount == 0) {
         if (row.Parental != 1 || row.Manufacturer != "LiveQing") {
-          if (row.ID.length != 20 || row.ID.substring(10, 13) != "216") {
+          if (row.ID.length != 20 || row.ID.substring(10, 13) != "216" || row.ID.substring(10, 13) != "215") {
             return true;
           }
         }
@@ -315,7 +315,7 @@ export default {
       // return row && row.DeviceOnline && !row.Custom && row.Parental == 0 && row.SubCount == 0;
       if (row && row.DeviceOnline && !row.Custom && row.SubCount == 0) {
         if (row.Parental != 1 || row.Manufacturer != "LiveQing") {
-          if (row.ID.length != 20 || row.ID.substring(10, 13) != "216") {
+          if (row.ID.length != 20 || row.ID.substring(10, 13) != "216" || row.ID.substring(10, 13) != "215") {
             return true;
           }
         }
@@ -331,7 +331,7 @@ export default {
         if (row.Parental == 1 && row.Manufacturer == "LiveQing") {
           return true;
         }
-        if (row.ID.length == 20 && row.ID.substring(10, 13) == "216") {
+        if (row.ID.length == 20 && (row.ID.substring(10, 13) == "216" || row.ID.substring(10, 13) == "215")) {
           return true;
         }
       }
