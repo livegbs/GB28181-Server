@@ -242,7 +242,6 @@ export default {
             HTTPSPort: "",
             HTTPSCertFile: "",
             HTTPSKeyFile: "",
-            preHTTPSPort: "",
         };
     },
     mounted() {
