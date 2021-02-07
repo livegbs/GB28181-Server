@@ -65,6 +65,27 @@
                                 <span class="help-block"></span>
                             </div>
                         </div>
+                        <div :class="{'form-group': true, 'has-error': errors.has('HTTPSPort')}" title="配置为0, 表示不开启HTTPS">
+                            <label for="base-https-port" class="col-sm-4 control-label">HTTPS 端口(可选)</label>
+                            <div class="col-sm-7">
+                                <input id="base-https-port" type="text" class="form-control" name="HTTPSPort" data-vv-as="HTTPS 端口" v-validate="'numeric'" v-model.trim="HTTPSPort" placeholder="默认不开启HTTPS">
+                                <span class="help-block">{{errors.first('HTTPSPort')}}</span>
+                            </div>
+                        </div>
+                        <div :class="{'form-group': true, 'has-error': errors.has('HTTPSCertFile')}" title="配置 Cert 证书路径，绝对路径" v-if="HTTPSPort != ''">
+                            <label for="base-https-cert-file" class="col-sm-4 control-label">HTTPS Cert 证书路径</label>
+                            <div class="col-sm-7">
+                                <input id="base-https-cert-file" type="text" class="form-control" spellcheck="false" autocomplete="off" name="HTTPSCertFile" v-model.trim="HTTPSCertFile" placeholder="配置cert证书绝对路径">
+                                <span class="help-block">{{errors.first('HTTPSCertFile')}}</span>
+                            </div>
+                        </div>
+                        <div :class="{'form-group': true, 'has-error': errors.has('HTTPSKeyFile')}" title="配置 Cert 证书路径，绝对路径" v-if="HTTPSPort != ''">
+                            <label for="base-https-key-file" class="col-sm-4 control-label">HTTPS Key 证书路径</label>
+                            <div class="col-sm-7">
+                                <input id="base-https-key-file" type="text" class="form-control" spellcheck="false" autocomplete="off" name="HTTPSKeyFile" v-model.trim="HTTPSKeyFile" placeholder="配置key证书绝对路径">
+                                <span class="help-block">{{errors.first('HTTPSKeyFile')}}</span>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">其他配置</label>
                             <div class="col-sm-7 checkbox">
@@ -218,6 +239,10 @@ export default {
             sms: {},
             smsbaseconfig: {},
             smstip: "流媒体服务尚未启动",
+            HTTPSPort: "",
+            HTTPSCertFile: "",
+            HTTPSKeyFile: "",
+            preHTTPSPort: "",
         };
     },
     mounted() {
@@ -284,6 +309,9 @@ export default {
                 SIPLog: this.SIPLog,
                 BlackIPList: this.BlackIPList,
                 BlackUAList: this.BlackUAList,
+                HTTPSPort: this.HTTPSPort,
+                HTTPSCertFile: this.HTTPSCertFile,
+                HTTPSKeyFile: this.HTTPSKeyFile,
             };
         },
         getBaseConfig() {
@@ -300,6 +328,9 @@ export default {
                 this.SIPLog = ret.SIPLog;
                 this.BlackIPList = ret.BlackIPList;
                 this.BlackUAList = ret.BlackUAList;
+                this.HTTPSPort = ret.HTTPSPort == 0 ? "":ret.HTTPSPort;
+                this.HTTPSCertFile = ret.HTTPSCertFile;
+                this.HTTPSKeyFile = ret.HTTPSKeyFile;
 
                 this.remoteBasicData = JSON.stringify(this.getBasicCommitObject());
             });
