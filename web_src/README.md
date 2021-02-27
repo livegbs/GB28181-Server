@@ -12,7 +12,7 @@ cd web_src
 #  安装 npm 依赖
 cnpm install
 
-# 编辑 webpack.config.js > devServer > proxy ip 指向 server ip
+# 编辑 webpack.config.js > devServer > proxy target ip 指向 server ip
 
 # 启动
 npm run start
