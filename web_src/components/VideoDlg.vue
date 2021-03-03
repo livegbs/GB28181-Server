@@ -68,8 +68,9 @@
                     <el-radio-group v-model.trim="protocol" size="small" @change="setProtocol" id="protocol-switcher" class="hidden-xs pull-left">
                       <el-radio-button label="FLV" v-if="flvSupported() && !isIE()"></el-radio-button>
                       <el-radio-button label="WS_FLV" v-if="flvSupported()"></el-radio-button>
-                      <el-radio-button label="RTMP"></el-radio-button>
+                      <el-radio-button label="WEBRTC" v-if="rtcSupported()"></el-radio-button>
                       <el-radio-button label="HLS"></el-radio-button>
+                      <el-radio-button label="RTMP"></el-radio-button>
                     </el-radio-group>
                     <button v-if="hasAnyRole(serverInfo, userInfo, '管理员', '操作员') && serverInfo.VersionType == '旗舰版'" type="button" :class="['btn', {'btn-primary': !bRecording, 'btn-danger': bRecording}]" @click.prevent="toggleRecord()">
                       <i :class="['fa', {'fa-save': !bRecording, 'fa-stop': bRecording}]"></i>
@@ -181,6 +182,35 @@ export default {
           videoUrl = this.isIE() ? streamInfo.WS_FLV : streamInfo.FLV;
           protocol = this.isIE() ? "WS_FLV" : "FLV";
       }
+      switch(String(this.serverInfo.PreferStreamFmt).toUpperCase()) {
+        case "WEBRTC":
+          if(this.rtcSupported()) {
+            videoUrl = streamInfo.WEBRTC;
+            protocol = "WEBRTC";
+          }
+          break;
+        case "FLV":
+          if(this.flvSupported() && !this.isIE()) {
+              videoUrl = streamInfo.FLV;
+              protocol = "FLV";
+          }
+          break;
+        case "WS_FLV":
+        case "WS-FLV":
+          if(this.flvSupported()) {
+            videoUrl = streamInfo.WS_FLV;
+            protocol = "WS_FLV";
+          }
+          break;
+        case "HLS":
+          videoUrl = streamInfo.HLS;
+          protocol = "HLS";
+          break;
+        case "RTMP":
+          videoUrl = streamInfo.RTMP;
+          protocol = "RTMP";
+          break;
+      }
       this.protocol = protocol;
       this.videoTitle = title || "";
       this.snapUrl = protocol == "RTMP" ? "" : (streamInfo.SnapURL || "");
@@ -199,6 +229,9 @@ export default {
     setProtocol(protocol) {
       if(!this.streamInfo) return;
       switch(protocol) {
+        case "WEBRTC":
+          this.videoUrl = this.streamInfo.WEBRTC;
+          break;
         case "FLV":
           this.videoUrl = this.streamInfo.FLV;
           break;

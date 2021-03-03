@@ -252,6 +252,30 @@ export default {
         if(this.flvSupported()) {
           videoUrl = this.isIE() ? streamInfo.WS_FLV : streamInfo.FLV;
         }
+        switch(String(this.serverInfo.PreferStreamFmt).toUpperCase()) {
+          case "WEBRTC":
+            if(this.rtcSupported()) {
+              videoUrl = streamInfo.WEBRTC;
+            }
+            break;
+          case "FLV":
+            if(this.flvSupported() && !this.isIE()) {
+                videoUrl = streamInfo.FLV;
+            }
+            break;
+          case "WS_FLV":
+          case "WS-FLV":
+            if(this.flvSupported()) {
+              videoUrl = streamInfo.WS_FLV;
+            }
+            break;
+          case "HLS":
+            videoUrl = streamInfo.HLS;
+            break;
+          case "RTMP":
+            videoUrl = streamInfo.RTMP;
+            break;
+        }
         this.streamID = streamInfo.StreamID;
         this.videoUrl = videoUrl;
         // no need since v1.2

@@ -64,6 +64,8 @@ import moment from "moment";
 import DatePicker from "components/DatePicker.vue";
 import PlaybackVideoDlg from "components/PlaybackVideoDlg";
 import PlaybackDownloadDlg from "components/PlaybackDownloadDlg";
+import { mapState } from "vuex";
+
 export default {
   props: {
     devid: {
@@ -97,6 +99,9 @@ export default {
   },
   components: {
     PlaybackVideoDlg, PlaybackDownloadDlg, DatePicker
+  },
+  computed: {
+    ...mapState(['userInfo', 'serverInfo']),
   },
   methods: {
     ready(){
@@ -230,6 +235,35 @@ export default {
         if(this.flvSupported()) {
           protocol = this.isIE() ? "WS_FLV" : "FLV";
           videoUrl = this.isIE() ? streamInfo.WS_FLV : streamInfo.FLV;
+        }
+        switch(String(this.serverInfo.PreferStreamFmt).toUpperCase()) {
+          case "WEBRTC":
+            if(this.rtcSupported()) {
+              videoUrl = streamInfo.WEBRTC;
+              protocol = "WEBRTC";
+            }
+            break;
+          case "FLV":
+            if(this.flvSupported() && !this.isIE()) {
+                videoUrl = streamInfo.FLV;
+                protocol = "FLV";
+            }
+            break;
+          case "WS_FLV":
+          case "WS-FLV":
+            if(this.flvSupported()) {
+              videoUrl = streamInfo.WS_FLV;
+              protocol = "WS_FLV";
+            }
+            break;
+          case "HLS":
+            videoUrl = streamInfo.HLS;
+            protocol = "HLS";
+            break;
+          case "RTMP":
+            videoUrl = streamInfo.RTMP;
+            protocol = "RTMP";
+            break;
         }
         var snap = protocol == "RTMP" ? "" : (row.Snap || "");
         this.$refs["playbackVideoDlg"].play(

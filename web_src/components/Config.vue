@@ -44,6 +44,20 @@
                                 <span class="help-block">{{errors.first('DevicePassword')}}</span>
                             </div>
                         </div>
+                        <div :class="['form-group', {'has-error': errors.has('PreferStreamFmt')}]" title="配置直播流优先使用的播放格式">
+                            <label for="prefer-stream-fmt" class="col-sm-4 control-label">首选直播格式</label>
+                            <div class="col-sm-7">
+                                <select id="prefer-stream-fmt" name="PreferStreamFmt" class="form-control" v-model.trim="PreferStreamFmt">
+                                    <option value="">自动选择</option>
+                                    <option value="FLV">FLV</option>
+                                    <option value="WS_FLV">WS_FLV</option>
+                                    <option value="WEBRTC">WEBRTC</option>
+                                    <option value="HLS">HLS</option>
+                                    <option value="RTMP">RTMP</option>
+                                </select>
+                                <span class="help-block">{{errors.first('PreferStreamFmt')}}</span>
+                            </div>
+                        </div>
                         <div :class="['form-group' , {'has-error': errors.has('TimeServer')}]">
                             <label for="sip-time-server" class="col-sm-4 control-label">校时源(可选)</label>
                             <div class="col-sm-7">
@@ -226,6 +240,7 @@ export default {
             Port: 0,
             DevicePassword: "",
             TimeServer: "",
+            PreferStreamFmt: "",
             AckTimeout: 0,
             KeepaliveTimeout: 0,
             APIAuth: false,
@@ -302,6 +317,7 @@ export default {
                 Port: this.Port,
                 DevicePassword: this.DevicePassword,
                 TimeServer: this.TimeServer,
+                PreferStreamFmt: this.PreferStreamFmt,
                 AckTimeout: this.AckTimeout,
                 KeepaliveTimeout: this.KeepaliveTimeout,
                 APIAuth: this.APIAuth,
@@ -321,6 +337,7 @@ export default {
                 this.Port = ret.Port;
                 this.DevicePassword = ret.DevicePassword;
                 this.TimeServer = ret.TimeServer;
+                this.PreferStreamFmt = ret.PreferStreamFmt;
                 this.AckTimeout = ret.AckTimeout;
                 this.KeepaliveTimeout = ret.KeepaliveTimeout;
                 this.APIAuth = ret.APIAuth;

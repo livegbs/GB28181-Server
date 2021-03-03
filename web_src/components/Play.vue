@@ -183,6 +183,9 @@ Vue.prototype.isIE = () => {
 Vue.prototype.flvSupported = () => {
   return videojs.browser.IE_VERSION || (flvjs.getFeatureList() && flvjs.getFeatureList().mseLiveFlvPlayback);
 }
+Vue.prototype.rtcSupported = () => {
+    return !!RTCPeerConnection;
+}
 Vue.prototype.canTalk = () => {
   return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 }
@@ -288,7 +291,7 @@ export default {
     this.serial = this.$getQueryString("serial", "");
     this.code = this.$getQueryString("code", "");
     this.channel = this.$getQueryString("channel", "1");
-    this.protocol = this.$getQueryString("protocol", "");
+    this.protocol = this.$getQueryString("protocol", serverInfo.PreferStreamFmt||"");
     this.debug = this.$getQueryString("debug") == "yes";
     this.token = this.$getQueryString("token", "");
     this.muted = this.$getQueryString("muted", "yes") == "yes";
@@ -367,6 +370,11 @@ export default {
             }
             var _protocol = String(this.protocol).toUpperCase();
             switch (_protocol) {
+              case "WEBRTC":
+                if(this.rtcSupported()) {
+                  _videoUrl = streamInfo.WEBRTC;
+                }
+                break;
               case "RTMP":
                 _videoUrl = streamInfo.RTMP || "";
                 break;
@@ -374,13 +382,15 @@ export default {
                 _videoUrl = streamInfo.HLS || "";
                 break;
               case "FLV":
-                _videoUrl = streamInfo.FLV || "";
+                if(this.flvSupported() && !this.isIE()) {
+                  _videoUrl = streamInfo.FLV || "";
+                }
                 break;
               case "WS_FLV":
-                _videoUrl = streamInfo.WS_FLV || "";
-                break;
               case "WS-FLV":
-                _videoUrl = streamInfo.WS_FLV || "";
+                if(this.flvSupported()) {
+                  _videoUrl = streamInfo.WS_FLV || "";
+                }
                 break;
             }
             if (this.otherParams != "") {

@@ -233,7 +233,7 @@ export default {
       this.playerLength = 1;
     }
     this.setPlayerLength(this.playerLength);
-    this.protocol = this.getQueryString("protocol", "");
+    this.protocol = this.getQueryString("protocol", this.serverInfo.PreferStreamFmt||"");
     this.loadLocalData(false);
     this.contextMenuTarget = document.querySelector('#tab-tree-wrapper');
     $(document).on("mouseup touchend", this.ctrlStop);
@@ -252,12 +252,12 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.protocol = vm.getQueryString("protocol", "");
+      vm.protocol = vm.getQueryString("protocol", this.serverInfo.PreferStreamFmt||"");
     });
   },
   beforeRouteUpdate(to, from, next) {
     this.clearVideos();
-    this.protocol = this.getQueryString("protocol", "");
+    this.protocol = this.getQueryString("protocol", this.serverInfo.PreferStreamFmt||"");
     next();
   },
   beforeRouteLeave(to, from, next) {
@@ -378,6 +378,12 @@ export default {
         // }
         var _protocol = String(this.protocol).toUpperCase();
         switch (_protocol) {
+          case "WEBRTC":
+            if(this.rtcSupported()) {
+              videoUrl = stream.WEBRTC || "";
+              protocol = "WEBRTC";
+            }
+            break;
           case "RTMP":
             videoUrl = stream.RTMP || "";
             protocol = "RTMP";
@@ -387,16 +393,17 @@ export default {
             protocol = "HLS";
             break;
           case "FLV":
-            videoUrl = stream.FLV || "";
-            protocol = "FLV";
+            if(this.flvSupported() && !this.isIE()) {
+              videoUrl = stream.FLV || "";
+              protocol = "FLV";
+            }
             break;
           case "WS_FLV":
-            videoUrl = stream.WS_FLV || "";
-            protocol = "WS_FLV";
-            break;
           case "WS-FLV":
-            videoUrl = stream.WS_FLV || "";
-            protocol = "WS_FLV";
+            if(this.flvSupported()) {
+              videoUrl = stream.WS_FLV || "";
+              protocol = "WS_FLV";
+            }
             break;
         }
         player.serial = channel.DeviceID;
