@@ -12,7 +12,7 @@
   "author": "penggy",
   "license": "ISC",
   "devDependencies": {
-    "@liveqing/liveplayer": "2.2.6",
+    "@liveqing/liveplayer": "2.2.7",
     "@penggy/jquery.nicescroll": "3.7.7",
     "@xkeshi/vue-qrcode": "0.3.0",
     "@xunlei/vue-context-menu": "1.0.2",
