@@ -252,7 +252,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.protocol = vm.getQueryString("protocol", this.serverInfo.PreferStreamFmt||"");
+      vm.protocol = vm.getQueryString("protocol", vm.serverInfo.PreferStreamFmt||"");
     });
   },
   beforeRouteUpdate(to, from, next) {
