@@ -1,3 +1,6 @@
+
+:loudspeaker: 由于 github 访问不稳定, 自 2021-03-04 起, 该仓库迁移至 https://gitee.com/livegbs/GB28181-Server
+
 #  下载地址
 [**https://www.liveqing.com/docs/download/LiveGBS.html**](https://www.liveqing.com/docs/download/LiveGBS.html)
 
@@ -30,7 +33,7 @@
 
 	TCP 端口 : 15060(SIP), 10000(HTTP), 26379(Redis)
 
-	UDP 端口 : 15060(SIP)
+	UDP 端口 : 15060(SIP), 10000(HTTP)
 
 ### 流媒体服务
 
@@ -42,7 +45,7 @@
 
 	TCP 端口 : 15070(SIP), 10001(HTTP), 11935(RTMP Live), 30000-30500(RTP over TCP)
 
-	UDP 端口 : 15070(SIP), 30000-30500(RTP/RTCP over UDP)
+	UDP 端口 : 15070(SIP), 10001(HTTP), 30000-30500(RTP/RTCP over UDP)
 
 
 	*端口区间说明*
