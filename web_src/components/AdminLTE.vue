@@ -105,15 +105,20 @@ Vue.prototype.canTalk = () => {
   return location.protocol.indexOf("https") == 0 || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 }
 Vue.prototype.hasAnyRole = (serverInfo, userInfo, ...roles) => {
+    roles = roles||[];
     if (serverInfo && serverInfo.APIAuth === false && !userInfo) {
+      if(roles.length == 1 && roles[0] == '管理员') {
+        return false;
+      } else {
         return true;
+      }
     }
     var userRoles = [];
     if (userInfo) {
         userRoles = userInfo.Roles || [];
     }
     var checked = false;
-    for(var role of (roles||[])) {
+    for(var role of roles) {
         if (!role || userRoles.some(ur => (ur == role || ur == '超级管理员'))) {
             checked = true;
             break;
